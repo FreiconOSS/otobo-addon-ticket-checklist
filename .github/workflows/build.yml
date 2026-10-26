@@ -1,0 +1,49 @@
+name: Build OPM
+
+on:
+  release:
+    types: [ published ]
+
+  push:
+
+  # allows for manual workflow execution
+  workflow_dispatch:
+
+
+jobs:
+  build-opm:
+    runs-on: ubuntu-latest
+
+    # release upload writes the OPM as an asset to the release
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Calculate package version
+        run: |
+          echo "VERSION=$(git describe --tag --abbrev=7 | sed s/-/./g)" >> $GITHUB_ENV
+          echo "NAME=TicketChecklist" >> $GITHUB_ENV
+
+      - name: Build OPM package
+        uses: freiconoss/action-opm-build@v1.1
+        with:
+          name: ${{ env.NAME }}
+          version: ${{ env.VERSION }}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.NAME }}
+          path: ${{ env.NAME }}-${{ env.VERSION }}.opm
+          retention-days: 5
+
+      - name: Upload release artifact
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" "${NAME}-${VERSION}.opm" --clobber

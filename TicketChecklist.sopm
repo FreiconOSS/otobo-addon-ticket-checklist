@@ -2,10 +2,10 @@
 <otobo_package version="1.0">
     <Name>TicketChecklist</Name>
     <Framework>11.0.x</Framework>
-    <Vendor>Perl-Services.de</Vendor>
-    <URL>http://www.perl-services.de</URL>
-    <Description Lang="de">Eine Checkliste für Tickets.</Description>
-    <Description Lang="en">Add a checklist to tickets.</Description>
+    <Vendor>Freicon GmbH &amp; Co.KG</Vendor>
+    <URL>https://github.com/FreiconOSS/otobo-addon-ticket-checklist</URL>
+    <Description Lang="de">Eine Checkliste für Tickets. Basiert auf TicketChecklist von Perl-Services.de, von Freicon für OTOBO 11 angepasst (AGPL-3.0).</Description>
+    <Description Lang="en">Add a checklist to tickets. Based on TicketChecklist by Perl-Services.de, modified by Freicon for OTOBO 11 (AGPL-3.0).</Description>
     <Description Lang="hu">Egy ellenőrzőlista hozzáadása a jegyekhez.</Description>
     <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
     <DatabaseInstall Type="post">

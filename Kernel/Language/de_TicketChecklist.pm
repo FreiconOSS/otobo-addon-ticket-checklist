@@ -36,7 +36,7 @@ sub Data {
     $Lang->{'Maintain ticket checklists'}  = 'Ticketchecklisten pflegen';
     $Lang->{'Maintain ticket checklists.'}  = 'Ticketchecklisten pflegen.';
 
-    # Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistStateList.tt
+    # Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistStateList.tt
     $Lang->{'Checklist Item State Management'} = 'Checklisten Status Verwaltung';
     $Lang->{'Actions'} = 'Aktionen';
     $Lang->{'Add State'} = 'Status hinzufügen';
@@ -48,7 +48,7 @@ sub Data {
     $Lang->{'edit'} = 'bearbeiten';
     $Lang->{'delete'} = 'löschen';
 
-    # Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistStateForm.tt
+    # Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistStateForm.tt
     $Lang->{'Go to overview'} = 'Zur Übersicht';
     $Lang->{'Add/Change States'} = 'Status Hinzufügen / Ändern';
     $Lang->{'done'} = 'erledigt';
@@ -59,7 +59,7 @@ sub Data {
     $Lang->{'or'} = 'oder';
     $Lang->{'Cancel'} = 'Abbrechen';
 
-    # Custom/Kernel/Output/HTML/Templates/Standard/AgentTicketChecklist.tt
+    # Kernel/Output/HTML/Templates/Standard/AgentTicketChecklist.tt
     $Lang->{'Manage Checklist for ticket'} = 'Verwalten Sie eine Checkliste für das Ticket';
     $Lang->{'Cancel & close window'} = 'Abbrechen und Fenster schließen';
     $Lang->{'Toggle this widget'} = 'Dieses Widget umschalten';
@@ -68,11 +68,11 @@ sub Data {
     $Lang->{'Add item'} = 'Punkt hinzufügen';
     $Lang->{'Submit'} = 'Abschicken';
 
-    # Custom/Kernel/Output/HTML/Templates/Standard/TicketChecklistWidget.tt
+    # Kernel/Output/HTML/Templates/Standard/TicketChecklistWidget.tt
     $Lang->{'Show or hide the content'} = 'Inhalt anzeigen oder ausblenden';
     $Lang->{'Ticket Checklist'} = 'Ticket Checkliste';
 
-    # Custom/Kernel/Modules/AgentTicketChecklist.pm
+    # Kernel/Modules/AgentTicketChecklist.pm
     $Lang->{'No TicketID is given!'} = 'Keine TicketID übergeben!';
     $Lang->{'Please contact the admin.'} = 'Bitte kontaktieren Sie den Administrator.';
     $Lang->{'You need %s permissions!'} = 'Sie benötigen %s-Rechte!';

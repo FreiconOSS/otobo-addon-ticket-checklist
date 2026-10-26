@@ -216,6 +216,26 @@ my $OrigArticles  = \&Kernel::Output::PDF::Ticket::_PDFOutputArticles;
     $Self->IsDeeply( \@PrintedArticles, [ $ArticleIDs[1] ], 'with a selection only the selected article is printed' );
 }
 
+# ---------------------------------------------------------------------------
+# TicketDelete removes the checklist first (Kernel::Autoload::TicketChecklist)
+# ---------------------------------------------------------------------------
+
+$Self->True(
+    defined $Kernel::Autoload::TicketChecklist::OrigTicketDelete ? 1 : 0,
+    'autoload wrapper around TicketDelete is loaded',
+);
+
+$Self->True(
+    $TicketObject->TicketDelete(
+        TicketID => $TicketID,
+        UserID   => 1,
+    ),
+    'ticket with checklist items can be deleted',
+);
+
+my @Remaining = $ChecklistObject->TicketChecklistTicketGet( TicketID => $TicketID );
+$Self->Is( scalar @Remaining, 0, 'checklist items of the deleted ticket are gone' );
+
 # cleanup is done by RestoreDatabase
 
 $Self->DoneTesting();

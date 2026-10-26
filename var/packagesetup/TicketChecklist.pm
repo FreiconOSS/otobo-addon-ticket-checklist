@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2015 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -18,6 +21,7 @@ use List::Util qw(first);
 our @ObjectDependencies = qw(
     Kernel::Config
     Kernel::System::SysConfig
+    Kernel::System::SysConfig::DB
     Kernel::System::DB
     Kernel::System::Stats
 );
@@ -109,6 +113,7 @@ run the code upgrade part
 sub CodeUpgrade {
     my ( $Self, %Param ) = @_;
 
+    $Self->_RemoveObsoleteSettings();
     $Self->_DoSysConfigChanges();
     $Self->_CreateDynamicFields();
 
@@ -273,6 +278,44 @@ sub CodeUpgrade_5_0_24 {
 =item _DoSysConfigChanges()
 
 =cut
+
+# Settings that earlier versions defined and this one no longer does. OTOBO only
+# drops them on a package upgrade when the XML files of every installed package
+# are deployed correctly (Kernel::System::Package::_ConfigurationDeploy), so on
+# many systems they would survive. Ticket::CustomModule###10001-TicketChecklist
+# would then keep requiring a module that is gone, and log an error for every
+# ticket object. Same steps as Kernel::System::SysConfig::_DBCleanUp.
+sub _RemoveObsoleteSettings {
+    my ( $Self, %Param ) = @_;
+
+    my $SysConfigDBObject = $Kernel::OM->Get('Kernel::System::SysConfig::DB');
+
+    my $Removed;
+    SETTING:
+    for my $Name (qw(Ticket::CustomModule###10001-TicketChecklist)) {
+        my %Setting = $SysConfigDBObject->DefaultSettingLookup( Name => $Name );
+        next SETTING if !%Setting;
+
+        for my $Modified ( $SysConfigDBObject->ModifiedSettingListGet( Name => $Name ) ) {
+            $SysConfigDBObject->ModifiedSettingDelete( ModifiedID => $Modified->{ModifiedID} );
+        }
+        for my $Version ( $SysConfigDBObject->ModifiedSettingVersionListGet( Name => $Name ) ) {
+            $SysConfigDBObject->ModifiedSettingVersionDelete( ModifiedVersionID => $Version->{ModifiedVersionID} );
+        }
+
+        $Removed++ if $SysConfigDBObject->DefaultSettingDelete( Name => $Name );
+    }
+
+    return 1 if !$Removed;
+
+    # rewrite ZZZAAuto.pm, the package deployment has already run at this point
+    return $Kernel::OM->Get('Kernel::System::SysConfig')->ConfigurationDeploy(
+        Comments => 'TicketChecklist: obsolete settings removed',
+        NotDirty => 1,
+        UserID   => 1,
+        Force    => 1,
+    );
+}
 
 sub _DoSysConfigChanges {
     my ($Self, %Param) = @_;

@@ -40,7 +40,7 @@ sub Data {
     $Lang->{'Create and manage checklist states.'} = 'Ellenőrzőlista-állapotok létrehozása és kezelése.';
     $Lang->{'Checklist States'} = 'Ellenőrzőlista-állapotok';
 
-    # Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistStateList.tt
+    # Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistStateList.tt
     $Lang->{'Checklist Item State Management'} = 'Ellenőrzőlista elemállapotának kezelése';
     $Lang->{'Actions'} = 'Műveletek';
     $Lang->{'Add State'} = 'Állapot hozzáadása';
@@ -52,7 +52,7 @@ sub Data {
     $Lang->{'edit'} = 'szerkesztés';
     $Lang->{'delete'} = 'törlés';
 
-    # Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistStateForm.tt
+    # Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistStateForm.tt
     $Lang->{'Go to overview'} = 'Ugrás az áttekintőhöz';
     $Lang->{'Add/Change States'} = 'Állapotok hozzáadása vagy megváltoztatása';
     $Lang->{'done'} = 'kész';
@@ -63,7 +63,7 @@ sub Data {
     $Lang->{'or'} = 'vagy';
     $Lang->{'Cancel'} = 'Mégse';
 
-    # Custom/Kernel/Output/HTML/Templates/Standard/AgentTicketChecklist.tt
+    # Kernel/Output/HTML/Templates/Standard/AgentTicketChecklist.tt
     $Lang->{'Manage Checklist for ticket'} = 'Ellenőrzőlista kezelése a jegynél';
     $Lang->{'Cancel & close window'} = 'Mégse és ablak bezárása';
     $Lang->{'Toggle this widget'} = 'Felületi elem ki- vagy bekapcsolása';
@@ -72,11 +72,11 @@ sub Data {
     $Lang->{'Add item'} = 'Elem hozzáadása';
     $Lang->{'Submit'} = 'Elküldés';
 
-    # Custom/Kernel/Output/HTML/Templates/Standard/TicketChecklistWidget.tt
+    # Kernel/Output/HTML/Templates/Standard/TicketChecklistWidget.tt
     $Lang->{'Show or hide the content'} = 'A tartalom megjelenítése vagy elrejtése';
     $Lang->{'Ticket Checklist'} = 'Jegy ellenőrzőlista';
 
-    # Custom/Kernel/Modules/AgentTicketChecklist.pm
+    # Kernel/Modules/AgentTicketChecklist.pm
     $Lang->{'No TicketID is given!'} = 'Nincs jegyazonosító megadva!';
     $Lang->{'Please contact the admin.'} = 'Vegye fel a kapcsolatot a rendszergazdával.';
     $Lang->{'You need %s permissions!'} = '%s jogosultságokra van szüksége!';
