@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -19,7 +22,7 @@ our @ObjectDependencies = qw(
     Kernel::System::Priority
     Kernel::System::User
     Kernel::System::Group
-    Kernel::System::Time
+    Kernel::System::DateTime
     Kernel::System::Web::Request
     Kernel::System::LinkObject
     Kernel::System::DynamicField
@@ -66,7 +69,6 @@ sub Run {
     my $BackendObject      = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
     my $LinkObject         = $Kernel::OM->Get('Kernel::System::LinkObject');
     my $GroupObject        = $Kernel::OM->Get('Kernel::System::Group');
-    my $TimeObject         = $Kernel::OM->Get('Kernel::System::Time');
 
     my $Output;
 
@@ -309,7 +311,7 @@ sub Run {
                     # is in the past. That should be forbidden.
                     if ( !$PastDueDatesAllowed && ( !%Item || ( %Item && $DueDate ne $Item{DueDate} ) ) ) {
                         my ($DueDateDay) = split / /, $DueDate;
-                        my ($NowDay)     = split / /, $TimeObject->CurrentTimestamp();
+                        my ($NowDay)     = split / /, $Kernel::OM->Create('Kernel::System::DateTime')->ToString();
 
                         my $IsInPast = $DueDateDay lt $NowDay;
 
@@ -957,7 +959,6 @@ sub Form {
     my $JSONObject      = $Kernel::OM->Get('Kernel::System::JSON');
     my $ConfigObject    = $Kernel::OM->Get('Kernel::Config');
     my $UserObject      = $Kernel::OM->Get('Kernel::System::User');
-    my $TimeObject      = $Kernel::OM->Get('Kernel::System::Time');
     my $TemplateObject  = $Kernel::OM->Get('Kernel::System::PerlServices::TicketChecklistTemplate');
     my $GroupObject     = $Kernel::OM->Get('Kernel::System::Group');
 
@@ -1033,13 +1034,9 @@ sub Form {
         my $StartPrefix = 'ItemDateStart_' . $Item->{Position} . '_';
         my %StartDateOpts;
         if ( $Item->{DateStart} ) {
-            my $SystemTime = $TimeObject->TimeStamp2SystemTime(
-                String => $Item->{DateStart},
-            );
-
-            my @Keys = map{ $StartPrefix . $_ }qw/Test Minute Hour Day Month Year/;
-            @StartDateOpts{@Keys} = $TimeObject->SystemTime2Date(
-                SystemTime => $SystemTime,
+            %StartDateOpts = $Self->_DateSelectionValues(
+                TimeStamp => $Item->{DateStart},
+                Prefix    => $StartPrefix,
             );
 
             $StartDateOpts{ $StartPrefix . 'Used' } = 1;
@@ -1060,13 +1057,9 @@ sub Form {
         my $Prefix = 'ItemDueDate_' . $Item->{Position} . '_';
         my %DateOpts;
         if ( $Item->{DueDate} ) {
-            my $SystemTime = $TimeObject->TimeStamp2SystemTime(
-                String => $Item->{DueDate},
-            );
-
-            my @Keys = map{ $Prefix . $_ }qw/Test Minute Hour Day Month Year/;
-            @DateOpts{@Keys} = $TimeObject->SystemTime2Date(
-                SystemTime => $SystemTime,
+            %DateOpts = $Self->_DateSelectionValues(
+                TimeStamp => $Item->{DueDate},
+                Prefix    => $Prefix,
             );
 
             $DateOpts{ $Prefix . 'Used' } = 1;
@@ -1168,6 +1161,31 @@ sub Form {
     );
 
     return $Output;
+}
+
+# Prefill values for BuildDateSelection from a stored time stamp. Stored dates are
+# in OTOBO time; saving runs them through TransformDateSelection, so showing them
+# has to convert to the user's time zone, or every save shifts them by the offset.
+sub _DateSelectionValues {
+    my ( $Self, %Param ) = @_;
+
+    my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+
+    my $DateTimeObject = $Kernel::OM->Create(
+        'Kernel::System::DateTime',
+        ObjectParams => {
+            String => $Param{TimeStamp},
+        },
+    );
+    return if !$DateTimeObject;
+
+    if ( $LayoutObject->{UserTimeZone} ) {
+        $DateTimeObject->ToTimeZone( TimeZone => $LayoutObject->{UserTimeZone} );
+    }
+
+    my $Values = $DateTimeObject->Get();
+
+    return map { $Param{Prefix} . $_ => $Values->{$_} } qw(Minute Hour Day Month Year);
 }
 
 1;

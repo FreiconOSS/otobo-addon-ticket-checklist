@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -26,7 +29,7 @@ our @ObjectDependencies = qw(
     Kernel::System::Main
     Kernel::System::JSON
     Kernel::System::User
-    Kernel::System::Time
+    Kernel::System::DateTime
     Kernel::System::CustomerCompany
 );
 
@@ -290,13 +293,7 @@ sub Run {
     }
 
     elsif ( $Self->{Subaction} eq 'Export' ) {
-        my $TimeObject = $Kernel::OM->Get('Kernel::System::Time');
-
-        my ( $s, $m, $h, $D, $M, $Y ) = $TimeObject->SystemTime2Date(
-            SystemTime => $TimeObject->SystemTime(),
-        );
-
-        my $Date     = sprintf "%04d-%02d-%02d_%02d-%02d", $Y, $M, $D, $h, $m;
+        my $Date     = $Kernel::OM->Create('Kernel::System::DateTime')->Format( Format => '%Y-%m-%d_%H-%M' );
         my $Filename = "TicketChecklistTemplates-$Date.json";
 
         my @TemplateIDs  = $ParamObject->GetArray( Param => 'ID' );

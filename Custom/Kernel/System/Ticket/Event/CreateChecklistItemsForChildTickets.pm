@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2017 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -17,7 +20,7 @@ our @ObjectDependencies = qw(
     Kernel::Config
     Kernel::System::Log
     Kernel::System::DB
-    Kernel::System::Time
+    Kernel::System::DateTime
     Kernel::System::DynamicField
     Kernel::System::DynamicField::Backend
     Kernel::System::PerlServices::TicketChecklist
@@ -80,7 +83,6 @@ sub _Add {
 
     my $DBObject           = $Kernel::OM->Get('Kernel::System::DB');
     my $LogObject          = $Kernel::OM->Get('Kernel::System::Log');
-    my $TimeObject         = $Kernel::OM->Get('Kernel::System::Time');
     my $TicketObject       = $Kernel::OM->Get('Kernel::System::Ticket');
     my $CacheObject        = $Kernel::OM->Get('Kernel::System::Cache');
     my $ParamObject        = $Kernel::OM->Get('Kernel::System::Web::Request');
@@ -91,8 +93,11 @@ sub _Add {
     my $StatusObject       = $Kernel::OM->Get('Kernel::System::PerlServices::TicketChecklistStatus');
 
     # get recently added links (within last 20 seconds
-    my $SystemTime = $TimeObject->SystemTime() - 20;
-    my $TimeStamp  = $TimeObject->SystemTime2TimeStamp( SystemTime => $SystemTime );
+    my $SystemTime = $Kernel::OM->Create('Kernel::System::DateTime')->ToEpoch() - 20;
+    my $TimeStamp  = $Kernel::OM->Create(
+        'Kernel::System::DateTime',
+        ObjectParams => { Epoch => $SystemTime },
+    )->ToString();
     my $SQL        = qq~
         SELECT target_key
         FROM link_relation

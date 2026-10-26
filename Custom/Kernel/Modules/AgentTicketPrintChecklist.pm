@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -106,7 +109,7 @@ sub Run {
     }
 # ---
 
-    my $PDFString   = $Kernel::OM->Get('Kernel::Output::PDF::Ticket')->GeneratePDF(
+    my $PDFString   = $Kernel::OM->Get('Kernel::Output::PDF::TicketChecklist')->GeneratePDF(
         TicketID      => $Self->{TicketID},
         UserID        => $Self->{UserID},
 # ---

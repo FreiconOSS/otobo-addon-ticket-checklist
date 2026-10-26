@@ -1,6 +1,9 @@
 # --
 # Kernel/Modules/AgentTicketChecklistIDSet.pm - set checklist id for the new ticket
 # Copyright (C) 2015 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -17,7 +20,7 @@ our @ObjectDependencies = qw(
     Kernel::Output::HTML::Layout
     Kernel::System::Web::Request
     Kernel::System::Cache
-    Kernel::System::Time
+    Kernel::System::DateTime
     Kernel::System::PerlServices::TicketChecklistStatus
     Kernel::System::PerlServices::TicketChecklistTemplate
     Kernel::System::JSON
@@ -46,7 +49,6 @@ sub Run {
     my $JSONObject     = $Kernel::OM->Get('Kernel::System::JSON');
     my $StatusObject   = $Kernel::OM->Get('Kernel::System::PerlServices::TicketChecklistStatus');
     my $TemplateObject = $Kernel::OM->Get('Kernel::System::PerlServices::TicketChecklistTemplate');
-    my $TimeObject     = $Kernel::OM->Get('Kernel::System::Time');
     my $LogObject      = $Kernel::OM->Get('Kernel::System::Log');
     my $MainObject     = $Kernel::OM->Get('Kernel::System::Main');
 
@@ -135,17 +137,17 @@ sub Run {
                 my $DateStart;
 
                 if ( $Item->{DateStartDiff} ) {
-                    $Item->{DateStart} = $TimeObject->SystemTime2TimeStamp(
-                        SystemTime => $TimeObject->SystemTime() + ( $Item->{DateStartDiff} * 60 ),
-                    );
+                    my $DateTimeObject = $Kernel::OM->Create('Kernel::System::DateTime');
+                    $DateTimeObject->Add( Seconds => $Item->{DateStartDiff} * 60 );
+                    $Item->{DateStart} = $DateTimeObject->ToString();
                 }
  
                 my $DueDate;
 
                 if ( $Item->{DueDateDiff} ) {
-                    $Item->{DueDate} = $TimeObject->SystemTime2TimeStamp(
-                        SystemTime => $TimeObject->SystemTime() + ( $Item->{DueDateDiff} * 60 ),
-                    );
+                    my $DateTimeObject = $Kernel::OM->Create('Kernel::System::DateTime');
+                    $DateTimeObject->Add( Seconds => $Item->{DueDateDiff} * 60 );
+                    $Item->{DueDate} = $DateTimeObject->ToString();
                 }
             }
 

@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2017 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -15,7 +18,7 @@ use List::Util qw(first);
 
 our @ObjectDependencies = qw(
     Kernel::Config
-    Kernel::System::Time
+    Kernel::System::DateTime
     Kernel::System::Log
     Kernel::Output::HTML::Layout
     Kernel::System::Web::Request
@@ -45,7 +48,6 @@ sub Run {
     my $ConfigObject    = $Kernel::OM->Get('Kernel::Config');
     my $ParamObject     = $Kernel::OM->Get('Kernel::System::Web::Request');
     my $MainObject      = $Kernel::OM->Get('Kernel::System::Main');
-    my $TimeObject      = $Kernel::OM->Get('Kernel::System::Time');
     my $LogObject       = $Kernel::OM->Get('Kernel::System::Log');
     my $LayoutObject    = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
     my $StatusObject    = $Kernel::OM->Get('Kernel::System::PerlServices::TicketChecklistStatus');
@@ -61,16 +63,18 @@ sub Run {
         $To   = sprintf "%s 23:59:59", $End;
     }
     else {
-        my @From = $TimeObject->SystemTime2Date(
-            SystemTime => $From,
-        );
+        my $FromValues = $Kernel::OM->Create(
+            'Kernel::System::DateTime',
+            ObjectParams => { Epoch => $Start },
+        )->Get();
 
-        my @To = $TimeObject->SystemTime2Date(
-            SystemTime => $End,
-        );
+        my $ToValues = $Kernel::OM->Create(
+            'Kernel::System::DateTime',
+            ObjectParams => { Epoch => $End },
+        )->Get();
 
-        $From = sprintf( "%04d-%02d-%02d 00:00:00", @From[5,4,3] );
-        $To   = sprintf( "%04d-%02d-%02d 23:59:59", @To[5,4,3] );
+        $From = sprintf( "%04d-%02d-%02d 00:00:00", @{$FromValues}{qw(Year Month Day)} );
+        $To   = sprintf( "%04d-%02d-%02d 23:59:59", @{$ToValues}{qw(Year Month Day)} );
     }
 
     if ( $Self->{Debug} ) {

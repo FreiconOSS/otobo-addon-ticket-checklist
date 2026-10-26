@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <otobo_package version="1.0">
-    <!-- GENERATED WITH OPM::Maker::Command::sopm (1.1.0) -->
     <Name>TicketChecklist</Name>
-    <Version>10.1.3</Version>
-    <Framework>10.0.x</Framework>
-    <Framework>10.1.x</Framework>
     <Framework>11.0.x</Framework>
     <Vendor>Perl-Services.de</Vendor>
     <URL>http://www.perl-services.de</URL>
@@ -12,106 +8,6 @@
     <Description Lang="en">Add a checklist to tickets.</Description>
     <Description Lang="hu">Egy ellenőrzőlista hozzáadása a jegyekhez.</Description>
     <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
-    <Filelist>
-        <File Permission="644" Location="Custom/Kernel/Modules/AdminTicketChecklistNotifications.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Modules/AdminTicketChecklistStates.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Modules/AdminTicketChecklistTemplates.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Modules/AgentChecklistExport.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Modules/AgentChecklistMyTodo.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Modules/AgentChecklistTickets.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChangeChecklistStatus.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChecklist.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChecklistCalendarAJAX.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChecklistCustomerVisibility.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChecklistIDSet.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChecklistResponsibleSearch.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChecklistTemplates.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketPrintChecklist.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Dashboard/ChecklistItem.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Dashboard/ChecklistTicket.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/FilterElementPost/ChecklistSelectArticle.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/FilterElementPost/CustomerTicketChecklist.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/FilterElementPost/TicketChecklistCalendar.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/FilterElementPost/TicketChecklistDropdown.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Preferences/ChecklistNotifications.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistNotificationsForm.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistNotificationsList.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistStateForm.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistStateList.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistTemplateForm.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistTemplateList.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AgentChecklistMyTodo.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AgentDashboardChecklistItem.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AgentTicketChecklist.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AgentTicketChecklistSlim.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/ChecklistItemsSnippet.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/ChecklistItemsSnippetSlim.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/CustomerTicketChecklistWidget.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/PreferencesChecklistNotifications.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/TicketChecklistWidget.tt"/>
-        <File Permission="644" Location="Custom/Kernel/Output/HTML/TicketZoom/TicketChecklist.pm"/>
-        <File Permission="644" Location="Custom/Kernel/Output/PDF/TicketChecklist.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/GenericAgent/AddChecklistToTicket.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/GenericAgent/ChangeChecklistItems.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Autocomplete/Agent.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Autocomplete/Groups.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Autocomplete/LDAP.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Autocomplete/Roles.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/ChangeNote.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/ConditionAction.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/ForeignTickets.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/Notifications.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/RemoveTicketInfoFlags.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/SetDefaultCustomerVisibility.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/SetHasChecklist.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/SetHasOpenTodos.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/SetTicketState.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/TicketHistory.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistDueDate.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistNotification.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistStartDate.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistStatus.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistTemplate.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistTicketInfo.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistUtils.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PostMaster/Filter/TicketChecklist.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/PostMaster/Filter/TicketChecklistItem.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/Ticket/Custom/TicketChecklist.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/Ticket/Event/CloseChecklistItems.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/Ticket/Event/CreateChecklistItemsForChildTickets.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/Ticket/Event/MergeTicketChecklists.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/Ticket/Event/SetTicketChecklists.pm"/>
-        <File Permission="644" Location="Custom/Kernel/System/Ticket/Event/UpdateChecklistItems.pm"/>
-        <File Permission="644" Location="Kernel/Config/Files/XML/TicketChecklist.xml"/>
-        <File Permission="644" Location="Kernel/Config/Files/ZZZChecklist.pm"/>
-        <File Permission="644" Location="Kernel/Language/de_TicketChecklist.pm"/>
-        <File Permission="644" Location="Kernel/Language/en_TicketChecklist.pm"/>
-        <File Permission="644" Location="Kernel/Language/hu_TicketChecklist.pm"/>
-        <File Permission="644" Location="Kernel/System/Console/Command/Maint/Ticket/ChecklistClearPreferences.pm"/>
-        <File Permission="644" Location="Kernel/System/Console/Command/Maint/Ticket/ChecklistNotifications.pm"/>
-        <File Permission="644" Location="Kernel/System/Console/Command/Maint/Ticket/ChecklistSetStartDateStatus.pm"/>
-        <File Permission="644" Location="Kernel/System/Console/Command/Maint/Ticket/ChecklistStartDateNotifications.pm"/>
-        <File Permission="644" Location="Kernel/System/PerlServices/TicketChecklist/ConditionAction/ChangeChecklistItems.pm"/>
-        <File Permission="644" Location="Kernel/System/PerlServices/TicketChecklist/ConditionAction/TicketSetData.pm"/>
-        <File Permission="644" Location="Kernel/System/PerlServices/TicketChecklist/ConditionAction/TicketSetDynamicField.pm"/>
-        <File Permission="644" Location="Kernel/System/ProcessManagement/TransitionAction/AddChecklist.pm"/>
-        <File Permission="644" Location="Kernel/System/ProcessManagement/TransitionAction/ChangeChecklistItems.pm"/>
-        <File Permission="644" Location="Kernel/System/Stats/Dynamic/TicketChecklistStatusFilter.pm"/>
-        <File Permission="644" Location="Kernel/System/Stats/Static/TicketChecklist.pm"/>
-        <File Permission="644" Location="doc/en/TicketChecklist.pod"/>
-        <File Permission="644" Location="doc/hu/TicketChecklist.pod"/>
-        <File Permission="644" Location="var/httpd/htdocs/js/PS.AdminTicketChecklistTemplate.js"/>
-        <File Permission="644" Location="var/httpd/htdocs/js/PS.ChecklistDropdown.js"/>
-        <File Permission="644" Location="var/httpd/htdocs/js/PS.TicketChecklist.js"/>
-        <File Permission="644" Location="var/httpd/htdocs/js/PS.TicketChecklistWidget.js"/>
-        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/PS.TicketChecklist.Default.css"/>
-        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/img/ps/arrow_down.png"/>
-        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/img/ps/arrow_up.png"/>
-        <File Permission="644" Location="var/httpd/htdocs/skins/Customer/default/css/PS.Checklist.CustomerZoom.css"/>
-        <File Permission="644" Location="var/packagesetup/TicketChecklist.pm"/>
-        <File Permission="644" Location="var/stats/TicketChecklist-001.xml"/>
-    </Filelist>
     <DatabaseInstall Type="post">
         <TableCreate Name="ps_ticketchecklist_status">
             <Column Name="id" Required="true" Type="INTEGER" AutoIncrement="true" PrimaryKey="true"/>
@@ -199,7 +95,7 @@
             <ForeignKey ForeignTable="ps_checklist_template">
                 <Reference Local="template_id" Foreign="id"/>
             </ForeignKey>
-            <ForeignKey ForeignTable="groups">
+            <ForeignKey ForeignTable="groups_table">
                 <Reference Local="group_id" Foreign="id"/>
             </ForeignKey>
         </TableCreate>
@@ -553,7 +449,7 @@ Ihr OTRS Benachrichtigungs-Master]]></Data>
             <ForeignKey ForeignTable="ps_checklist_template">
                 <Reference Local="template_id" Foreign="id"/>
             </ForeignKey>
-            <ForeignKey ForeignTable="groups">
+            <ForeignKey ForeignTable="groups_table">
                 <Reference Local="group_id" Foreign="id"/>
             </ForeignKey>
         </TableCreate>
@@ -901,6 +797,12 @@ Ihr OTRS Benachrichtigungs-Master]]></Data>
         <TableAlter Name="ps_ticketchecklist" Version="6.0.16">
             <ColumnAdd Name="state_change_by" Required="false" Type="INTEGER"/>
         </TableAlter>
+        <!-- 10.1.3 pointed this key at "groups", which OTOBO 11 calls "groups_table", so it was never created -->
+        <TableAlter Name="ps_checklist_tmpl_grp" Version="11.0.0">
+            <ForeignKeyCreate ForeignTable="groups_table">
+                <Reference Local="group_id" Foreign="id"/>
+            </ForeignKeyCreate>
+        </TableAlter>
     </DatabaseUpgrade>
     <DatabaseUninstall Type="pre">
         <TableDrop Name="ps_checklist_ticket_info"/>
@@ -930,4 +832,6 @@ Ihr OTRS Benachrichtigungs-Master]]></Data>
     ]]></IntroInstall>
     <IntroInstall Type="post" Lang="hu" Title="Köszönjük!"><![CDATA[
             Köszönjük, hogy a jegy ellenőrzőlista modult választotta.
-    ]]></IntroInstall></otobo_package>
+    ]]></IntroInstall>
+</otobo_package>
+

@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2016 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -145,7 +148,6 @@ sub Run {
 sub _ExportICS {
     my ($Self, %Param) = @_;
 
-    my $TimeObject   = $Kernel::OM->Get('Kernel::System::Time');
     my $LogObject    = $Kernel::OM->Get('Kernel::System::Log');
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 
@@ -162,7 +164,7 @@ sub _ExportICS {
         my $IsClosed;
 
         my $DueDate = Date::ICal->new(
-            epoch => $TimeObject->TimeStamp2SystemTime( String => $Item->{DueDate} ),
+            epoch => $Kernel::OM->Create('Kernel::System::DateTime')->TimeStamp2SystemTime( String => $Item->{DueDate} ),
         )->ical;
 
         my $Todo = Data::ICal::Entry::Todo->new;
@@ -176,11 +178,7 @@ sub _ExportICS {
         $Calendar->add_entry( $Todo );
     }
 
-    my ( $s, $m, $h, $D, $M, $Y ) = $TimeObject->SystemTime2Date(
-        SystemTime => $TimeObject->SystemTime(),
-    );
-
-    my $Date     = sprintf "%04d-%02d-%02d_%02d-%02d", $Y, $M, $D, $h, $m;
+    my $Date = $Kernel::OM->Create('Kernel::System::DateTime')->Format( Format => '%Y-%m-%d_%H-%M' );
     my $Filename = "TicketChecklist-$Date.ics";
 
     my %Headers = (
@@ -199,7 +197,6 @@ sub _ExportXLSX {
     my ($Self, %Param) = @_;
 
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
-    my $TimeObject   = $Kernel::OM->Get('Kernel::System::Time');
     my $LogObject    = $Kernel::OM->Get('Kernel::System::Log');
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 
@@ -287,11 +284,7 @@ sub _ExportXLSX {
 
     $Workbook->close();
 
-    my ( $s, $m, $h, $D, $M, $Y ) = $TimeObject->SystemTime2Date(
-        SystemTime => $TimeObject->SystemTime(),
-    );
-
-    my $Date     = sprintf "%04d-%02d-%02d_%02d-%02d", $Y, $M, $D, $h, $m;
+    my $Date = $Kernel::OM->Create('Kernel::System::DateTime')->Format( Format => '%Y-%m-%d_%H-%M' );
     my $Filename = "TicketChecklist-$Date.xlsx";
 
     my %Headers = (
@@ -316,12 +309,11 @@ sub _ExportPDF {
     my $UserObject         = $Kernel::OM->Get('Kernel::System::User');
     my $CustomerUserObject = $Kernel::OM->Get('Kernel::System::CustomerUser');
     my $PDFObject          = $Kernel::OM->Get('Kernel::System::PDF');
-    my $TimeObject         = $Kernel::OM->Get('Kernel::System::Time');
 
     # get needed objects
     my $PrintedBy = $LayoutObject->{LanguageObject}->Translate('printed by');
     my $Time      = $LayoutObject->{LanguageObject}->FormatTimeString(
-        $TimeObject->CurrentTimestamp(),
+        $Kernel::OM->Create('Kernel::System::DateTime')->ToString(),
         'DateFormat',
     );
 
@@ -444,31 +436,20 @@ sub _ExportPDF {
         Items    => $Param{ChecklistItems},
     );
 
-    # get time object and use the UserTimeObject, if the system use UTC as
-    # system time and the TimeZoneUser feature is active
-    if (
-        !$TimeObject->ServerLocalTimeOffsetSeconds()
-        && $ConfigObject->Get('TimeZoneUser')
-        && $Self->{UserTimeZone}
-        )
-    {
-        $TimeObject = $LayoutObject->{UserTimeObject};
+    # the file name carries the time in the user's time zone
+    my $DateTimeObject = $Kernel::OM->Create('Kernel::System::DateTime');
+    if ( $Self->{UserTimeZone} ) {
+        $DateTimeObject->ToTimeZone( TimeZone => $Self->{UserTimeZone} );
     }
 
     # return the pdf document
-    my $Filename = 'Ticket_' . $Ticket{TicketNumber};
-    my ( $s, $m, $h, $D, $M, $Y ) = $TimeObject->SystemTime2Date(
-        SystemTime => $TimeObject->SystemTime(),
-    );
-    $M = sprintf( "%02d", $M );
-    $D = sprintf( "%02d", $D );
-    $h = sprintf( "%02d", $h );
-    $m = sprintf( "%02d", $m );
+    my $Filename = 'Ticket_' . $Ticket{TicketNumber} . '_'
+        . $DateTimeObject->Format( Format => '%Y-%m-%d_%H-%M' );
 
     my $PDFString = $PDFObject->DocumentOutput();
 
     return $LayoutObject->Attachment(
-        Filename    => $Filename . "_" . "$Y-$M-$D" . "_" . "$h-$m.pdf",
+        Filename    => $Filename . '.pdf',
         ContentType => "application/pdf",
         Content     => $PDFString,
         Type        => 'inline',

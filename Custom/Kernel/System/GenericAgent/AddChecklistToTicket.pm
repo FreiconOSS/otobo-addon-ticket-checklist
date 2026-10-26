@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2015 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -15,7 +18,7 @@ use List::Util qw(first);
 
 our @ObjectDependencies = qw(
     Kernel::System::Log
-    Kernel::System::Time
+    Kernel::System::DateTime
     Kernel::System::DynamicField
     Kernel::System::DynamicField::Backend
     Kernel::System::PerlServices::TicketChecklistTemplate
@@ -36,7 +39,6 @@ sub Run {
     my ( $Self, %Param ) = @_;
 
     my $LogObject          = $Kernel::OM->Get('Kernel::System::Log');
-    my $TimeObject         = $Kernel::OM->Get('Kernel::System::Time');
     my $TemplateObject     = $Kernel::OM->Get('Kernel::System::PerlServices::TicketChecklistTemplate');
     my $ChecklistObject    = $Kernel::OM->Get('Kernel::System::PerlServices::TicketChecklist');
     my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
@@ -73,17 +75,17 @@ sub Run {
         my $DueDate;
 
         if ( $Item->{DueDateDiff} ) {
-            $DueDate = $TimeObject->SystemTime2TimeStamp(
-                SystemTime => $TimeObject->SystemTime() + ( $Item->{DueDateDiff} * 60 ),
-            );
+            my $DateTimeObject = $Kernel::OM->Create('Kernel::System::DateTime');
+            $DateTimeObject->Add( Seconds => $Item->{DueDateDiff} * 60 );
+            $DueDate = $DateTimeObject->ToString();
         }
 
         my $DateStart;
 
         if ( $Item->{DateStartDiff} ) {
-            $DateStart = $TimeObject->SystemTime2TimeStamp(
-                SystemTime => $TimeObject->SystemTime() + ( $Item->{DateStartDiff} * 60 ),
-            );
+            my $DateTimeObject = $Kernel::OM->Create('Kernel::System::DateTime');
+            $DateTimeObject->Add( Seconds => $Item->{DateStartDiff} * 60 );
+            $DateStart = $DateTimeObject->ToString();
         }
 
         my $StatusID = delete $Item->{Status};

@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -14,9 +17,10 @@ use warnings;
 our @ObjectDependencies = qw(
     Kernel::System::Log
     Kernel::System::DB
-    Kernel::System::Time
+    Kernel::System::DateTime
     Kernel::System::User
     Kernel::System::Valid
+    Kernel::System::Priority
     Kernel::System::Ticket
     Kernel::System::PerlServices::TicketChecklistStatus
 );
@@ -188,7 +192,7 @@ sub TicketChecklistAdd {
     }
 
     $Param{ResponsibleID}   ||= 0; # TODO: Use "-1" if SysConfig-Setting is activated?
-    $Param{PriorityID}      ||= 0;
+    $Param{PriorityID}      ||= $Self->_DefaultPriorityID();
     $Param{ArticleID}       ||= 0;
     $Param{ArticleNumber}   ||= 0;
     $Param{ForeignTicketID} ||= 0;
@@ -356,7 +360,7 @@ sub TicketChecklistUpdate {
     );
 
     $Param{ResponsibleID}   ||= 0; # TODO: Use "-1" if SysConfig-Setting is activated?
-    $Param{PriorityID}      ||= 0;
+    $Param{PriorityID}      ||= $Item{PriorityID} || $Self->_DefaultPriorityID();
     $Param{ArticleID}       ||= 0;
     $Param{ArticleNumber}   ||= 0;
     $Param{ForeignTicketID} ||= 0;
@@ -1223,7 +1227,6 @@ sub DueDateItems {
     my $DBObject     = $Kernel::OM->Get('Kernel::System::DB');
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
     my $StatusObject = $Kernel::OM->Get('Kernel::System::PerlServices::TicketChecklistStatus');
-    my $TimeObject   = $Kernel::OM->Get('Kernel::System::Time');
 
     my $OpenStates   = $ConfigObject->Get( 'TicketChecklist::OpenStates' ) || ['open'];
     my %StatusList   = $StatusObject->TicketChecklistStatusList();
@@ -1232,14 +1235,16 @@ sub DueDateItems {
     my $StatusIDBind = join ', ', ('?') x @OpenIDs;
     my $TimeDiff     = ( $ConfigObject->Get( 'TicketChecklist::DueDateBefore' ) || 60 ) * 60;
 
-    my $SystemTime   = $TimeObject->SystemTime();
-    my $Start        = $TimeObject->SystemTime2TimeStamp(
-        SystemTime => $SystemTime,
-    );
+    my $SystemTime   = $Kernel::OM->Create('Kernel::System::DateTime')->ToEpoch();
+    my $Start        = $Kernel::OM->Create(
+        'Kernel::System::DateTime',
+        ObjectParams => { Epoch => $SystemTime },
+    )->ToString();
 
-    my $Stop = $TimeObject->SystemTime2TimeStamp(
-        SystemTime => $SystemTime + $TimeDiff,
-    );
+    my $Stop = $Kernel::OM->Create(
+        'Kernel::System::DateTime',
+        ObjectParams => { Epoch => $SystemTime + $TimeDiff },
+    )->ToString();
 
     my @NotificationTimes = @{ $ConfigObject->Get('TicketChecklist::NotificationTimes') || [] };
     my $TimeSpan          = $ConfigObject->Get('TicketChecklist::NotificationTimesSpan') || 10;
@@ -1260,13 +1265,15 @@ sub DueDateItems {
 
         my $StopEpoche = $SystemTime + ( $Amount * $Factor );
 
-        my $Start        = $TimeObject->SystemTime2TimeStamp(
-            SystemTime => $StopEpoche - ( $TimeSpan * 60 ),
-        );
+        my $Start        = $Kernel::OM->Create(
+            'Kernel::System::DateTime',
+            ObjectParams => { Epoch => $StopEpoche - ( $TimeSpan * 60 ) },
+        )->ToString();
 
-        my $Stop = $TimeObject->SystemTime2TimeStamp(
-            SystemTime => $StopEpoche,
-        );
+        my $Stop = $Kernel::OM->Create(
+            'Kernel::System::DateTime',
+            ObjectParams => { Epoch => $StopEpoche },
+        )->ToString();
 
         push @NotificationTimesList, [ \$Start, \$Stop ];
     }
@@ -1478,13 +1485,22 @@ sub _TicketIDLookup {
     return $ID;
 }
 
+# priority_id is a foreign key on ticket_priority, so 0 is not a valid "no priority":
+# items from templates without a priority fell through and were never stored
+sub _DefaultPriorityID {
+    my ( $Self, %Param ) = @_;
+
+    my $Priority = $Kernel::OM->Get('Kernel::Config')->Get('TicketChecklist::DefaultPriority') || '3 normal';
+
+    return $Kernel::OM->Get('Kernel::System::Priority')->PriorityLookup( Priority => $Priority ) || 0;
+}
+
 sub StartedItems {
     my ($Self, %Param) = @_;
 
     my $DBObject     = $Kernel::OM->Get('Kernel::System::DB');
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
     my $StatusObject = $Kernel::OM->Get('Kernel::System::PerlServices::TicketChecklistStatus');
-    my $TimeObject   = $Kernel::OM->Get('Kernel::System::Time');
 
     my $WaitingStates = $ConfigObject->Get( 'TicketChecklist::WaitingStates' ) || ['waiting'];
     my %StatusList    = $StatusObject->TicketChecklistStatusList();
@@ -1492,10 +1508,11 @@ sub StartedItems {
     my @WaitingIDs    = @ReverseList{ @{$WaitingStates} };
     my $StatusIDBind  = join ', ', ('?') x @WaitingIDs;
 
-    my $SystemTime   = $TimeObject->SystemTime();
-    my $Start        = $TimeObject->SystemTime2TimeStamp(
-        SystemTime => $SystemTime,
-    );
+    my $SystemTime   = $Kernel::OM->Create('Kernel::System::DateTime')->ToEpoch();
+    my $Start        = $Kernel::OM->Create(
+        'Kernel::System::DateTime',
+        ObjectParams => { Epoch => $SystemTime },
+    )->ToString();
 
     my $SQL = 'SELECT tc.id '
         . ' FROM ps_ticketchecklist tc '
@@ -1522,7 +1539,6 @@ sub DateStartItems {
     my $DBObject     = $Kernel::OM->Get('Kernel::System::DB');
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
     my $StatusObject = $Kernel::OM->Get('Kernel::System::PerlServices::TicketChecklistStatus');
-    my $TimeObject   = $Kernel::OM->Get('Kernel::System::Time');
 
     my $OpenStates   = $ConfigObject->Get( 'TicketChecklist::WaitingStates' ) || ['open'];
     my %StatusList   = $StatusObject->TicketChecklistStatusList();
@@ -1531,14 +1547,16 @@ sub DateStartItems {
     my $StatusIDBind = join ', ', ('?') x @OpenIDs;
     my $TimeDiff     = ( $ConfigObject->Get( 'TicketChecklist::DateStartBefore' ) || 60 ) * 60;
 
-    my $SystemTime   = $TimeObject->SystemTime();
-    my $Start        = $TimeObject->SystemTime2TimeStamp(
-        SystemTime => $SystemTime,
-    );
+    my $SystemTime   = $Kernel::OM->Create('Kernel::System::DateTime')->ToEpoch();
+    my $Start        = $Kernel::OM->Create(
+        'Kernel::System::DateTime',
+        ObjectParams => { Epoch => $SystemTime },
+    )->ToString();
 
-    my $Stop = $TimeObject->SystemTime2TimeStamp(
-        SystemTime => $SystemTime + $TimeDiff,
-    );
+    my $Stop = $Kernel::OM->Create(
+        'Kernel::System::DateTime',
+        ObjectParams => { Epoch => $SystemTime + $TimeDiff },
+    )->ToString();
 
     my @NotificationTimes = @{ $ConfigObject->Get('TicketChecklist::StartNotificationTimes') || [1] };
     my $TimeSpan          = $ConfigObject->Get('TicketChecklist::StartNotificationTimesSpan') || 10;
@@ -1559,13 +1577,15 @@ sub DateStartItems {
 
         my $StopEpoche = $SystemTime + ( $Amount * $Factor );
 
-        my $Start        = $TimeObject->SystemTime2TimeStamp(
-            SystemTime => $StopEpoche - ( $TimeSpan * 60 ),
-        );
+        my $Start        = $Kernel::OM->Create(
+            'Kernel::System::DateTime',
+            ObjectParams => { Epoch => $StopEpoche - ( $TimeSpan * 60 ) },
+        )->ToString();
 
-        my $Stop = $TimeObject->SystemTime2TimeStamp(
-            SystemTime => $StopEpoche,
-        );
+        my $Stop = $Kernel::OM->Create(
+            'Kernel::System::DateTime',
+            ObjectParams => { Epoch => $StopEpoche },
+        )->ToString();
 
         push @NotificationTimesList, [ \$Start, \$Stop ];
     }

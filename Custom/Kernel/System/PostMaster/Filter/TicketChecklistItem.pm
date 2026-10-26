@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2015 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -17,7 +20,6 @@ our @ObjectDependencies = qw(
     Kernel::Config
     Kernel::System::Log
     Kernel::System::Ticket
-    Kernel::System::Time
     Kernel::System::PerlServices::TicketChecklistTemplate
     Kernel::System::PerlServices::TicketChecklist
 );
@@ -39,7 +41,6 @@ sub Run {
 
     my $LogObject       = $Kernel::OM->Get('Kernel::System::Log');
     my $ChecklistObject = $Kernel::OM->Get('Kernel::System::PerlServices::TicketChecklist');
-    my $TimeObject      = $Kernel::OM->Get('Kernel::System::Time');
 
     if ( $Self->{Debug} >= 1 ) {
         $LogObject->Log(
