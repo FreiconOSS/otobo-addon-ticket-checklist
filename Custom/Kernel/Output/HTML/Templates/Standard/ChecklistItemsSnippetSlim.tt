@@ -1,0 +1,53 @@
+[% RenderBlockStart("Item") %]
+                       <li id="Item_[% Data.Position | html %]"> <input class="W20pc" type="text" id="ItemTitle_[% Data.Position | html %]" name="ItemTitle_[% Data.Position | html %]" value="[% Data.Title | html %]" />
+                        [% Data.StatusSelect %]
+
+            [% Data.ResponsibleSelect %]
+[% RenderBlockStart("ResponsibleAutocomplete") %]
+            <input type="text" class="ResponsibleAutocomplete" name="ResponsibleSearchField_[% Data.Position | html %]" id="ResponsibleSearchField_[% Data.Position | html %]" value="[% Data.TextValue | html %]" placeholder="[% Translate("Responsible") %]" />
+            <input type="hidden" name="Responsible_[% Data.Position | html %]" id="Responsible_[% Data.Position | html %]" value="[% Data.Value | html %]" />
+[% RenderBlockEnd("ResponsibleAutocomplete") %]
+
+[% IF Config("TicketChecklist::Feature::CustomerVisibility") %]
+            [% Data.DateStartSelect %]
+[% END %]
+            [% Data.DueDateSelect %]
+
+                        <button name="DelBtn" id="DelBtn_[% Data.Position | html %]" class="DelBtn" value="-">-</button><br />
+                        <span id="ArrowUp_[% Data.Position | html %]" class="fa fa-arrow-up" style="cursor: pointer"></span>
+                        <span id="ArrowDown_[% Data.Position | html %]" class="fa fa-arrow-down" style="cursor: pointer"></span>
+
+<span id="InfoMore_[% Data.Position | html %]" class="fa fa-eye" style="cursor: pointer"></span>
+<div id="Info_[% Data.Position | html %]" class="Hidden">
+    <fieldset class="TableLike" style="width: 600px">
+        <label for="Comment">[% Translate("Comment") | html %]:</label>
+        <div class="Field">
+            <textarea name="ItemComment_[% Data.Position | html %]" rows="5" cols="100">[% Data.Comment | html %]</textarea>
+        </div>
+        <div class="Clear"></div>
+
+        <label for="ArticleNumber">[% Translate("Article #") | html %]:</label>
+        <div class="Field">
+            <input type="text" width="W25pc" name="ItemArticleNumber_[% Data.Position %]" value="[% Data.ArticleNumber | html %]" />
+        </div>
+        <div class="Clear"></div>
+
+        <label for="PriorityID">[% Translate("Priority") | html %]:</label>
+        <div class="Field">
+            [% Data.PrioritySelect %]
+        </div>
+        <div class="Clear"></div>
+
+[% RenderBlockStart("ChangeNote") %]
+        <label for="ChangeNote">[% Translate("Change Note") | html %]:</label>
+        <div class="Field">
+            <textarea name="ItemChangeNote_[% Data.Position | html %]" rows="5" cols="100">[% Data.ChangeNote | html %]</textarea>
+        </div>
+        <div class="Clear"></div>
+[% RenderBlockEnd("ChangeNote") %]
+
+    </fieldset>
+</div>
+                        <input type="hidden" name="ItemID_[% Data.Position | html %]" id="ItemID_[% Data.Position | html %]" value="[% Data.ID | html %]" />
+                       </li>
+[% RenderBlockEnd("Item") %]

@@ -1,0 +1,363 @@
+# --
+# AgentTicketChecklistStateForm.tt - provides HTML form for ticket checklist states
+# Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% InsertTemplate("AgentCustomerSearch.tt") %]
+
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <h1>[% Translate("Checklist Template Management") | html %]</h1>
+    <div class="SidebarColumn">
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Actions") | html %]</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %]" class="CallForAction"><span>[% Translate("Go to overview") | html %]</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Add/Change Templates") | html %]</h2>
+            </div>
+            <div class="Content">
+
+<script type="text/javascript">//<![CDATA[
+    function toggleInfoDiv(id) {
+        $('#' + id ).toggle();
+    }
+//]]></script>
+
+                    <form action="[% Env("CGIHandle") %]" id="MainForm" method="post" name="compose" class="Validate">
+                        <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                        <input type="hidden" name="Subaction" value="[% Data.SubactionName %]"/>
+                        <input type="hidden" name="ID" value="[% Data.ID %]"/>
+                        <input type="hidden" name="ItemCount" value="" id="ItemCount" />
+                        <input type="hidden" name="ItemOrder" value="" id="ItemOrder" />
+
+                    <fieldset class="TableLike">
+                        <label for="Name" class="Mandatory">
+                            <span class="Marker">*</span>
+                            [% Translate("Name") | html %]:
+                        </label>
+                        <div class="Field">
+                            <input type="text" id="Name" name="Name" value="[% Data.Name | html %]" class="W75pc Validate_Required [% Data.NameInvalid | html %]"/>
+                            <div id="NameError" class="TooltipErrorMessage">
+                                <p>[% Translate("A name is required.") | html %]</p>
+                            </div>
+                            <div id="NameServerError" class="TooltipErrorMessage">
+                                <p>[% Translate("A name is required.") | html %]</p>
+                            </div>
+                            <div id="NameServerUniqueError" class="TooltipErrorMessage">
+                                <p>[% Translate("A name must be unique.") | html %]</p>
+                            </div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="GroupIDs">
+                            [% Translate("Group") | html %]:
+                        </label>
+                        <div class="Field">
+                            [% Data.GroupIDSelect %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label>[% Translate("Customer") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" id="CustomerID" class="W90pc" />
+                        </div>
+                        <div class="Clear"></div>
+                        <div class="Row">
+                            <label></label>
+                            <div class="Field" id="CustomerIDsDiv">
+                            </div>
+                            <div class="Clear"></div>
+[% RenderBlockStart("CustomerID") %]
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+    PS.AdminTicketChecklistTemplate.ShowCustomer( "[% Data.Label | html %]", "[% Data.Value | html %]" );
+//]]></script>
+[% END %]
+[% RenderBlockEnd("CustomerID") %]
+                        </div>
+
+                        <label for="ValidID" class="Mandatory">
+                            <span class="Marker">*</span>
+                            [% Translate("Validity") | html %]:
+                        </label>
+                        <div class="Field">
+                            [% Data.ValidSelect %]
+                        </div>
+                        <div class="Clear"></div>
+
+
+<script type="text/javascript">
+//<![CDATA[
+    var Positions = '[% Data.Positions | html %]';
+//]]>
+</script>
+                    <div class="WidgetSimple">
+                        <div class="Header">
+                            <div class="WidgetAction Toggle">
+                                <a href="#" title="[% Translate("Show or hide the content") | html %]"><i class="fa fa-caret-right"></i><i class="fa fa-caret-down"></i></a>
+                            </div>
+                            <h2>[% Translate("Checklist Items") | html %]</h2>
+                        </div>
+                        <div class="Content">
+                            <button name="ToggleAllBtn" id="ToggleAllBtn" value="[% Translate("Show/Hide all details") | html %]" title="[% Translate("Show/Hide all details") | html %]">[% Translate("Show/Hide all details") | html %]</button>
+<div class="Field">
+<ol id="ChecklistItems">
+
+[% RenderBlockStart("Item") %]
+                       <li id="Item_[% Data.Position | html %]"> 
+<input type="text" id="ItemTitle_[% Data.Position | html %]" name="ItemTitle_[% Data.Position | html %]" value="[% Data.Title | html %]" class="Validate Validate_Required W75pc ItemTitle" />
+                        [% Data.StatusSelect %]
+                        <button name="DelBtn" id="DelBtn_[% Data.Position | html %]" class="DelBtn" value="-">-</button>
+                        <span id="ArrowUp_[% Data.Position | html %]" class="fa fa-arrow-up" style="cursor: pointer"></span>
+                        <span id="ArrowDown_[% Data.Position | html %]" class="fa fa-arrow-down" style="cursor: pointer"></span>
+
+<span id="InfoMore_[% Data.Position | html %]" class="fa fa-eye-slash"></span>
+<div id="Info_[% Data.Position | html %]" class="Hidden">
+    <fieldset class="TableLike" style="width: 600px">
+        <label for="Comment">[% Translate("Comment") | html %]:</label>
+        <div class="Field">
+            <textarea name="ItemComment_[% Data.Position | html %]" rows="5" cols="100">[% Data.Comment | html %]</textarea>
+        </div>
+        <div class="Clear"></div>
+
+        <label for="ResponsibleID">[% Translate("Responsible") | html %]:</label>
+        <div class="Field">
+            [% Data.ResponsibleSelect %]
+[% RenderBlockStart("ResponsibleAutocomplete") %]
+            <input type="text" name="ResponsibleSearchField_[% Data.Position | html %]" id="ResponsibleSearchField_[% Data.Position | html %]" value="[% Data.TextValue | html %]" />
+            <input type="hidden" name="Responsible_[% Data.Position | html %]" id="Responsible_[% Data.Position | html %]" value="[% Data.Value | html %]" />
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+    PS.AdminTicketChecklistTemplate.AutocompleteInit( $('#ResponsibleSearchField_[% Data.Position | html %]'), 'ResponsibleSearch', 'Responsible_[% Data.Position | html %]' );
+//]]></script>
+[% END %]
+[% RenderBlockEnd("ResponsibleAutocomplete") %]
+        </div>
+        <div class="Clear"></div>
+
+[% IF Config("TicketChecklist::Feature::DateStart") %]
+        <label for="DateStartDiff">[% Translate("Start Date") | html %]: <span class="fa fa-info-circle" onclick="toggleInfoDiv('DateStartInfo_[% Data.Position | html %]')"></span>
+            <div id="DateStartInfo_[% Data.Position | html %]" class="Hidden">[% Translate("Minutes the item should start after checklist creation") %]</div>
+        </label>
+        <div class="Field">
+            <input type="text" id="ItemDateStartDiff_[% Data.Position | html %]" name="ItemDateStartDiff_[% Data.Position | html %]" value="[% Data.DateStartDiff | html %]" />
+        </div>
+        <div class="Clear"></div>
+[% END %]
+
+
+        <label for="DueDateDiff">[% Translate("Due Date") | html %]: <span class="fa fa-info-circle" onclick="toggleInfoDiv('DueDateInfo_[% Data.Position | html %]')"></span>
+            <div id="DueDateInfo_[% Data.Position | html %]" class="Hidden">[% Translate("The estimated effort for this task (in minutes)") %]</div>
+        </label>
+        <div class="Field">
+            <input type="text" id="ItemDueDateDiff_[% Data.Position | html %]" name="ItemDueDateDiff_[% Data.Position | html %]" value="[% Data.DueDateDiff | html %]" />
+        </div>
+        <div class="Clear"></div>
+
+        <label for="PriorityID">[% Translate("Priority") | html %]:</label>
+        <div class="Field">
+            [% Data.PrioritySelect %]
+        </div>
+        <div class="Clear"></div>
+
+    </fieldset>
+</div>
+                        <input type="hidden" name="ItemID_[% Data.Position | html %]" id="ItemID_[% Data.Position | html %]" value="[% Data.ID | html %]" />
+                       </li>
+[% RenderBlockEnd("Item") %]
+</ol>
+</div>
+                            <br /><br />
+                            <div class="Field">
+                                <button class="CallForAction Primary" id="AddBtn" accesskey="g" title="[% Translate("+") | html %] (g)" type="button" value="[% Translate("+") | html %]"><span>[% Translate("+") | html %]</span></button>
+                            </div>
+                </div>
+</div>
+
+
+                    <div class="WidgetSimple">
+                        <div class="Header">
+                            <div class="WidgetAction Toggle">
+                                <a href="#" title="[% Translate("Show or hide the content") | html %]"><i class="fa fa-caret-right"></i><i class="fa fa-caret-down"></i></a>
+                            </div>
+                            <h2>[% Translate("Conditions and Actions") | html %]</h2>
+                        </div>
+                        <div class="Content">
+                            <div id="ChecklistActions">
+                            </div>
+
+                            <br /><br />
+                            <div class="Field">
+                                <button class="CallForAction Primary" id="AddActionBtn" accesskey="g" title="[% Translate("+") | html %] (g)" type="button" value="[% Translate("+") | html %]"><span>[% Translate("+") | html %]</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                            <br /><br />
+                            <div class="Field">
+
+                                <button class="CallForAction Primary" id="Submit" accesskey="g" title="[% Translate("Submit") | html %] (g)" type="submit" value="[% Translate("Submit") | html %]"><span>[% Translate("Submit") | html %]</span></button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div id="ItemTemplate" class="Hidden">
+                       <li id="Item_#Nr"> 
+    <div class="Field">
+                        <input type="text" id="ItemTitle_#Nr" name="ItemTitle_#Nr" value="[% Data.Title | html %]" Class="Validate Validate_Required W75pc" />
+                        [% Data.StatusSelect %]
+                        <button name="DelBtn" id="DelBtn_#Nr" class="DelBtn" value="-">-</button>
+                        <span id="ArrowUp_#Nr" class="fa fa-arrow-up" style="cursor: pointer"></span>
+                        <span id="ArrowDown_#Nr" class="fa fa-arrow-down" style="cursor: pointer"></span>
+
+<span id="InfoMore_#Nr" class="fa fa-eye-slash"></span>
+<div id="Info_#Nr" class="Hidden">
+    <fieldset class="TableLike" style="width: 600px">
+        <label for="Comment">[% Translate("Comment") | html %]:</label>
+        <div class="Field">
+            <textarea name="ItemComment_#Nr" rows="5" cols="100"></textarea>
+        </div>
+        <div class="Clear"></div>
+
+        <label for="ResponsibleID">[% Translate("Responsible") | html %]:</label>
+        <div class="Field">
+            [% Data.ResponsibleSelect %]
+[% RenderBlockStart("ResponsibleAutocompleteTemplate") %]
+            <input type="text" name="ResponsibleSearchField_#Nr" id="ResponsibleSearchField_#Nr" value="" />
+            <input type="hidden" name="Responsible_#Nr" id="Responsible_#Nr" value="" />
+[% RenderBlockEnd("ResponsibleAutocompleteTemplate") %]
+        </div>
+        <div class="Clear"></div>
+
+[% IF Config("TicketChecklist::Feature::DateStart") %]
+        <label for="DateStart">[% Translate("Start Date") | html %]: <span class="fa fa-info-circle" onclick="toggleInfoDiv('DateStartInfo_#Nr')"></span>
+            <div id="DateStartInfo_#Nr" class="Hidden">[% Translate("Minutes the item should start after checklist creation") %]</div>
+        </label>
+        <div class="Field">
+            <input type="text" id="ItemDateStartDiff_#Nr" name="ItemDateStartDiff_#Nr" value="" />
+        </div>
+        <div class="Clear"></div>
+[% END %]
+
+
+        <label for="DueDate">[% Translate("Due Date") | html %]: <span class="fa fa-info-circle" onclick="toggleInfoDiv('DueDateInfo_#Nr')"></span>
+            <div id="DueDateInfo_#Nr" class="Hidden">[% Translate("The estimated effort for this task (in minutes)") %]</div>
+        </label>
+        <div class="Field">
+            <input type="text" id="ItemDueDateDiff_#Nr" name="ItemDueDateDiff_#Nr" value="" />
+        </div>
+        <div class="Clear"></div>
+
+        <label for="PriorityID">[% Translate("Priority") | html %]:</label>
+        <div class="Field">
+            [% Data.PrioritySelect %]
+        </div>
+        <div class="Clear"></div>
+
+    </fieldset>
+</div>
+                        <input type="hidden" name="ItemID_#Nr" id="ItemID_#Nr" value="" />
+</div>
+                       </li>
+</div>
+
+
+
+<div id="ConditionActionTemplate" class="Hidden">
+    <div class="WidgetSimple ConditionAction CanDrag">
+        <div class="Header"><h2>[% Translate("Action") %]</h2></div>
+
+    <fieldset class="TableLike ActionItem" style="border: 1px solid #dfdfdf;" id="Action_#Nr">
+        <label for="ActionItem_#Nr">[% Translate("Checklist item") | html %]:</label>
+        <div class="Field">
+#            <input type="text" name="ActionItem_#Nr" id="ActionItem_#Nr">
+            <select name="ActionItem_#Nr" id="ActionItem_#Nr" class="ActionItemSelect Modernize" multiple="multiple" size="5"></select>
+        </div>
+        <div class="Clear"></div>
+
+        <label for="ActionStatus_#Nr">[% Translate("New Status") | html %]:</label>
+        <div class="Field">
+            [% Data.ActionStatusSelect %]
+        </div>
+        <div class="Clear"></div>
+
+        <label for="ActionModule_#Nr">[% Translate("Action Module") | html %]:</label>
+        <div class="Field">
+            [% Data.ActionModuleSelect %]
+        </div>
+        <div class="Clear"></div>
+
+        <div class="Field">
+        <fieldset class="TableLike">
+            <div id="ActionParams_ParameterList" class="ActionParam">
+                <div class="Field">
+                    [% Translate("Key") | html %]:
+                    <input type="text" name="ActionParamKey_#Nr_1" id="ActionParamKey_#Nr_1">
+                    [% Translate("Value") | html %]:
+                    <input type="text" name="ActionParamValue_#Nr_1" id="ActionParamValue_#Nr_1">
+                    <button class="CallForAction" id="AddParamBtn_#Nr" title="[% Translate("Add Parameter") | html %]" value="[% Translate("Add Parameter") | html %]">[% Translate("Add Parameter") | html %]</button>
+                </div>
+                <div class="Clear"></div>
+            </div>
+        </fieldset>
+        </div>
+
+        <div class="Field">
+            <button class="Primary CallForAction" id="RemoveActionBtn#Nr" value="[% Translate("Remove Action") | html %]">[% Translate("Remove Action") | html %]</button>
+        </div>
+    </fieldset>
+    </div>
+</div>
+
+<div class="Hidden" id="CustomerIDTemplate">
+    <div id="Customer-#Nr">
+        <p>
+            <span id="CustomerLabel-#Nr"></span>
+            <a href="#"><span id="CustomerDelete-#Nr" class="fa fa-minus-square-o"></span></a>
+        </p>
+        <input type="hidden" name="TemplateCustomerID"/>
+    </div>
+</div>
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+    PS.AdminTicketChecklistTemplate.InitItemNames();
+//]]></script>
+[% END %]
+
+[% RenderBlockStart("Action") %]
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+    PS.AdminTicketChecklistTemplate.NewAction( [% Data.Action %] );
+//]]></script>
+[% END %]
+[% RenderBlockEnd("Action") %]
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+    Core.Config.Set('UseAutocomplete', "[% Config("TicketChecklist::ResponsibleAutocomplete") | html %]" );
+    PS.AdminTicketChecklistTemplate.AutocompleteInit($("#CustomerID"), 'SearchCustomerID', 'CustomerID', Core.Config.Get('Action'), PS.AdminTicketChecklistTemplate.AddCustomer );
+    PS.AdminTicketChecklistTemplate.Init();
+//]]></script>
+[% END %]
+

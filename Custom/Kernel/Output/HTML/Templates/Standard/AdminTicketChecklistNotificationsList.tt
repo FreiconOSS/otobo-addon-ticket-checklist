@@ -1,0 +1,75 @@
+# --
+# AdminTicketChecklistNotificationList.tt - provides HTML form for AdminTicketChecklistNotificationList
+# Copyright (C) 2016 - 2022 Perl-Services.de, https://www.perl-services.de
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <h1>[% Translate("Checklist Item Notification Management") | html %]</h1>
+    <div class="SidebarColumn">
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Actions") | html %]</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=Add" class="CallForAction Fullsize Center"><span><i class="fa fa-plus-square"></i>[% Translate("Add Notification") | html %]</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("List") | html %]</h2>
+            </div>
+            <div class="Content">
+                <table class="DataTable" id="ChecklistItemNotification">
+                    <thead>
+                        <tr>
+                            <th>[% Translate("Name") | html %]</th>
+                            <th>[% Translate("Subject") | html %]</th>
+                            <th>[% Translate("Validity") | html %]</th>
+                            <th>[% Translate("Actions") | html %]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+[% RenderBlockStart("NoNotificationFound") %]
+                        <tr>
+                            <td colspan="4">[% Translate("No matches found.") | html %]</td>
+                        </tr>
+[% RenderBlockEnd("NoNotificationFound") %]
+[% RenderBlockStart("NotificationRow") %]
+                        <tr>
+                            <td>
+                                [% Data.Language | html %]::[% Data.Event | html %]
+                            </td>
+                            <td>
+                                [% Data.Subject | html %]
+                            </td>
+                            <td>
+                                [% Translate(Data.Valid) | html %]
+                            </td>
+                            <td>
+                                <a href="[% Env("Baselink") %]Action=AdminTicketChecklistNotifications;Subaction=Edit;ID=[% Data.ID | uri %]">
+                                [% Translate("edit") | html %]
+                                </a> |
+                                <a href="[% Env("Baselink") %]Action=AdminTicketChecklistNotifications;Subaction=Delete;ID=[% Data.ID | uri %]">
+                                [% Translate("delete") | html %]
+                                </a>
+                            </td>
+                        </tr>
+[% RenderBlockEnd("NotificationRow") %]
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="Clear"></div>
+</div>

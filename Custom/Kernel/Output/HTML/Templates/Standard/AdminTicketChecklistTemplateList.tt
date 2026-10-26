@@ -1,0 +1,102 @@
+# --
+# AdminTicketChecklistTemplateList.tt - provides HTML form for AdminTicketChecklistTemplateList
+# Copyright (C) 2015 - 2022 Perl-Services.de, https://www.perl-services.de
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <h1>[% Translate("Checklist Template Management") | html %]</h1>
+    <div class="SidebarColumn">
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Actions") | html %]</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=Add" class="CallForAction Fullsize"><span>[% Translate("Add Template") | html %]</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Export / Import") | html %]</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=Export" class="CallForAction Fullsize"><span>[% Translate("Export all Templates") | html %]</span></a>
+                    </li>
+                    <li><hr style="width: 100%; height: 2px; color: #000000" /></li>
+                    <li>
+                        <form action="[% Env("Baselink") %]" method="post" enctype="multipart/form-data">
+                            <input type="file" name="TemplateFile"><br />
+                            <input type="hidden" name="Action" value="AdminTicketChecklistTemplates">
+                            <input type="hidden" name="Subaction" value="Import">
+                            <button type="submit" class="Fullsize CallForAction" value="[% Translate("Import Templates") | html %]">[% Translate("Import Templates") | html %]</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("List") | html %]</h2>
+            </div>
+            <div class="Content">
+                <table class="DataTable" id="ChecklistItemTemplate">
+                    <thead>
+                        <tr>
+                            <th>[% Translate("ID") | html %]</th>
+                            <th>[% Translate("Name") | html %]</th>
+                            <th>[% Translate("Validity") | html %]</th>
+                            <th>[% Translate("Actions") | html %]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+[% RenderBlockStart("NoTemplateFound") %]
+                        <tr>
+                            <td colspan="4">[% Translate("No matches found.") | html %]</td>
+                        </tr>
+[% RenderBlockEnd("NoTemplateFound") %]
+[% RenderBlockStart("TemplateRow") %]
+                        <tr>
+                            <td>
+                                [% Data.ID | html %]
+                            </td>
+                            <td>
+                                [% Data.Name | html %]
+                            </td>
+                            <td>
+                                [% Translate(Data.Valid) | html %]
+                            </td>
+                            <td>
+                                <a href="[% Env("Baselink") %]Action=AdminTicketChecklistTemplates;Subaction=Edit;ID=[% Data.ID | uri %]">
+                                [% Translate("edit") | html %]
+                                </a> |
+                                <a href="[% Env("Baselink") %]Action=AdminTicketChecklistTemplates;Subaction=Copy;ID=[% Data.ID | uri %]">
+                                [% Translate("copy") | html %]
+                                </a> |
+                                <a href="[% Env("Baselink") %]Action=AdminTicketChecklistTemplates;Subaction=Export;ID=[% Data.ID | uri %]">
+                                [% Translate("export") | html %]
+                                </a> |
+                                <a href="[% Env("Baselink") %]Action=AdminTicketChecklistTemplates;Subaction=Delete;ID=[% Data.ID | uri %]">
+                                [% Translate("delete") | html %]
+                                </a>
+                            </td>
+                        </tr>
+[% RenderBlockEnd("TemplateRow") %]
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="Clear"></div>
+</div>

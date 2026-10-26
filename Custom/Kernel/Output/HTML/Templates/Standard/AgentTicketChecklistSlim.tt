@@ -1,0 +1,181 @@
+# --
+# Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="LayoutPopup ARIARoleMain">
+    <div class="Header">
+        <h1>[% Translate("Manage Checklist for ticket") | html %]: [% Data.TicketNumber | html %] - [% Data.Title | html %]</h1>
+        <p>
+            <a class="CancelClosePopup" href="#">[% Translate("Cancel & close window") | html %]</a>
+        </p>
+    </div>
+
+    <div class="Content">
+        <div class="LayoutFixedSidebar SidebarLast">
+            <div class="ContentColumn">
+                <div class="Content">
+
+                    [% Translate("Template") | html %]: [% Data.TemplateSelect %]
+                    <span id="TemplateLoader"></span>
+                    <hr style="width:100%; border-bottom: 1px solid; margin: 10px;"/>
+
+                    <form action="[% Env("CGIHandle") %]" id="MainForm" method="post" name="compose">
+                        <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                        <input type="hidden" name="Subaction" value="Save"/>
+                        <input type="hidden" name="TicketID" value="[% Data.TicketID | html %]" id="TicketID"/>
+                        <input type="hidden" name="TicketFormID" value="[% Data.TicketFormID | html %]" id="TicketFormID"/>
+                        <input type="hidden" name="ItemOrder" value="" id="ItemOrder"/>
+                        <input type="hidden" name="ChecklistTemplateSelected" value="" id="ChecklistTemplateSelected"/>
+                        <input type="hidden" name="ChecklistTemplates" value="[% Data.ChecklistTemplates | html %]" id="ChecklistTemplates" />
+<script type="text/javascript">
+//<![CDATA[
+    var Positions = '[% Data.Position | html %]';
+//]]>
+</script>
+
+<button name="ToggleAllBtn" id="ToggleAllBtn" title="[% Translate("Show/Hide all details") | html %]" value="[% Translate("Show/Hide all details") | html %]">[% Translate("Show/Hide all details") | html %]</button>
+<button name="ClearBtn" id="ClearBtn" title="[% Translate("Clear checklist") | html %]" value="[% Translate("Clear checklist") | html %]">[% Translate("Clear checklist") | html %]</button>
+
+<ol id="ChecklistItems">
+
+[% RenderBlockStart("Item") %]
+                       <li id="Item_[% Data.Position | html %]"> <input class="W25pc" type="text" id="ItemTitle_[% Data.Position | html %]" name="ItemTitle_[% Data.Position | html %]" value="[% Data.Title | html %]" />
+                        [% Data.StatusSelect %]
+
+            [% Data.ResponsibleSelect %]
+[% RenderBlockStart("ResponsibleAutocomplete") %]
+            <input type="text" name="ResponsibleSearchField_[% Data.Position | html %]" id="ResponsibleSearchField_[% Data.Position | html %]" value="[% Data.TextValue | html %]" placeholder="[% Translate("Responsible") %]" />
+            <input type="hidden" name="Responsible_[% Data.Position | html %]" id="Responsible_[% Data.Position | html %]" value="[% Data.Value | html %]" />
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+    PS.TicketChecklist.AutocompleteInit( $('#ResponsibleSearchField_[% Data.Position | html %]'), 'ResponsibleSearch', 'Responsible_[% Data.Position | html %]' );
+//]]></script>
+[% END %]
+[% RenderBlockEnd("ResponsibleAutocomplete") %]
+
+[% IF Config("TicketChecklist::Feature::DateStart") %]
+            [% Data.DateStartSelect %]
+[% END %]
+            [% Data.DueDateSelect %]
+
+                        <button name="DelBtn" id="DelBtn_[% Data.Position | html %]" class="DelBtn" value="-">-</button><br />
+                        <span id="ArrowUp_[% Data.Position | html %]" class="fa fa-arrow-up" style="cursor: pointer"></span>
+                        <span id="ArrowDown_[% Data.Position | html %]" class="fa fa-arrow-down" style="cursor: pointer"></span>
+
+<span id="InfoMore_[% Data.Position | html %]" class="fa fa-eye" style="cursor: pointer"></span>
+<div id="Info_[% Data.Position | html %]" class="Hidden">
+    <fieldset class="TableLike" style="width: 600px">
+        <label for="Comment">[% Translate("Comment") | html %]:</label>
+        <div class="Field">
+            <textarea name="ItemComment_[% Data.Position | html %]" rows="5" cols="100">[% Data.Comment | html %]</textarea>
+        </div>
+        <div class="Clear"></div>
+
+        <label for="ArticleNumber">[% Translate("Article #") | html %]:</label>
+        <div class="Field">
+            <input type="text" width="W25pc" name="ItemArticleNumber_[% Data.Position | html %]" value="[% Data.ArticleNumber | html %]" />
+        </div>
+        <div class="Clear"></div>
+
+
+        <label for="PriorityID">[% Translate("Priority") | html %]:</label>
+        <div class="Field">
+            [% Data.PrioritySelect %]
+        </div>
+        <div class="Clear"></div>
+
+[% RenderBlockStart("ChangeNote") %]
+        <label for="ChangeNote">[% Translate("ChangeNote") | html %]:</label>
+        <div class="Field">
+            <textarea name="ItemChangeNote_[% Data.Position | html %]" rows="5" cols="100"></textarea>
+        </div>
+        <div class="Clear"></div>
+[% RenderBlockEnd("ChangeNote") %]
+
+[% RenderBlockStart("ChangeNoteEdit") %]
+        <label for="ChangeNote">[% Translate("ChangeNote") | html %]:</label>
+        <div class="Field">
+            <textarea name="ItemChangeNote_[% Data.Position | html %]" rows="5" cols="100">[% Data.ChangeNote | html %]</textarea>
+        </div>
+        <div class="Clear"></div>
+[% RenderBlockEnd("ChangeNoteEdit") %]
+
+        <label>[% Translate("Move task to Ticket") | html %]:</label>
+        <div class="Field">
+            <span class="fa fa-mail-forward MoveIcon" id="Move_[% Data.Position | html %]"></span>
+        </div>
+        <div class="Clear"></div>
+
+    </fieldset>
+</div>
+                        <input type="hidden" name="ItemID_[% Data.Position | html %]" id="ItemID_[% Data.Position | html %]" value="[% Data.ID | html %]" />
+                       </li>
+[% RenderBlockEnd("Item") %]
+</ol>
+
+                            <br /><br />
+                            <div class="Field">
+                                <button class="CallForAction Primary" id="AddBtn" accesskey="g" title="[% Translate("+") | html %] (g)" type="submit" value="[% Translate("+") | html %]"><span>[% Translate("+") | html %]</span></button>
+
+                                <button class="CallForAction Primary" id="Submit" accesskey="g" title="[% Translate("Submit") | html %] (g)" type="submit" value="[% Translate("Submit") | html %]"><span>[% Translate("Submit") | html %]</span></button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <div class="Clear"></div>
+        </div>
+
+        <div id="ChecklistTickets"></div>
+
+    </div>
+    <div class="Footer"></div>
+</div>
+
+<div class="Hidden">
+  <div id="MoveToTicketDiv">
+    <fieldset class="TableLike">
+        <label>[% Translate("Move to Ticket#") | html %]:</label>
+        <div class="Field">
+            <input type="text" name="TargetTicketNr" class="W75pc">
+        </div>
+        <div class="Clear"></div>
+
+    </fieldset>
+  </div>
+</div>
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript"> //<![CDATA[
+    Core.Config.Set( 'PSUseDateStartFeature', [% IF Config("TicketChecklist::Feature::DateStart") %]1[% ELSE %]0[% END %] );
+    Core.Config.Set( 'more_info_text', [% Translate("[more...]") | JSON %] );
+    Core.Config.Set( 'close_text', [% Translate("[close]") | JSON %] );
+    Core.Config.Set( 'Responsible_text', [% Translate("Responsible") | JSON %] );
+    Core.Config.Set( 'DueDate_text', [% Translate("Due Date") | JSON %] );
+    Core.Config.Set( 'DateStart_text', [% Translate("Start Date") | JSON %] );
+    Core.Config.Set( 'Priority_text', [% Translate("Priority") | JSON %] );
+    Core.Config.Set( 'Comment_text', [% Translate("Comment") | JSON %] );
+    Core.Config.Set( 'ArticleNumber_text', [% Translate("Article #") | JSON %] );
+    Core.Config.Set( 'HardDeleteItems', [% Config("TicketChecklist::HardDeleteItems") | JSON %] );
+    Core.Config.Set( 'ConfirmDeleteItems', [% Config("TicketChecklist::ConfirmDeleteItems") | JSON %] );
+    Core.Config.Set( 'ConfirmDeleteTitle', [% Translate("Confirm item deletion") | JSON %] );
+    Core.Config.Set( 'ConfirmDeleteHTML', [% Translate("Do you want to delete this item?") | JSON %] );
+    Core.Config.Set( 'ConfirmDeleteOkButton', [% Translate("Ok") | JSON %] );
+    Core.Config.Set( 'ConfirmDeleteCancelButton', [% Translate("Cancel") | JSON %] );
+    Core.Config.Set( 'ChangeNoteLabel', [% Translate("Change Note") | JSON %] );
+    Core.Config.Set( 'PSChecklistChangeNote', [% Data.ChangeNote | JSON %] );
+    Core.Config.Set( 'PSChecklistChangeNoteWidget', [% Data.ChangeNoteWidget | JSON %] );
+    Core.Config.Set( 'PSChecklistUseAutocomplete', [% Data.UseAutocomplete | JSON %] );
+    Core.Config.Set( 'PSTranslationOK', [% Translate("Ok") | JSON %] );
+    Core.Config.Set( 'PSTranslationCancel', [% Translate("Cancel") | JSON %] );
+    Core.Config.Set( 'PSMoveToTicketTitle', [% Translate("Move task to Ticket") | JSON %] );
+    Core.Config.Set( 'PSMoveToTicketSuccess', [% Translate("Moved task to Ticket") | JSON %] );
+    Core.Config.Set( 'PSMoveToTicketError', [% Translate("Could not move task to Ticket") | JSON %] );
+    Core.Config.Set( 'UseSlimChecklistTheme', 1 );
+//]]>
+</script>
+[% END %]

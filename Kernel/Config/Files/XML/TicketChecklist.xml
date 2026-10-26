@@ -1,0 +1,1583 @@
+<?xml version="1.0" encoding="utf-8"?>
+<otobo_config version="2.0" init="Application">
+    <Setting Name="Ticket::Frontend::AgentTicketZoom###Widgets###002-TicketChecklist" Required="0" Valid="1">
+        <Description Translatable="1">AgentTicketZoom widget that displays customers' ci info data in the side bar.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::View::TicketZoom</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::TicketZoom::TicketChecklist</Item>
+                <Item Key="Location">Sidebar</Item>
+                <Item Key="Async">1</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AgentTicketZoom###003-TicketChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>PS.TicketChecklistWidget.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Ticket::Frontend::MenuModule###212-Checklist" Required="0" Valid="1">
+        <Description Translatable="1">Shows a link in the menu to the ticket checklist.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::View::TicketZoom::MenuModule</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::TicketMenu::Generic</Item>
+                <Item Key="Name" Translatable="1">Checklist</Item>
+                <Item Key="Description" Translatable="1">Maintain checklist for the ticket</Item>
+                <Item Key="Action">AgentTicketChecklist</Item>
+                <Item Key="Link">Action=AgentTicketChecklist;TicketID=[% Data.TicketID | html %]</Item>
+                <Item Key="LinkParam"></Item>
+                <Item Key="Target"></Item>
+                <Item Key="PopupType">TicketAction</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Ticket::Frontend::MenuModule###213-ChecklistPrint" Required="0" Valid="1">
+        <Description Translatable="1">Shows a link in the menu to the ticket checklist.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::View::TicketZoom::MenuModule</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::TicketMenu::Generic</Item>
+                <Item Key="Name" Translatable="1">Print Checklist</Item>
+                <Item Key="Description" Translatable="1">Print tickets' checklist</Item>
+                <Item Key="Action">AgentChecklistPrint</Item>
+                <Item Key="Link">Action=AgentChecklistExport;Type=pdf;TicketID=[% Data.TicketID | html %]</Item>
+                <Item Key="LinkParam"></Item>
+                <Item Key="Target"></Item>
+                <Item Key="PopupType">TicketAction</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::Debug" Required="0" Valid="1">
+        <Description Translatable="1">Enable/Disable debugging feature.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ReloadChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Reload checklist widget in ticket zoom when an item is updated.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ReloadTicketZoom" Required="0" Valid="1">
+        <Description Translatable="1">Reload ticket zoom in ticket zoom when an item is updated.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::DefaultState" Required="0" Valid="1">
+        <Description Translatable="1">The default state for a new checklist item.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">open</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::DefaultPriority" Required="0" Valid="1">
+        <Description Translatable="1">Default priority for checklist items (ticket priorities are used)</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">3 normal</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::PrioritySource" Required="0" Valid="1">
+        <Description Translatable="1">Define the source of the default priority</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Select" SelectedID="DefaultPriority">
+                <Item ValueType="Option" Value="DefaultPriority" Translatable="1">TicketChecklist::DefaultPriority</Item>
+                <Item ValueType="Option" Value="Ticket" Translatable="1">Ticket</Item>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AgentTicketChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for ticket checklist module.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">Maintain ticket checklists.</Item>
+                    <Item Key="NavBarName">Ticket</Item>
+                    <Item Key="Title" Translatable="1">Maintain ticket checklists</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AgentTicketChecklist###002-TicketChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>PS.TicketChecklist.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AgentTicketChecklist###002-TicketChecklist" Required="0" Valid="0">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AgentChecklistExport" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for ticket checklist module.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">Export ticket checklists.</Item>
+                    <Item Key="NavBarName">Ticket</Item>
+                    <Item Key="Title" Translatable="1">Export ticket checklists</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AgentChecklistExport###002-TicketChecklist" Required="0" Valid="0">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AdminTicketChecklistStates" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the checklist state administration.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Admin::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>admin</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">Create and manage checklist states.</Item>
+                    <Item Key="Title" Translatable="1">Checklist States</Item>
+                    <Item Key="NavBarName">Admin</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AdminTicketChecklistStates###002-TicketChecklist" Required="0" Valid="0">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Admin::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::NavigationModule###AdminTicketChecklistStates" Required="0" Valid="1">
+        <Description Translatable="1">Admin area navigation for the agent interface.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Admin::ModuleRegistration::AdminOverview</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Group">
+                    <Array>
+                        <Item>admin</Item>
+                    </Array>
+                </Item>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Module">Kernel::Output::HTML::NavBar::ModuleAdmin</Item>
+                <Item Key="Name" Translatable="1">Checklist States</Item>
+                <Item Key="Block">System</Item>
+                <Item Key="Description" Translatable="1">Create and manage checklist states.</Item>
+                <Item Key="IconBig"></Item>
+                <Item Key="IconSmall"></Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Ticket::EventModulePost###1031-MergeTicketChecklists" Required="0" Valid="1">
+        <Description Translatable="1">Merge ticket checklists when tickets are merged.</Description>
+        <Navigation>PerlServices::TicketChecklist::Events</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::Ticket::Event::MergeTicketChecklists</Item>
+                <Item Key="Event">TicketMerge</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Ticket::EventModulePost###1032-CloseChecklistItems" Required="0" Valid="0">
+        <Description Translatable="1">Close checklist items when tickets are closed.</Description>
+        <Navigation>PerlServices::TicketChecklist::Events</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::Ticket::Event::CloseChecklistItems</Item>
+                <Item Key="Event">TicketStateUpdate</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Agent::CommonCSS###100001-TicketChecklist" Required="1" Valid="1">
+        <Description Translatable="1">List of CSS files to always be loaded for the agent interface.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Base</Navigation>
+        <Value>
+            <Array>
+                <Item>PS.TicketChecklist.Default.css</Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::OpenStates" Required="0" Valid="1">
+        <Description Translatable="1">"open" states for checklist items</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Array>
+                <Item>open</Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::WaitingStates" Required="0" Valid="1">
+        <Description Translatable="1">"waiting" states for checklist items. This is necessary for the "start date" feature.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Array>
+                <Item>waiting</Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::HiddenStates" Required="0" Valid="0">
+        <Description Translatable="1">checklist items that have thoses states are hidden in theticket zoom widget</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Array>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AgentChecklistTickets" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">Search own tickets with checklists</Item>
+                    <Item Key="Title" Translatable="1">Search Checklist Tickets</Item>
+                    <Item Key="NavBarName">Ticket</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AgentChecklistTickets###002-TicketChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+                <Item>
+                    <Hash>
+                        <Item Key="Group">
+                            <Array>
+                            </Array>
+                        </Item>
+                        <Item Key="GroupRo">
+                            <Array>
+                            </Array>
+                        </Item>
+                        <Item Key="Description" Translatable="1">Search Checklist Tickets</Item>
+                        <Item Key="Name" Translatable="1">Search Checklist Tickets</Item>
+                        <Item Key="Link">Action=AgentChecklistTickets</Item>
+                        <Item Key="LinkOption"></Item>
+                        <Item Key="NavBar">Ticket</Item>
+                        <Item Key="Type"></Item>
+                        <Item Key="Block"></Item>
+                        <Item Key="AccessKey"></Item>
+                        <Item Key="Prio">602</Item>
+                    </Hash>
+                </Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AgentChecklistMyTodo" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">My Checklist Todos</Item>
+                    <Item Key="Title" Translatable="1">My Checklist Todos</Item>
+                    <Item Key="NavBarName">Ticket</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AgentChecklistMyTodo###002-TicketChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+                <Item>
+                    <Hash>
+                        <Item Key="Group">
+                            <Array>
+                            </Array>
+                        </Item>
+                        <Item Key="GroupRo">
+                            <Array>
+                            </Array>
+                        </Item>
+                        <Item Key="Description" Translatable="1">My Checklist Todos</Item>
+                        <Item Key="Name" Translatable="1">My Checklist Todos</Item>
+                        <Item Key="Link">Action=AgentChecklistMyTodo</Item>
+                        <Item Key="LinkOption"></Item>
+                        <Item Key="NavBar">Ticket</Item>
+                        <Item Key="Type"></Item>
+                        <Item Key="Block"></Item>
+                        <Item Key="AccessKey"></Item>
+                        <Item Key="Prio">603</Item>
+                    </Hash>
+                </Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::EventModule###001-Notifications" Required="0" Valid="1">
+        <Description Translatable="1">Send Notifications.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::TicketChecklist::Event</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PerlServices::TicketChecklist::Event::Notifications</Item>
+                <Item Key="Event">(ItemDelete|ItemResponsibleUpdate|ItemStatusUpdate|ItemDueDateBefore|ItemsAllClosed|ItemDateStartUpdate|ItemDueDateUpdate|ItemDateStartBefore)</Item>
+                <Item Key="Transaction">0</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::DueDateBefore" Required="0" Valid="1">
+        <Description Translatable="1">Minutes before the due date a notification is sent</Description>
+        <Navigation>PerlServices::TicketChecklist::Notifications</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="^\d+$">60</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::NotificationTimes" Required="0" Valid="0">
+        <Description Translatable="1">Time spans when a notification (due date) should be sent, e.g. -60m (60 minutes before the due date) or -5d (5 days before the due date)</Description>
+        <Navigation>PerlServices::TicketChecklist::Notifications</Navigation>
+        <Value>
+            <Array>
+                <Item>-60m</Item>
+                <Item>-5d</Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::NotificationTimesSpan" Required="0" Valid="1">
+        <Description Translatable="1">Time span that is checked for the NotificationTimes. Should be the time span between two runs of the daemon task</Description>
+        <Navigation>PerlServices::TicketChecklist::Notifications</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="^\d+$">10</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::DateStartBefore" Required="0" Valid="1">
+        <Description Translatable="1">Minutes before the start date a notification is sent</Description>
+        <Navigation>PerlServices::TicketChecklist::Notifications</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="^\d+$">60</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::StartNotificationTimes" Required="0" Valid="0">
+        <Description Translatable="1">Time spans when a notification (start date) should be sent, e.g. -60m (60 minutes before the due date) or -5d (5 days before the due date)</Description>
+        <Navigation>PerlServices::TicketChecklist::Notifications</Navigation>
+        <Value>
+            <Array>
+                <Item>-60m</Item>
+                <Item>-5d</Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::StartNotificationTimesSpan" Required="0" Valid="1">
+        <Description Translatable="1">Time span that is checked for the StartNotificationTimes. Should be the time span between two runs of the daemon task</Description>
+        <Navigation>PerlServices::TicketChecklist::Notifications</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="^\d+$">10</Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AdminTicketChecklistTemplates" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the checklist template administration.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Admin::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>admin</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">Create and manage checklist templates.</Item>
+                    <Item Key="Title" Translatable="1">Checklist Templates</Item>
+                    <Item Key="NavBarName">Admin</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AdminTicketChecklistTemplates###002-TicketChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Admin::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>PS.AdminTicketChecklistTemplate.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AdminTicketChecklistTemplates###002-TicketChecklist" Required="0" Valid="0">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Admin::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::NavigationModule###AdminTicketChecklistTemplates" Required="0" Valid="1">
+        <Description Translatable="1">Admin area navigation for the agent interface.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Admin::ModuleRegistration::AdminOverview</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Group">
+                    <Array>
+                        <Item>admin</Item>
+                    </Array>
+                </Item>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Module">Kernel::Output::HTML::NavBar::ModuleAdmin</Item>
+                <Item Key="Name" Translatable="1">Checklist Templates</Item>
+                <Item Key="Block">System</Item>
+                <Item Key="Description" Translatable="1">Create and manage checklist templates.</Item>
+                <Item Key="IconBig"></Item>
+                <Item Key="IconSmall"></Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="DashboardBackend###0991-ChecklistItems" Required="0" Valid="1">
+        <Description Translatable="1">Dashboard widget for checklist items.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::View::Dashboard</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::Dashboard::ChecklistItem</Item>
+                <Item Key="Title">Checklist Items</Item>
+                <Item Key="Description">All checklist items for an user</Item>
+                <Item Key="Limit">10</Item>
+                <Item Key="Permission">rw</Item>
+                <Item Key="Block">ContentLarge</Item>
+                <Item Key="Group"></Item>
+                <Item Key="Default">1</Item>
+                <Item Key="CacheTTLLocal">0.5</Item>
+                <Item Key="Mandatory">0</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="DashboardBackend###0992-ChecklistTicket" Required="0" Valid="1">
+        <Description Translatable="1">Dashboard widget for tickets with checklist items.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::View::Dashboard</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::Dashboard::ChecklistTicket</Item>
+                <Item Key="Title" Translatable="1">Tickets with Checklist Items</Item>
+                <Item Key="Description" Translatable="1">All tickets with checklist items for an user</Item>
+                <Item Key="Limit">10</Item>
+                <Item Key="Filter" Translatable="1">All</Item>
+                <Item Key="Time">Age</Item>
+                <Item Key="Permission">rw</Item>
+                <Item Key="Block">ContentLarge</Item>
+                <Item Key="Group"></Item>
+                <Item Key="Default">1</Item>
+                <Item Key="CacheTTLLocal">0.5</Item>
+                <Item Key="DefaultColumns">
+                    <Hash>
+                        <Item Key="Age">2</Item>
+                        <Item Key="Changed">1</Item>
+                        <Item Key="Created">1</Item>
+                        <Item Key="CustomerID">1</Item>
+                        <Item Key="CustomerName">1</Item>
+                        <Item Key="CustomerUserID">1</Item>
+                        <Item Key="EscalationResponseTime">1</Item>
+                        <Item Key="EscalationSolutionTime">1</Item>
+                        <Item Key="EscalationTime">1</Item>
+                        <Item Key="EscalationUpdateTime">1</Item>
+                        <Item Key="TicketNumber">2</Item>
+                        <Item Key="Lock">1</Item>
+                        <Item Key="Owner">1</Item>
+                        <Item Key="PendingTime">1</Item>
+                        <Item Key="Queue">1</Item>
+                        <Item Key="Responsible">1</Item>
+                        <Item Key="Priority">1</Item>
+                        <Item Key="Service">1</Item>
+                        <Item Key="State">1</Item>
+                        <Item Key="SLA">1</Item>
+                        <Item Key="Title">2</Item>
+                        <Item Key="Type">1</Item>
+                    </Hash>
+                </Item>
+                <Item Key="Mandatory">0</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::EventModule###002-TicketHistory" Required="0" Valid="1">
+        <Description Translatable="1">Update TicketHistory.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::TicketChecklist::Event</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PerlServices::TicketChecklist::Event::TicketHistory</Item>
+                <Item Key="Event">(ItemResponsibleUpdate|ItemStatusUpdate|ItemAdd|ItemDelete|ItemDueDateUpdate|ItemMove)</Item>
+                <Item Key="Transaction">0</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::EventModule###003-ChangeNote" Required="0" Valid="1">
+        <Description Translatable="1">Add ChangeNote to ticket.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::TicketChecklist::Event</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PerlServices::TicketChecklist::Event::ChangeNote</Item>
+                <Item Key="Event">(ItemChangeNote)</Item>
+                <Item Key="Transaction">0</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::EventModule###004-SetHasOpenTodos" Required="0" Valid="1">
+        <Description Translatable="1">Set ticket dynamic field to keep track if any item is open.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::TicketChecklist::Event</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PerlServices::TicketChecklist::Event::SetHasOpenTodos</Item>
+                <Item Key="Event">(TicketChecklistCreate|TicketChecklistRemove|ItemsAllClosed|ItemAdd|ItemStatusUpdate)</Item>
+                <Item Key="Transaction">0</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::EventModule###005-ConditionAction" Required="0" Valid="1">
+        <Description Translatable="1">Check the conditions and run the actions.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::TicketChecklist::Event</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PerlServices::TicketChecklist::Event::ConditionAction</Item>
+                <Item Key="Event">(ItemStatusUpdate)</Item>
+                <Item Key="Transaction">0</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::EventModule###006-SetHasChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Set ticket dynamic field to keep track if the ticket has a checklist.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::TicketChecklist::Event</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PerlServices::TicketChecklist::Event::SetHasChecklist</Item>
+                <Item Key="Event">(TicketChecklistCreate|TicketChecklistRemove)</Item>
+                <Item Key="Transaction">0</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::EventModule###007-SetDefaultCustomerVisibility" Required="0" Valid="1">
+        <Description Translatable="1">Event handler module to set customer visibility for some queues.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::TicketChecklist::Event</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PerlServices::TicketChecklist::Event::SetDefaultCustomerVisibility</Item>
+                <Item Key="Event">(TicketChecklistCreate)</Item>
+                <Item Key="Transaction">0</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::AllUsersForResponsibles" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, all users can be selected as a responsible. If disabled, only users with ro permission on the tickets' queue can be selected as a responsible.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">1</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::AllAgentsStatusChange" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, all users can change the status of all tasks.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="Ticket::Frontend::HistoryTypes###212-Checklist" Required="0" Valid="1">
+        <Description Translatable="1">Show checklist actions in history.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="TicketChecklistItemAdd">Checklist item %s (Title: %s) added.</Item>
+                <Item Key="TicketChecklistItemUpdate">Checklist item %s (Title: %s) updated.</Item>
+                <Item Key="TicketChecklistItemResponsibleUpdate">New responsible for Checklist item %s (Title: %s): %s</Item>
+                <Item Key="TicketChecklistItemDueDateUpdate">Due date for Checklist item %s (Title: %s) updated: %s</Item>
+                <Item Key="TicketChecklistItemDelete">Checklist item %s (Title: %s) deleted.</Item>
+                <Item Key="TicketChecklistItemStatusUpdate">Checklist item %s (Title: %s) changed state: %s -> %s.</Item>
+                <Item Key="TicketChecklistItemMove">Checklist item %s (Title: %s) moved to ticket id %s.</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AgentTicketChecklistIDSet" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the AgentTicketChecklistIDSet.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Module">Kernel::Modules::AgentTicketChecklistIDSet</Item>
+                    <Item Key="Description">Set Checklist template id when ticket is created</Item>
+                    <Item Key="NavBarName">Ticket</Item>
+                    <Item Key="Debug">0</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AgentTicketChecklistTemplates" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the AgentTicketChecklistTemplates.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Module">Kernel::Modules::AgentTicketChecklistTemplates</Item>
+                    <Item Key="Description">Returns a list of checklisttemplates</Item>
+                    <Item Key="NavBarName">Ticket</Item>
+                    <Item Key="Debug">0</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Output::FilterElementPost###OutputFilterTicketChecklistDropdown" Required="0" Valid="1">
+        <Description Translatable="1">Module to show checklist templates dropdown in ticket masks.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Base::OutputFilter</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::FilterElementPost::TicketChecklistDropdown</Item>
+                <Item Key="Debug">0</Item>
+                <Item Key="Templates">
+                    <Hash>
+                        <Item Key="AgentTicketEmail">1</Item>
+                        <Item Key="AgentTicketPhone">1</Item>
+                    </Hash>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Template::GenerateBlockHooks###132-TicketChecklist" Required="1" Valid="1">
+        <Description Translatable="1">Generate HTML comment hooks for the specified blocks so that filters can use them.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Base::OutputFilter</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="AgentTicketEmail">
+                    <Array>
+                        <Item>TicketType</Item>
+                    </Array>
+                </Item>
+                <Item Key="AgentTicketZoom">
+                    <Array>
+                        <Item>TicketType</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Ticket::EventModulePost###1037-SetTicketChecklists" Required="0" Valid="1">
+        <Description Translatable="1">Set ticket checklists when tickets are created via webinterface.</Description>
+        <Navigation>PerlServices::TicketChecklist::Events</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::Ticket::Event::SetTicketChecklists</Item>
+                <Item Key="Event">TicketCreate</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="PostMaster::PostFilterModule###015-TicketChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Add checklist to ticket.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::Email::PostMaster</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PostMaster::Filter::TicketChecklist</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="PostMaster::PostFilterModule###016-TicketChecklistItem" Required="0" Valid="1">
+        <Description Translatable="1">Update checklist item in ticket.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::Email::PostMaster</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PostMaster::Filter::TicketChecklistItem</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::KeepEntriesOnTemplateChange" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, items are added when the template is changed (instead of overridden)</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::HardDeleteItems" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, items are deleted from database</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">1</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ConfirmDeleteItems" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, confirmation is needed to delete items</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ShowChecklistInTicketCreate" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, a widget with checklist items is shown in the ticket create form.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::AllowMultiChecklistsInTicketCreate" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, items are added when the template is changed (instead of overridden)</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AdminTicketChecklistNotifications" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the checklist notification administration.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Admin::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>admin</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="Description">Create and manage checklist notifications.</Item>
+                    <Item Key="Title">Checklist Notifications</Item>
+                    <Item Key="NavBarName">Admin</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AdminTicketChecklistNotifications###002-TicketChecklist" Required="0" Valid="0">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Admin::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::NavigationModule###AdminTicketChecklistNotifications" Required="0" Valid="1">
+        <Description Translatable="1">Admin area navigation for the agent interface.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Admin::ModuleRegistration::AdminOverview</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Group">
+                    <Array>
+                        <Item>admin</Item>
+                    </Array>
+                </Item>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Module">Kernel::Output::HTML::NavBar::ModuleAdmin</Item>
+                <Item Key="Name" Translatable="1">Checklist Notifications</Item>
+                <Item Key="Block">System</Item>
+                <Item Key="Description" Translatable="1">Create and manage checklist notifications.</Item>
+                <Item Key="IconBig"></Item>
+                <Item Key="IconSmall"></Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Daemon::SchedulerCronTaskManager::Task###ChecklistNotifications" Required="0" Valid="1">
+        <Description Translatable="1">Send Checklist notifications.</Description>
+        <Navigation>PerlServices::TicketChecklist::Daemon::SchedulerCronTaskManager::Task</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="TaskName">ChecklistNotifications</Item>
+                <Item Key="Schedule">*/10 * * * *</Item> <!-- default: every 10 minutes -->
+                <Item Key="Module">Kernel::System::Console::Command::Maint::Ticket::ChecklistNotifications</Item>
+                <Item Key="Function">Execute</Item>
+                <Item Key="MaximumParallelInstances">1</Item>
+                <Item Key="Params">
+                    <Array>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Daemon::SchedulerCronTaskManager::Task###ChecklistStartDateNotifications" Required="0" Valid="1">
+        <Description Translatable="1">Send Checklist notifications when start date of some items are reached.</Description>
+        <Navigation>PerlServices::TicketChecklist::Daemon::SchedulerCronTaskManager::Task</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="TaskName">ChecklistStartDateNotifications</Item>
+                <Item Key="Schedule">*/10 * * * *</Item> <!-- default: every 10 minutes -->
+                <Item Key="Module">Kernel::System::Console::Command::Maint::Ticket::ChecklistStartDateNotifications</Item>
+                <Item Key="Function">Execute</Item>
+                <Item Key="MaximumParallelInstances">1</Item>
+                <Item Key="Params">
+                    <Array>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Daemon::SchedulerCronTaskManager::Task###ChecklistSetStartDateStatus" Required="0" Valid="1">
+        <Description Translatable="1">Set new state for items that reached the start date.</Description>
+        <Navigation>PerlServices::TicketChecklist::Daemon::SchedulerCronTaskManager::Task</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="TaskName">ChecklistSetStartDateStatus</Item>
+                <Item Key="Schedule">*/10 * * * *</Item> <!-- default: every 10 minutes -->
+                <Item Key="Module">Kernel::System::Console::Command::Maint::Ticket::ChecklistSetStartDateStatus</Item>
+                <Item Key="Function">Execute</Item>
+                <Item Key="MaximumParallelInstances">1</Item>
+                <Item Key="Params">
+                    <Array>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Daemon::SchedulerCronTaskManager::Task###ChecklistClearPreferences" Required="0" Valid="1">
+        <Description Translatable="1">Clear preferences (for which tickets all items should be shown) for all agents.</Description>
+        <Navigation>PerlServices::TicketChecklist::Daemon::SchedulerCronTaskManager::Task</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="TaskName">ChecklistClearPreferences</Item>
+                <Item Key="Schedule">*/10 0 * * 0</Item> <!-- default: every 10 minutes -->
+                <Item Key="Module">Kernel::System::Console::Command::Maint::Ticket::ChecklistClearPreferences</Item>
+                <Item Key="Function">Execute</Item>
+                <Item Key="MaximumParallelInstances">1</Item>
+                <Item Key="Params">
+                    <Array>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ShowChangeNotes" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, agents can add notes to the item when they change them.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::ChangeNote</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ShowChangeNotesWidget" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, agents can add notes to the item when they change the states via the widget.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::ChangeNote</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ChangeNoteAsArticle" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, change notes are added to the ticket.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::ChangeNote</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ChangeNoteAsNotification" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, change notes are sent as notifications.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::ChangeNote</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">1</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ChangeNoteArticle###Type" Required="0" Valid="1">
+        <Description Translatable="1">Article type for change note articles.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::ChangeNote</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">note-internal</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ChangeNoteArticle###Subject" Required="0" Valid="1">
+        <Description Translatable="1">Subject for change note articles.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::ChangeNote</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">TODO changed</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::SaveChangeNote" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, change notes are added to the todo item.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::ChangeNote</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::EditChangeNote" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, change notes are editable in the todo item.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::ChangeNote</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ChangeNoteDialogRows" Required="0" Valid="1">
+        <Description Translatable="1">Number of rows for the change note.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::ChangeNote</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="^\d+$">10</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ChangeNoteDialogCols" Required="0" Valid="1">
+        <Description Translatable="1">Number of columns for the change note.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::ChangeNote</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="^\d+$">40</Item>
+        </Value>
+    </Setting>
+    <Setting Name="Ticket::Frontend::MenuModule###210-PrintChecklist" Required="0" Valid="0">
+        <Description Translatable="1">Shows a link in the menu to print a ticket or an article in the ticket zoom view of the agent interface. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2". To cluster menu items use for Key "ClusterName" and for the Content any name you want to see in the UI. Use "ClusterPriority" to configure the order of a certain cluster within the toolbar.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::View::TicketZoom::MenuModule</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::TicketMenu::Generic</Item>
+                <Item Key="Name" Translatable="1">Print</Item>
+                <Item Key="Description" Translatable="1">Print this ticket</Item>
+                <Item Key="Action">AgentTicketPrintChecklist</Item>
+                <Item Key="Link">Action=AgentTicketPrintChecklist;TicketID=[% Data.TicketID | html %]</Item>
+                <Item Key="LinkParam">target="print"</Item>
+                <Item Key="Target"></Item>
+                <Item Key="PopupType">TicketAction</Item>
+                <Item Key="ClusterName" Translatable="1"></Item>
+                <Item Key="ClusterPriority"></Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AgentTicketPrintChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the AgentTicketPrintChecklist.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Module">Kernel::Modules::AgentTicketPrintChecklist</Item>
+                    <Item Key="Description">Prints ticket with checklist information</Item>
+                    <Item Key="NavBarName">Ticket</Item>
+                    <Item Key="Debug">0</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AgentTicketChecklistResponsibleSearch" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the AgentTicketChecklistResponsibleSearch.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Module">Kernel::Modules::AgentTicketChecklistResponsibleSearch</Item>
+                    <Item Key="Description">Backendmodule for responsible autocomplete</Item>
+                    <Item Key="NavBarName">Ticket</Item>
+                    <Item Key="Debug">0</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ResponsibleAutocomplete" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, responsible dropdown will be replaced with an autocomplete field.</Description>
+        <Navigation>PerlServices::TicketChecklist::Responsible</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ResponsibleAutocompleteModule" Required="0" Valid="1">
+        <Description Translatable="1">Defines which module is used for responsible autocomplete field.</Description>
+        <Navigation>PerlServices::TicketChecklist::Responsible</Navigation>
+        <Value>
+            <Item ValueType="Select" SelectedID="Agent">
+                <Item ValueType="Option" Value="Agent" Translatable="1">Agent</Item>
+                <Item ValueType="Option" Value="LDAP" Translatable="1">LDAP</Item>
+                <Item ValueType="Option" Value="Groups" Translatable="1">Group</Item>
+                <Item ValueType="Option" Value="Roles" Translatable="1">Role</Item>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::PrintItemComment" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, the todo item comment is included in the ticket PDF.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AgentTicketChangeChecklistStatus" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the AgentTicketChangeChecklistStatus.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Module">Kernel::Modules::AgentTicketChangeChecklistStatus</Item>
+                    <Item Key="Description">Backend module to change the state of a checklist item</Item>
+                    <Item Key="NavBarName">Ticket</Item>
+                    <Item Key="Debug">0</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ClosedState" Required="0" Valid="1">
+        <Description Translatable="1">New state for checklist items when a ticket is closed</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">done</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::DynamicFieldHasOpenTodos" Required="0" Valid="1">
+        <Description Translatable="1">Name of the dynamic field for keeping the state of open todos.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">TicketHasOpenTodos</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ShowExportIcons" Required="0" Valid="1">
+        <Description Translatable="1">Defines where the 'export' (currently xls, ical, pdf) icons are shown.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="TicketZoom">1</Item>
+                <Item Key="Dashboard (MyTodos)">0</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::OverrideExistingTemplatesOnImport" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, existing templates will be overriden if a template with the same name exists in the import</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">1</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::DetailsInWidget" Required="0" Valid="1">
+        <Description Translatable="1">Define how the task details are shown in the widget</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Select" SelectedID="Link">
+                <Item ValueType="Option" Value="Link" Translatable="1">Show Link</Item>
+                <Item ValueType="Option" Value="MouseOver" Translatable="1">Show on Mouseover</Item>
+                <Item ValueType="Option" Value="None" Translatable="1">Do not show Details</Item>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Output::FilterElementPost###ChecklistSelectArticle" Required="0" Valid="0">
+        <Description Translatable="1">Module to show checkboxes in article tree to select articles to be printed.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Base::OutputFilter</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::FilterElementPost::ChecklistSelectArticle</Item>
+                <Item Key="Debug">0</Item>
+                <Item Key="Templates">
+                    <Hash>
+                        <Item Key="AgentTicketZoom">1</Item>
+                    </Hash>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ChangeNote::ASCII2HTML" Required="0" Valid="1">
+        <Description Translatable="1">Use Ascii -> HTML when change note is displayed.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::ChangeNote</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ChangeNote::URLAutolink" Required="0" Valid="1">
+        <Description Translatable="1">Autolinks for http://.... strings in the change note (Only valid when Ascii -> HTML is active)</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::ChangeNote</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::Comment::ASCII2HTML" Required="0" Valid="1">
+        <Description Translatable="1">Use Ascii -> HTML when comment is displayed.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::Comment</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::Comment::URLAutolink" Required="0" Valid="1">
+        <Description Translatable="1">Autolinks for http://.... strings in the comment (Only valid when Ascii -> HTML is active)</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::Comment</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="Ticket::CustomModule###10001-TicketChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Overloads (redefines) existing functions in Kernel::System::Ticket. Used to easily add customizations.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::Ticket</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">Kernel::System::Ticket::Custom::TicketChecklist</Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AgentTicketChecklistCalendarAJAX" Required="0" Valid="1">
+        <Description Lang="en">Frontend module registration for calendar module.</Description>
+        <Description Lang="de">Frontendmodul-Registration für das Kalender-Modul.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description">TicketChecklist</Item>
+                    <Item Key="NavBarName">Ticket</Item>
+                    <Item Key="Title">TicketChecklist</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AgentTicketChecklistCalendarAJAX###002-TicketChecklist" Required="0" Valid="0">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Output::FilterElementPost###TicketChecklistCalendar" Required="0" Valid="1">
+        <Description Translatable="1">Module to show events in TicketsEventsCalendar (Dashboard).</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Base::OutputFilter</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::FilterElementPost::TicketChecklistCalendar</Item>
+                <Item Key="Debug">0</Item>
+                <Item Key="Templates">
+                    <Hash>
+                        <Item Key="DashboardEventsTicketCalendar">1</Item>
+                    </Hash>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::Calendar::Color" Required="0" Valid="1">
+        <Description Translatable="1">Color for the calendar entries.</Description>
+        <Navigation>PerlServices::TicketChecklist::Calendar</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="^#[0-9a-fA-F]{6}$">#cdcdcd</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::Calendar::TitleFormat" Required="0" Valid="1">
+        <Description Translatable="1">Title format for calendar entries.</Description>
+        <Navigation>PerlServices::TicketChecklist::Calendar</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex=""><![CDATA[#[% Data.TicketNumber %] - [% Data.Title %]]]></Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::Calendar::InfoFormat" Required="0" Valid="1">
+        <Description Translatable="1">Pseudo template for the event mouseover info.</Description>
+        <Navigation>PerlServices::TicketChecklist::Calendar</Navigation>
+        <Value>
+            <Item ValueType="Textarea"><![CDATA[ [% Data.TicketNumber %] - [% Data.Title %] ]]></Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::Theme" Required="0" Valid="1">
+        <Description Translatable="1">View mode for Checklist dialog.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Select" SelectedID="Standard">
+                <Item ValueType="Option" Value="Slim" Translatable="1">Slim</Item>
+                <Item ValueType="Option" Value="Standard" Translatable="1">Standard</Item>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::AllowTicketsAsItems" Required="0" Valid="1">
+        <Description Translatable="1">Ticket numbers can be used as item names and ticket information is imported into the item.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::LinkTickets" Required="0" Valid="1">
+        <Description Translatable="1">Enable/Disable ticket linking feature.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="Ticket::EventModulePost###1033-UpdateChecklistItems" Required="0" Valid="1">
+        <Description Translatable="1">Update checklist items when tickets are updated.</Description>
+        <Navigation>PerlServices::TicketChecklist::Events</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::Ticket::Event::UpdateChecklistItems</Item>
+                <Item Key="Event">(TicketTitleUpdate|TicketStateUpdate)</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::TicketStateToItemState" Required="0" Valid="1">
+        <Description Translatable="1">Map ticket states to checklist item states. This is used when TicketChecklist::AllowTicketsAsItems is active.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="new">open</Item>
+                <Item Key="open">open</Item>
+                <Item Key="pending reminder">open</Item>
+                <Item Key="pending auto close+">open</Item>
+                <Item Key="pending auto close-">open</Item>
+                <Item Key="merged">done</Item>
+                <Item Key="closed successful">done</Item>
+                <Item Key="closed unsuccessful">rejected</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::EventModule###011-SetTicketState" Required="0" Valid="1">
+        <Description Translatable="1">Set ticket state.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::TicketChecklist::Event</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PerlServices::TicketChecklist::Event::SetTicketState</Item>
+                <Item Key="Event">(ItemStatusUpdate)</Item>
+                <Item Key="Transaction">0</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::EventModule###012-ForeignTickets" Required="0" Valid="1">
+        <Description Translatable="1">Send Notifications.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::TicketChecklist::Event</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PerlServices::TicketChecklist::Event::ForeignTickets</Item>
+                <Item Key="Event">(ItemChangeNote|ItemStatusUpdate)</Item>
+                <Item Key="Transaction">0</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::ItemStateToTicketState" Required="0" Valid="1">
+        <Description Translatable="1">Map checklist item states to ticket states. This is used when TicketChecklist::AllowTicketsAsItems is active.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="open">open</Item>
+                <Item Key="done">closed successful</Item>
+                <Item Key="rejected">closed unsuccessful</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AgentTicketEmail###002-TicketChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>PS.ChecklistDropdown.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AgentTicketPhone###002-TicketChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>PS.ChecklistDropdown.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::RWGroups" Required="0" Valid="0">
+        <Description Translatable="1">Only members of those groups that have rw permissions can change the checklist.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Array>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AgentTicketChecklistCustomerVisibility" Required="0" Valid="1">
+        <Description Lang="en">Frontend module registration for calendar module.</Description>
+        <Description Lang="de">Frontendmodul-Registration für das Kalender-Modul.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description">TicketChecklist Customer Visibility</Item>
+                    <Item Key="NavBarName">Ticket</Item>
+                    <Item Key="Title">TicketChecklist Customer Visibility</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AgentTicketChecklistCustomerVisibility###002-TicketChecklist" Required="0" Valid="0">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::Feature::CustomerVisibility" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, the agents can allow customers to see checklist in the customer portal.</Description>
+        <Navigation>PerlServices::TicketChecklist::Features</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::Feature::DateStart" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, the checklist items have a start date.</Description>
+        <Navigation>PerlServices::TicketChecklist::Features</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::Feature::FromTextarea" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, the checklist items can be created from a textarea.</Description>
+        <Navigation>PerlServices::TicketChecklist::Features</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="Queues::CustomerVisibility" Required="0" Valid="0">
+        <Description Translatable="1">Define in which queues the checklist ist visible for customers by default</Description>
+        <Navigation>PerlServices::TicketChecklist::CustomerVisibility</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Misc">1</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Output::FilterElementPost###CustomerTicketChecklist" Required="0" Valid="1">
+        <Description Translatable="1">Module to show checklist in Customer ticket zoom.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Base::OutputFilter</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::FilterElementPost::CustomerTicketChecklist</Item>
+                <Item Key="Debug">0</Item>
+                <Item Key="Templates">
+                    <Hash>
+                        <Item Key="CustomerTicketZoom">1</Item>
+                    </Hash>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Customer::CommonCSS###100001-TicketChecklist" Required="1" Valid="1">
+        <Description Translatable="1">List of CSS files to always be loaded for the agent interface.</Description>
+        <Navigation>PerlServices::TicketChecklist::Frontend::Base</Navigation>
+        <Value>
+            <Array>
+                <Item>PS.Checklist.CustomerZoom.css</Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::EventModule###020-RemoveTicketInfoFlags" Required="0" Valid="1">
+        <Description Translatable="1">Set ticket dynamic field to keep track if the ticket has a checklist.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core::TicketChecklist::Event</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PerlServices::TicketChecklist::Event::RemoveTicketInfoFlags</Item>
+                <Item Key="Event">(TicketChecklistRemove)</Item>
+                <Item Key="Transaction">0</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Stats::DynamicObjectRegistration###TicketChecklistStatusFilter" Required="0" Valid="1">
+        <Description Translatable="1">Module to generate ticket statistics.</Description>
+        <Navigation>Core::Stats</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::Stats::Dynamic::TicketChecklistStatusFilter</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::StartDate::NewState" Required="0" Valid="1">
+        <Description Translatable="1">New state for a todo item that has reached the start date.</Description>
+        <Navigation>PerlServices::TicketChecklist::StartDate</Navigation>
+        <Value>
+            <Item ValueType="String">open</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::Widget::ShowResponsibleFullname" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, the responsible is shown with fullname instead of login.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::Condition::MultiState" Required="0" Valid="1">
+        <Description Translatable="1">If enabled, multiple states can be selected that triggers an action (or'ed).</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::PastDueDatesAllowed" Required="0" Valid="1">
+        <Description Translatable="1">If disabled, one cannot change the due date to a past date.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">1</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::DueDateYearsInPast" Required="0" Valid="1">
+        <Description Translatable="1">Years in the past shown in the start and due date dropdowns.</Description>
+        <Navigation>PerlServices::TicketChecklist::Core</Navigation>
+        <Value>
+            <Item ValueType="String">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TicketChecklist::NotificationQueueExclude" Required="0" Valid="0">
+        <Description Translatable="1">Checklist notifications will not be sent if a ticket is in one of those queues</Description>
+        <Navigation>PerlServices::TicketChecklist::Notifications</Navigation>
+        <Value>
+            <Array>
+                <Item>Junk</Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="PreferencesGroups###ChecklistNotifications" Required="0" Valid="1">
+        <Description Translatable="1">Please note: setting 'Active' to 0 will only prevent agents from editing settings of this group in their personal preferences, but will still allow administrators to edit the settings of another user's behalf. Use 'PreferenceGroup' to control in which area these settings should be shown in the user interface.</Description>
+        <Navigation>Frontend::Agent::View::Preferences</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::Preferences::ChecklistNotifications</Item>
+                <Item Key="PreferenceGroup">NotificationSettings</Item>
+                <Item Key="Label" Translatable="1">Checklist notifications</Item>
+                <Item Key="Desc" Translatable="1">Choose for which kind of checklist changes you want to receive notifications.</Item>
+                <Item Key="PrefKey">ChecklistNotifications</Item>
+                <Item Key="Prio">8600</Item>
+                <Item Key="Active">1</Item>
+            </Hash>
+        </Value>
+    </Setting>
+</otobo_config>

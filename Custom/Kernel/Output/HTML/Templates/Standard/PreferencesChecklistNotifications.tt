@@ -1,0 +1,26 @@
+# --
+# Copyright (C) 2021 - 2022 Perl-Services.de, https://www.perl-services.de
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
+# --
+
+<table class="DataTable NotificationList">
+    <thead>
+        <tr>
+            <th>[% Translate("Notification") | html %]</th>
+            <th class="Center">[% Translate("Subscribe") | html%]</th>
+        </tr>
+    </thead>
+    <tbody>
+[% RenderBlockStart("ChecklistNotification") %]
+        <tr title="[% Data.Notification %]">
+            <td>[% Translate(Data.NotificationName) | html %]</td>
+            <td class="Center">
+                <input autocomplete="off" type="checkbox" class="NotificationEvent" name="[% Data.Notification | html %]" title="[% Translate("Receive messages for notification '%s'", Translate(Data.NotificationName)) | html %]" value="1" [% IF Data.Checked == 1 %]checked="checked"[% END %] />
+            </td>
+        </tr>
+[% RenderBlockEnd("ChecklistNotification") %]
+    </tbody>
+</table>

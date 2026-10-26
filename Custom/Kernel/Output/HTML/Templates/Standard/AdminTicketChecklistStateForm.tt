@@ -1,0 +1,111 @@
+# --
+# AgentTicketChecklistStateForm.tt - provides HTML form for ticket checklist states
+# Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% InsertTemplate("AgentCustomerSearch.tt") %]
+
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <h1>[% Translate("Checklist Item State Management") | html %]</h1>
+    <div class="SidebarColumn">
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Actions") | html %]</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %]" class="CallForAction Fullsize Center">
+                        <span>[% Translate("Go to overview") | html %]</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Add/Change States") | html %]</h2>
+            </div>
+            <div class="Content">
+                <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="[% Data.Subaction | html %]"/>
+                    <input type="hidden" name="ID" value="[% Data.ID | html %]"/>
+
+                    <fieldset class="TableLike">
+                        <label for="Name" class="Mandatory">
+                            <span class="Marker">*</span>
+                            [% Translate("Name") | html %]:
+                        </label>
+                        <div class="Field">
+                            <input type="text" id="Name" name="Name" placeholder="[% Translate("done") | html %]" value="[% Data.Name | html %]" class="W75pc Validate_Required [% Data.NameInvalid | html %]"/>
+                            <div id="NameError" class="TooltipErrorMessage">
+                                <p>[% Translate("A name is required.") | html %]</p>
+                            </div>
+                            <div id="NameServerError" class="TooltipErrorMessage">
+                                <p>[% Translate("A name is required.") | html %]</p>
+                            </div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Color" class="Mandatory">
+                            <span class="Marker">*</span>
+                            [% Translate("Color") | html %]:
+                        </label>
+                        <div class="Field">
+                            <input type="text" id="Color" name="Color" placeholder="green / #D3E5B5" value="[% Data.Color | html %]" class="W75pc Validate_Required [% Data.ColorInvalid | html %]"/>
+                            <div id="ColorError" class="TooltipErrorMessage">
+                                <p>[% Translate("A color is required.") | html %]</p>
+                            </div>
+                            <div id="ColorServerError" class="TooltipErrorMessage">
+                                <p>[% Translate("A color is required.") | html %]</p>
+                            </div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="QueueIDs">
+                            [% Translate("Queue") | html %]:
+                        </label>
+                        <div class="Field">
+                            [% Data.QueueSelect %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="RoleIDs">
+                            [% Translate("Role") | html %]:
+                        </label>
+                        <div class="Field">
+                            [% Data.RoleSelect %]
+                        </div>
+                        <div class="Clear"></div>
+
+
+                        <label for="ValidID" class="Mandatory">
+                            <span class="Marker">*</span>
+                            [% Translate("Valid") | html %]:
+                        </label>
+                        <div class="Field">
+                            [% Data.ValidSelect %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <div class="Field">
+                            <button class="Primary" type="submit" value="[% Translate("Save") | html %]">[% Translate("Save") | html %]</button>
+                            [% Translate("or") | html %]
+                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                        </div>
+                        <div class="Clear"></div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="Clear"></div>
+</div>

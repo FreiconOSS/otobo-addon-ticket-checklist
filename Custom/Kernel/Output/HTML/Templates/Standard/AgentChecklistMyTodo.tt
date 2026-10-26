@@ -1,0 +1,62 @@
+# --
+# AgentChecklistMyTodo.tt - provides HTML form for AgentChecklistMyTodo
+# Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("My Todos") | html %]</h2>
+            </div>
+            <div class="Content">
+                <table class="DataTable" id="Todo">
+                    <thead>
+                        <tr>
+                            <th>[% Translate("Title") | html %]</th>
+                            <th>[% Translate("Due Date") | html %]</th>
+                            <th>[% Translate("Priority") | html %]</th>
+                            <th>[% Translate("State") | html %]</th>
+                            <th>[% Translate("TicketNumber") | html %]</th>
+                            <th>[% Translate("Ticket Title") | html %]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+[% RenderBlockStart("NoTodo") %]
+                        <tr>
+                            <td colspan="6">[% Translate("No matches found.") | html %]</td>
+                        </tr>
+[% RenderBlockEnd("NoTodo") %]
+[% RenderBlockStart("Todo") %]
+                        <tr>
+                            <td>
+                                [% Data.Title | html %]
+                            </td>
+                            <td>
+                                [% Data.DueDate | Localize("TimeLong") %]
+                            </td>
+                            <td>
+                                [% Translate(Data.Priority) | html %]
+                            </td>
+                            <td>
+                                [% Translate(Data.Status) | html %]
+                            </td>
+                            <td>
+                                <a href="[% Env("Baselink") %]Action=AgentTicketZoom;TicketID=[% Data.TicketID | uri %]">[% Data.TicketNumber | html %]</a>
+                            </td>
+                            <td>
+                                <a href="[% Env("Baselink") %]Action=AgentTicketZoom;TicketID=[% Data.TicketID | uri %]">[% Data.TicketTitle | html %]</a>
+                            </td>
+                        </tr>
+[% RenderBlockEnd("Todo") %]
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="Clear"></div>
+</div>

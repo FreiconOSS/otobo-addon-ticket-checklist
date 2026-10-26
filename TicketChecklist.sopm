@@ -1,0 +1,933 @@
+<?xml version="1.0" encoding="utf-8"?>
+<otobo_package version="1.0">
+    <!-- GENERATED WITH OPM::Maker::Command::sopm (1.1.0) -->
+    <Name>TicketChecklist</Name>
+    <Version>10.1.3</Version>
+    <Framework>10.0.x</Framework>
+    <Framework>10.1.x</Framework>
+    <Framework>11.0.x</Framework>
+    <Vendor>Perl-Services.de</Vendor>
+    <URL>http://www.perl-services.de</URL>
+    <Description Lang="de">Eine Checkliste für Tickets.</Description>
+    <Description Lang="en">Add a checklist to tickets.</Description>
+    <Description Lang="hu">Egy ellenőrzőlista hozzáadása a jegyekhez.</Description>
+    <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
+    <Filelist>
+        <File Permission="644" Location="Custom/Kernel/Modules/AdminTicketChecklistNotifications.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Modules/AdminTicketChecklistStates.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Modules/AdminTicketChecklistTemplates.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Modules/AgentChecklistExport.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Modules/AgentChecklistMyTodo.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Modules/AgentChecklistTickets.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChangeChecklistStatus.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChecklist.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChecklistCalendarAJAX.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChecklistCustomerVisibility.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChecklistIDSet.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChecklistResponsibleSearch.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketChecklistTemplates.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Modules/AgentTicketPrintChecklist.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Dashboard/ChecklistItem.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Dashboard/ChecklistTicket.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/FilterElementPost/ChecklistSelectArticle.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/FilterElementPost/CustomerTicketChecklist.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/FilterElementPost/TicketChecklistCalendar.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/FilterElementPost/TicketChecklistDropdown.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Preferences/ChecklistNotifications.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistNotificationsForm.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistNotificationsList.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistStateForm.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistStateList.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistTemplateForm.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminTicketChecklistTemplateList.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AgentChecklistMyTodo.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AgentDashboardChecklistItem.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AgentTicketChecklist.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AgentTicketChecklistSlim.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/ChecklistItemsSnippet.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/ChecklistItemsSnippetSlim.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/CustomerTicketChecklistWidget.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/PreferencesChecklistNotifications.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/TicketChecklistWidget.tt"/>
+        <File Permission="644" Location="Custom/Kernel/Output/HTML/TicketZoom/TicketChecklist.pm"/>
+        <File Permission="644" Location="Custom/Kernel/Output/PDF/TicketChecklist.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/GenericAgent/AddChecklistToTicket.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/GenericAgent/ChangeChecklistItems.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Autocomplete/Agent.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Autocomplete/Groups.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Autocomplete/LDAP.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Autocomplete/Roles.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/ChangeNote.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/ConditionAction.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/ForeignTickets.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/Notifications.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/RemoveTicketInfoFlags.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/SetDefaultCustomerVisibility.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/SetHasChecklist.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/SetHasOpenTodos.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/SetTicketState.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklist/Event/TicketHistory.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistDueDate.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistNotification.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistStartDate.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistStatus.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistTemplate.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistTicketInfo.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PerlServices/TicketChecklistUtils.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PostMaster/Filter/TicketChecklist.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/PostMaster/Filter/TicketChecklistItem.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/Ticket/Custom/TicketChecklist.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/Ticket/Event/CloseChecklistItems.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/Ticket/Event/CreateChecklistItemsForChildTickets.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/Ticket/Event/MergeTicketChecklists.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/Ticket/Event/SetTicketChecklists.pm"/>
+        <File Permission="644" Location="Custom/Kernel/System/Ticket/Event/UpdateChecklistItems.pm"/>
+        <File Permission="644" Location="Kernel/Config/Files/XML/TicketChecklist.xml"/>
+        <File Permission="644" Location="Kernel/Config/Files/ZZZChecklist.pm"/>
+        <File Permission="644" Location="Kernel/Language/de_TicketChecklist.pm"/>
+        <File Permission="644" Location="Kernel/Language/en_TicketChecklist.pm"/>
+        <File Permission="644" Location="Kernel/Language/hu_TicketChecklist.pm"/>
+        <File Permission="644" Location="Kernel/System/Console/Command/Maint/Ticket/ChecklistClearPreferences.pm"/>
+        <File Permission="644" Location="Kernel/System/Console/Command/Maint/Ticket/ChecklistNotifications.pm"/>
+        <File Permission="644" Location="Kernel/System/Console/Command/Maint/Ticket/ChecklistSetStartDateStatus.pm"/>
+        <File Permission="644" Location="Kernel/System/Console/Command/Maint/Ticket/ChecklistStartDateNotifications.pm"/>
+        <File Permission="644" Location="Kernel/System/PerlServices/TicketChecklist/ConditionAction/ChangeChecklistItems.pm"/>
+        <File Permission="644" Location="Kernel/System/PerlServices/TicketChecklist/ConditionAction/TicketSetData.pm"/>
+        <File Permission="644" Location="Kernel/System/PerlServices/TicketChecklist/ConditionAction/TicketSetDynamicField.pm"/>
+        <File Permission="644" Location="Kernel/System/ProcessManagement/TransitionAction/AddChecklist.pm"/>
+        <File Permission="644" Location="Kernel/System/ProcessManagement/TransitionAction/ChangeChecklistItems.pm"/>
+        <File Permission="644" Location="Kernel/System/Stats/Dynamic/TicketChecklistStatusFilter.pm"/>
+        <File Permission="644" Location="Kernel/System/Stats/Static/TicketChecklist.pm"/>
+        <File Permission="644" Location="doc/en/TicketChecklist.pod"/>
+        <File Permission="644" Location="doc/hu/TicketChecklist.pod"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/PS.AdminTicketChecklistTemplate.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/PS.ChecklistDropdown.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/PS.TicketChecklist.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/PS.TicketChecklistWidget.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/PS.TicketChecklist.Default.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/img/ps/arrow_down.png"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/img/ps/arrow_up.png"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Customer/default/css/PS.Checklist.CustomerZoom.css"/>
+        <File Permission="644" Location="var/packagesetup/TicketChecklist.pm"/>
+        <File Permission="644" Location="var/stats/TicketChecklist-001.xml"/>
+    </Filelist>
+    <DatabaseInstall Type="post">
+        <TableCreate Name="ps_ticketchecklist_status">
+            <Column Name="id" Required="true" Type="INTEGER" AutoIncrement="true" PrimaryKey="true"/>
+            <Column Name="name" Required="true" Type="VARCHAR" Size="150"/>
+            <Column Name="color" Required="true" Type="VARCHAR" Size="10"/>
+            <Column Name="valid_id" Required="true" Type="SMALLINT"/>
+            <Column Name="queues" Required="false" Type="VARCHAR" Size="1000"/>
+            <Column Name="roles" Required="false" Type="VARCHAR" Size="1000"/>
+            <Column Name="create_time" Required="true" Type="DATE"/>
+            <Column Name="create_by" Required="true" Type="INTEGER"/>
+            <Column Name="change_time" Required="true" Type="DATE"/>
+            <Column Name="change_by" Required="true" Type="INTEGER"/>
+            <ForeignKey ForeignTable="users">
+                <Reference Local="create_by" Foreign="id"/>
+                <Reference Local="change_by" Foreign="id"/>
+            </ForeignKey>
+            <ForeignKey ForeignTable="valid">
+                <Reference Local="valid_id" Foreign="id"/>
+            </ForeignKey>
+        </TableCreate>
+        <TableCreate Name="ps_ticketchecklist">
+            <Column Name="id" Required="true" Type="INTEGER" AutoIncrement="true" PrimaryKey="true"/>
+            <Column Name="title" Required="false" Type="VARCHAR" Size="250"/>
+            <Column Name="comments" Required="false" Type="VARCHAR" Size="5000"/>
+            <Column Name="position" Required="true" Type="SMALLINT"/>
+            <Column Name="status_id" Required="true" Type="INTEGER"/>
+            <Column Name="ticket_id" Required="true" Type="BIGINT"/>
+            <Column Name="priority_id" Required="true" Type="SMALLINT"/>
+            <Column Name="responsible_id" Required="false" Type="INTEGER"/>
+            <Column Name="responsible_key" Required="false" Type="VARCHAR" Size="250"/>
+            <Column Name="due_date" Required="false" Type="DATE"/>
+            <Column Name="date_start" Required="false" Type="DATE"/>
+            <Column Name="article_id" Required="false" Type="INTEGER"/>
+            <Column Name="article_number" Required="false" Type="VARCHAR" Size="30"/>
+            <Column Name="foreign_ticket_id" Required="false" Type="INTEGER"/>
+            <Column Name="change_notes" Required="false" Type="VARCHAR" Size="10000"/>
+            <Column Name="create_time" Required="true" Type="DATE"/>
+            <Column Name="create_by" Required="true" Type="INTEGER"/>
+            <Column Name="change_time" Required="true" Type="DATE"/>
+            <Column Name="change_by" Required="true" Type="INTEGER"/>
+            <Column Name="state_change_by" Required="false" Type="INTEGER"/>
+            <ForeignKey ForeignTable="users">
+                <Reference Local="create_by" Foreign="id"/>
+                <Reference Local="change_by" Foreign="id"/>
+            </ForeignKey>
+            <ForeignKey ForeignTable="ps_ticketchecklist_status">
+                <Reference Local="status_id" Foreign="id"/>
+            </ForeignKey>
+            <ForeignKey ForeignTable="ticket_priority">
+                <Reference Local="priority_id" Foreign="id"/>
+            </ForeignKey>
+            <ForeignKey ForeignTable="ticket">
+                <Reference Local="ticket_id" Foreign="id"/>
+            </ForeignKey>
+        </TableCreate>
+        <TableCreate Name="ps_checklist_template">
+            <Column Name="id" Required="true" Type="INTEGER" AutoIncrement="true" PrimaryKey="true"/>
+            <Column Name="tmpl_name" Required="true" Type="VARCHAR" Size="150"/>
+            <Column Name="cl_template" Required="true" Type="VARCHAR" Size="10000"/>
+            <Column Name="condition_actions" Required="false" Type="VARCHAR" Size="10000"/>
+            <Column Name="valid_id" Required="true" Type="SMALLINT"/>
+            <Column Name="customer_ids" Required="false" Type="VARCHAR" Size="10000"/>
+            <Column Name="create_time" Required="true" Type="DATE"/>
+            <Column Name="create_by" Required="true" Type="INTEGER"/>
+            <Column Name="change_time" Required="true" Type="DATE"/>
+            <Column Name="change_by" Required="true" Type="INTEGER"/>
+            <Unique Name="tmpl_name">
+                <UniqueColumn Name="tmpl_name"/>
+            </Unique>
+            <ForeignKey ForeignTable="users">
+                <Reference Local="create_by" Foreign="id"/>
+                <Reference Local="change_by" Foreign="id"/>
+            </ForeignKey>
+            <ForeignKey ForeignTable="valid">
+                <Reference Local="valid_id" Foreign="id"/>
+            </ForeignKey>
+        </TableCreate>
+        <TableCreate Name="ps_checklist_tmpl_grp">
+            <Column Name="template_id" Required="true" Type="INTEGER"/>
+            <Column Name="group_id" Required="true" Type="INTEGER"/>
+            <Unique Name="template_id_group_id">
+                <UniqueColumn Name="template_id"/>
+                <UniqueColumn Name="group_id"/>
+            </Unique>
+            <ForeignKey ForeignTable="ps_checklist_template">
+                <Reference Local="template_id" Foreign="id"/>
+            </ForeignKey>
+            <ForeignKey ForeignTable="groups">
+                <Reference Local="group_id" Foreign="id"/>
+            </ForeignKey>
+        </TableCreate>
+        <TableCreate Name="ps_checklist_notify">
+            <Column Name="id" Required="true" Type="INTEGER" AutoIncrement="true" PrimaryKey="true"/>
+            <Column Name="notification_type" Required="true" Type="VARCHAR" Size="200"/>
+            <Column Name="language" Required="true" Type="VARCHAR" Size="60"/>
+            <Column Name="subject" Required="true" Type="VARCHAR" Size="200"/>
+            <Column Name="notification_text" Required="true" Type="VARCHAR" Size="5000"/>
+            <Column Name="content_type" Required="true" Type="VARCHAR" Size="250"/>
+            <Column Name="valid_id" Required="true" Type="SMALLINT"/>
+            <Column Name="create_time" Required="true" Type="DATE"/>
+            <Column Name="create_by" Required="true" Type="INTEGER"/>
+            <Column Name="change_time" Required="true" Type="DATE"/>
+            <Column Name="change_by" Required="true" Type="INTEGER"/>
+            <Unique Name="notification_type_language">
+                <UniqueColumn Name="notification_type"/>
+                <UniqueColumn Name="language"/>
+            </Unique>
+            <ForeignKey ForeignTable="valid">
+                <Reference Local="valid_id" Foreign="id"/>
+            </ForeignKey>
+        </TableCreate>
+        <TableCreate Name="ps_checklist_ticket_info">
+            <Column Name="ticket_id" Required="true" Type="BIGINT"/>
+            <Column Name="customer_visibility" Required="true" Type="INTEGER"/>
+            <Column Name="create_time" Required="true" Type="DATE"/>
+            <Column Name="create_by" Required="true" Type="INTEGER"/>
+            <Column Name="change_time" Required="true" Type="DATE"/>
+            <Column Name="change_by" Required="true" Type="INTEGER"/>
+            <Unique Name="ticket_id">
+                <UniqueColumn Name="ticket_id"/>
+            </Unique>
+            <ForeignKey ForeignTable="users">
+                <Reference Local="create_by" Foreign="id"/>
+                <Reference Local="change_by" Foreign="id"/>
+            </ForeignKey>
+            <ForeignKey ForeignTable="ticket">
+                <Reference Local="ticket_id" Foreign="id"/>
+            </ForeignKey>
+        </TableCreate>
+        <Insert Table="ps_ticketchecklist_status">
+            <Data Key="name" Type="Quote"><![CDATA[open]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="color" Type="Quote"><![CDATA[#CDCDCD]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_ticketchecklist_status">
+            <Data Key="name" Type="Quote"><![CDATA[done]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="color" Type="Quote"><![CDATA[#8BEF4D]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_ticketchecklist_status">
+            <Data Key="name" Type="Quote"><![CDATA[rejected]]></Data>
+            <Data Key="color" Type="Quote"><![CDATA[#FF505E]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+            <Data Key="valid_id">1</Data>
+        </Insert>
+        <Insert Table="ps_ticketchecklist_status">
+            <Data Key="name" Type="Quote"><![CDATA[waiting]]></Data>
+            <Data Key="color" Type="Quote"><![CDATA[#FFDD50]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+            <Data Key="valid_id">1</Data>
+        </Insert>
+        <Insert Table="ps_ticketchecklist_status">
+            <Data Key="name" Type="Quote"><![CDATA[in progress]]></Data>
+            <Data Key="color" Type="Quote"><![CDATA[#FFDD50]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+            <Data Key="valid_id">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemResponsibleUpdate]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Verantwortung einer Aufgabe an Sie übertragen]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo <OTRS_CHECKLISTITEM_User>,
+
+Die Verantwortung eines Checklisten-Punkts im Ticket [<OTRS_TICKET_TicketNumber>] wurde an Sie
+von <OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> uebertragen.
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemStatusUpdate]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Statusupdate einer Aufgabe]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo,
+
+Der Status der Aufgabe '<OTRS_CHECKLISTITEM_Title>' im Ticket [<OTRS_TICKET_TicketNumber>] 
+wurde auf <OTRS_CHECKLISTITEM_Status> gesetzt.
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemDueDateBefore]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Fälligkeitsdatum einer Aufgabe steht bevor]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo,
+
+Das Fälligkeitsdatum der Aufgabe '<OTRS_CHECKLISTITEM_Title>' im Ticket [<OTRS_TICKET_TicketNumber>] 
+steht kurz bevor.
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ticket_history_type">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemAdd]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Added a new checklist item]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ticket_history_type">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemDelete]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Deleted a new checklist item]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ticket_history_type">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemDueDateUpdate]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Updated due date for a checklist item]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ticket_history_type">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemStatusUpdate]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Updated status for a checklist item]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ticket_history_type">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemResponsibleUpdate]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Updated responsible person for a checklist item]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ticket_history_type">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemDueDateBefore]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Reached due date for a checklist item]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemDelete]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Aufgabe gelöscht]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo,
+
+die Aufgabe '<OTRS_CHECKLISTITEM_Title>' im Ticket [<OTRS_TICKET_TicketNumber>] 
+wurde gelöscht
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemChangeNote]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Aufgabe verändert]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo <OTRS_CHECKLISTITEM_User>,
+
+folgende Notiz wurde bei der Änderung der Aufgabe angegeben:
+<OTRS_CHECKLIST_VARIABLETEXT>
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemChangeNote]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[en]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Note for TODO item change]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hello <OTRS_CHECKLISTITEM_User>,
+
+this note was left when the todo item was changed:
+<OTRS_CHECKLIST_VARIABLETEXT>
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Your OTRS notification master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemsAllClosed]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Alle Aufgaben geschlossen]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo,
+
+Alle Aufgaben im Ticket [<OTRS_TICKET_TicketNumber>] sind geschlossen.
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ticket_history_type">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemMove]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Moved to a new ticket]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemDateStartUpdate]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Startdatum einer Aufgabe aktualisiert]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo <OTRS_CHECKLISTITEM_User>,
+
+Das Startdatum eines Checklisten-Punkts im Ticket [<OTRS_TICKET_TicketNumber>] wurde 
+von <OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> aktualisiert.
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemDateStartBefore]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Startdatum einer Aufgabe steht bevor]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo,
+
+Das Startdatum der Aufgabe '<OTRS_CHECKLISTITEM_Title>' im Ticket [<OTRS_TICKET_TicketNumber>] 
+steht kurz bevor.
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+    </DatabaseInstall>
+    <DatabaseUpgrade Type="post">
+        <TableCreate Name="ps_checklist_template" Version="3.3.8">
+            <Column Name="id" Required="true" Type="INTEGER" AutoIncrement="true" PrimaryKey="true"/>
+            <Column Name="tmpl_name" Required="true" Type="VARCHAR" Size="150"/>
+            <Column Name="cl_template" Required="true" Type="VARCHAR" Size="10000"/>
+            <Column Name="condition_actions" Required="false" Type="VARCHAR" Size="10000"/>
+            <Column Name="valid_id" Required="true" Type="SMALLINT"/>
+            <Column Name="customer_ids" Required="false" Type="VARCHAR" Size="10000"/>
+            <Column Name="create_time" Required="true" Type="DATE"/>
+            <Column Name="create_by" Required="true" Type="INTEGER"/>
+            <Column Name="change_time" Required="true" Type="DATE"/>
+            <Column Name="change_by" Required="true" Type="INTEGER"/>
+            <Unique Name="tmpl_name">
+                <UniqueColumn Name="tmpl_name"/>
+            </Unique>
+            <ForeignKey ForeignTable="users">
+                <Reference Local="create_by" Foreign="id"/>
+                <Reference Local="change_by" Foreign="id"/>
+            </ForeignKey>
+            <ForeignKey ForeignTable="valid">
+                <Reference Local="valid_id" Foreign="id"/>
+            </ForeignKey>
+        </TableCreate>
+        <TableCreate Name="ps_checklist_tmpl_grp" Version="3.3.8">
+            <Column Name="template_id" Required="true" Type="INTEGER"/>
+            <Column Name="group_id" Required="true" Type="INTEGER"/>
+            <Unique Name="template_id_group_id">
+                <UniqueColumn Name="template_id"/>
+                <UniqueColumn Name="group_id"/>
+            </Unique>
+            <ForeignKey ForeignTable="ps_checklist_template">
+                <Reference Local="template_id" Foreign="id"/>
+            </ForeignKey>
+            <ForeignKey ForeignTable="groups">
+                <Reference Local="group_id" Foreign="id"/>
+            </ForeignKey>
+        </TableCreate>
+        <TableCreate Name="ps_checklist_notify" Version="5.0.1">
+            <Column Name="id" Required="true" Type="INTEGER" AutoIncrement="true" PrimaryKey="true"/>
+            <Column Name="notification_type" Required="true" Type="VARCHAR" Size="200"/>
+            <Column Name="language" Required="true" Type="VARCHAR" Size="60"/>
+            <Column Name="subject" Required="true" Type="VARCHAR" Size="200"/>
+            <Column Name="notification_text" Required="true" Type="VARCHAR" Size="5000"/>
+            <Column Name="content_type" Required="true" Type="VARCHAR" Size="250"/>
+            <Column Name="valid_id" Required="true" Type="SMALLINT"/>
+            <Column Name="create_time" Required="true" Type="DATE"/>
+            <Column Name="create_by" Required="true" Type="INTEGER"/>
+            <Column Name="change_time" Required="true" Type="DATE"/>
+            <Column Name="change_by" Required="true" Type="INTEGER"/>
+            <Unique Name="notification_type_language">
+                <UniqueColumn Name="notification_type"/>
+                <UniqueColumn Name="language"/>
+            </Unique>
+            <ForeignKey ForeignTable="valid">
+                <Reference Local="valid_id" Foreign="id"/>
+            </ForeignKey>
+        </TableCreate>
+        <TableCreate Name="ps_checklist_ticket_info" Version="6.0.11">
+            <Column Name="ticket_id" Required="true" Type="BIGINT"/>
+            <Column Name="customer_visibility" Required="true" Type="INTEGER"/>
+            <Column Name="create_time" Required="true" Type="DATE"/>
+            <Column Name="create_by" Required="true" Type="INTEGER"/>
+            <Column Name="change_time" Required="true" Type="DATE"/>
+            <Column Name="change_by" Required="true" Type="INTEGER"/>
+            <Unique Name="ticket_id">
+                <UniqueColumn Name="ticket_id"/>
+            </Unique>
+            <ForeignKey ForeignTable="users">
+                <Reference Local="create_by" Foreign="id"/>
+                <Reference Local="change_by" Foreign="id"/>
+            </ForeignKey>
+            <ForeignKey ForeignTable="ticket">
+                <Reference Local="ticket_id" Foreign="id"/>
+            </ForeignKey>
+        </TableCreate>
+        <Insert Table="ps_ticketchecklist_status" Version="6.0.26">
+            <Data Key="name" Type="Quote"><![CDATA[waiting]]></Data>
+            <Data Key="color" Type="Quote"><![CDATA[#FFDD50]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+            <Data Key="valid_id">1</Data>
+        </Insert>
+        <TableAlter Name="ps_ticketchecklist" Version="3.3.1">
+            <ColumnAdd Name="responsible_id" Required="false" Type="INTEGER"/>
+            <ColumnAdd Name="priority_id" Required="true" Type="SMALLINT"/>
+            <ColumnAdd Name="due_date" Required="false" Type="DATE"/>
+        </TableAlter>
+        <TableAlter Name="ps_ticketchecklist" Version="3.3.1">
+            <ForeignKeyCreate ForeignTable="users">
+                <Reference Local="responsible_id" Foreign="id"/>
+            </ForeignKeyCreate>
+            <ForeignKeyCreate ForeignTable="ticket_priority">
+                <Reference Local="priority_id" Foreign="id"/>
+            </ForeignKeyCreate>
+        </TableAlter>
+        <Insert Table="ps_checklist_notify" Version="5.0.1">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemResponsibleUpdate]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Verantwortung einer Aufgabe an Sie übertragen]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo <OTRS_CHECKLISTITEM_User>,
+
+Die Verantwortung eines Checklisten-Punkts im Ticket [<OTRS_TICKET_TicketNumber>] wurde an Sie
+von <OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> uebertragen.
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify" Version="5.0.1">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemStatusUpdate]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Statusupdate einer Aufgabe]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo,
+
+Der Status der Aufgabe '<OTRS_CHECKLISTITEM_Title>' im Ticket [<OTRS_TICKET_TicketNumber>] 
+wurde auf <OTRS_CHECKLISTITEM_Status> gesetzt.
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify" Version="5.0.1">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemDueDateBefore]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Fälligkeitsdatum einer Aufgabe steht bevor]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo,
+
+Das Fälligkeitsdatum der Aufgabe '<OTRS_CHECKLISTITEM_Title>' im Ticket [<OTRS_TICKET_TicketNumber>] 
+steht kurz bevor.
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <TableAlter Name="ps_ticketchecklist" Version="3.3.8">
+            <ColumnAdd Name="comments" Required="false" Type="VARCHAR" Size="5000"/>
+        </TableAlter>
+        <Insert Table="ticket_history_type" Version="3.3.14">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemAdd]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Added a new checklist item]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ticket_history_type" Version="3.3.14">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemDelete]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Deleted a new checklist item]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ticket_history_type" Version="3.3.14">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemDueDateUpdate]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Updated due date for a checklist item]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ticket_history_type" Version="3.3.14">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemStatusUpdate]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Updated status for a checklist item]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ticket_history_type" Version="3.3.14">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemResponsibleUpdate]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Updated responsible person for a checklist item]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ticket_history_type" Version="3.3.14">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemDueDateBefore]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Reached due date for a checklist item]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time" Type="Quote"><![CDATA[2012-10-18 00:00:00]]></Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify" Version="5.0.1">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemDelete]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Aufgabe gelöscht]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo,
+
+die Aufgabe '<OTRS_CHECKLISTITEM_Title>' im Ticket [<OTRS_TICKET_TicketNumber>] 
+wurde gelöscht
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <TableAlter Name="ps_ticketchecklist" Version="5.0.2">
+            <ColumnAdd Name="article_id" Required="false" Type="SMALLINT"/>
+            <ColumnAdd Name="article_number" Required="false" Type="SMALLINT"/>
+        </TableAlter>
+        <Insert Table="ps_checklist_notify" Version="5.0.4">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemChangeNote]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Aufgabe verändert]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo <OTRS_CHECKLISTITEM_User>,
+
+folgende Notiz wurde bei der Änderung der Aufgabe angegeben:
+<OTRS_CHECKLIST_VARIABLETEXT>
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify" Version="5.0.4">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemChangeNote]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[en]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Note for TODO item change]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hello <OTRS_CHECKLISTITEM_User>,
+
+this note was left when the todo item was changed:
+<OTRS_CHECKLIST_VARIABLETEXT>
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Your OTRS notification master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <TableAlter Name="ps_ticketchecklist" Version="5.0.6">
+            <ForeignKeyDrop ForeignTable="users">
+                <Reference Local="responsible_id" Foreign="id"/>
+            </ForeignKeyDrop>
+        </TableAlter>
+        <TableAlter Name="ps_ticketchecklist" Version="5.0.6">
+            <ColumnAdd Name="responsible_key" Required="false" Type="VARCHAR" Size="250"/>
+        </TableAlter>
+        <Insert Table="ps_checklist_notify" Version="5.0.8">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemsAllClosed]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Alle Aufgaben geschlossen]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo,
+
+Alle Aufgaben im Ticket [<OTRS_TICKET_TicketNumber>] sind geschlossen.
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <TableAlter Name="ps_ticketchecklist" Version="5.0.8">
+            <ColumnAdd Name="change_notes" Required="false" Type="VARCHAR" Size="10000"/>
+        </TableAlter>
+        <TableAlter Name="ps_ticketchecklist" Version="5.0.8">
+            <ColumnChange NameNew="article_id" NameOld="article_id" Required="false" Type="INTEGER"/>
+            <ColumnChange NameNew="article_number" NameOld="article_number" Required="false" Type="VARCHAR" Size="30"/>
+        </TableAlter>
+        <TableAlter Name="ps_checklist_template" Version="5.0.22">
+            <ColumnAdd Name="condition_actions" Required="false" Type="VARCHAR" Size="10000"/>
+        </TableAlter>
+        <TableAlter Name="ps_checklist_notify" Version="5.0.24">
+            <ColumnAdd Name="valid_id" Required="true" Type="SMALLINT"/>
+        </TableAlter>
+        <TableAlter Name="ps_checklist_notify" Version="5.0.24">
+            <ForeignKeyCreate ForeignTable="valid">
+                <Reference Local="valid_id" Foreign="id"/>
+            </ForeignKeyCreate>
+        </TableAlter>
+        <TableAlter Name="ps_checklist_template" Version="5.0.30">
+            <ColumnAdd Name="customer_ids" Required="false" Type="VARCHAR" Size="10000"/>
+        </TableAlter>
+        <Insert Table="ticket_history_type" Version="5.0.33">
+            <Data Key="name" Type="Quote"><![CDATA[TicketChecklistItemMove]]></Data>
+            <Data Key="comments" Type="Quote"><![CDATA[Moved to a new ticket]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <TableAlter Name="ps_ticketchecklist" Version="5.0.40">
+            <ColumnAdd Name="foreign_ticket_id" Required="false" Type="INTEGER"/>
+        </TableAlter>
+        <TableAlter Name="ps_ticketchecklist_status" Version="6.0.14">
+            <ColumnAdd Name="queues" Required="false" Type="VARCHAR" Size="1000"/>
+        </TableAlter>
+        <TableAlter Name="ps_ticketchecklist_status" Version="6.0.15">
+            <ColumnAdd Name="roles" Required="false" Type="VARCHAR" Size="1000"/>
+        </TableAlter>
+        <TableAlter Name="ps_ticketchecklist" Version="6.0.26">
+            <ColumnAdd Name="date_start" Required="false" Type="DATE"/>
+        </TableAlter>
+        <Insert Table="ps_checklist_notify" Version="6.0.26">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemDateStartUpdate]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Startdatum einer Aufgabe aktualisiert]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo <OTRS_CHECKLISTITEM_User>,
+
+Das Startdatum eines Checklisten-Punkts im Ticket [<OTRS_TICKET_TicketNumber>] wurde 
+von <OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> aktualisiert.
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <Insert Table="ps_checklist_notify" Version="6.0.26">
+            <Data Key="notification_type" Type="Quote"><![CDATA[ItemDateStartBefore]]></Data>
+            <Data Key="language" Type="Quote"><![CDATA[de]]></Data>
+            <Data Key="subject" Type="Quote"><![CDATA[Startdatum einer Aufgabe steht bevor]]></Data>
+            <Data Key="notification_text" Type="Quote"><![CDATA[Hallo,
+
+Das Startdatum der Aufgabe '<OTRS_CHECKLISTITEM_Title>' im Ticket [<OTRS_TICKET_TicketNumber>] 
+steht kurz bevor.
+
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+Ihr OTRS Benachrichtigungs-Master]]></Data>
+            <Data Key="valid_id">1</Data>
+            <Data Key="content_type" Type="Quote"><![CDATA[text/plain]]></Data>
+            <Data Key="create_time">current_timestamp</Data>
+            <Data Key="create_by">1</Data>
+            <Data Key="change_time">current_timestamp</Data>
+            <Data Key="change_by">1</Data>
+        </Insert>
+        <TableAlter Name="ps_ticketchecklist" Version="6.0.16">
+            <ColumnAdd Name="state_change_by" Required="false" Type="INTEGER"/>
+        </TableAlter>
+    </DatabaseUpgrade>
+    <DatabaseUninstall Type="pre">
+        <TableDrop Name="ps_checklist_ticket_info"/>
+        <TableDrop Name="ps_checklist_notify"/>
+        <TableDrop Name="ps_checklist_tmpl_grp"/>
+        <TableDrop Name="ps_checklist_template"/>
+        <TableDrop Name="ps_ticketchecklist"/>
+        <TableDrop Name="ps_ticketchecklist_status"/>
+    </DatabaseUninstall>
+    <CodeInstall Type="post"><![CDATA[
+        $Kernel::OM->Get('var::packagesetup::' . $Param{Structure}->{Name}->{Content} )->CodeInstall();
+    ]]></CodeInstall>
+    <CodeUpgrade Type="post"><![CDATA[
+        $Kernel::OM->Get('var::packagesetup::' . $Param{Structure}->{Name}->{Content} )->CodeUpgrade();
+    ]]></CodeUpgrade>
+    <CodeUpgrade Type="post" Version="5.0.1"><![CDATA[
+        $Kernel::OM->Get('var::packagesetup::' . $Param{Structure}->{Name}->{Content} )->CodeUpgrade_5_0_1();
+    ]]></CodeUpgrade>
+    <CodeUpgrade Type="post" Version="5.0.24"><![CDATA[
+        $Kernel::OM->Get('var::packagesetup::' . $Param{Structure}->{Name}->{Content} )->CodeUpgrade_5_0_24();
+    ]]></CodeUpgrade>
+    <IntroInstall Type="post" Lang="en" Title="Thank you!"><![CDATA[
+            Thank you for choosing the TicketChecklist module.
+    ]]></IntroInstall>
+    <IntroInstall Type="post" Lang="de" Title="Vielen Dank!"><![CDATA[
+            Vielen Dank für die Wahl des TicketChecklist Moduls.
+    ]]></IntroInstall>
+    <IntroInstall Type="post" Lang="hu" Title="Köszönjük!"><![CDATA[
+            Köszönjük, hogy a jegy ellenőrzőlista modult választotta.
+    ]]></IntroInstall></otobo_package>

@@ -1,0 +1,376 @@
+# --
+# Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<script type="text/javascript">
+    if ( [% Data.MoveChecklistAfterArticleItems %] ) {
+        var ArticleItems = $('#ArticleItems');
+        var ComplexTable = $('#TicketChecklistWidget');
+        var Copy = ComplexTable.clone(true);
+        ComplexTable.remove();
+        Copy.insertBefore( ArticleItems );
+    }
+
+    Core.App.Ready(function () {
+      Core.Config.Set('PSChecklistChangeNoteWidget', "[% Data.ShowChangeNote | html %]" );
+      Core.Config.Set('PSChecklistMandatoryChangeNote', "[% Data.MandatoryChangeNote | html %]" );
+      Core.Config.Set('TicketChecklist.ReloadChecklist', "[% Data.ReloadChecklist | html %]" );
+      Core.Config.Set('TicketChecklist.ReloadTicketZoom', "[% Data.ReloadTicketZoom | html %]" );
+      Core.Config.Set('PS.Checklist.DetailsOnMouseover', "[% Data.DetailsMouseOver | html %]" );
+      Core.Config.Set('PS.Checklist.Prefix', "[% Data.Prefix | html %]" );
+      PS.TicketChecklistWidget.Init();
+    });
+</script>
+
+
+[% RenderBlockStart("SimpleView") %]
+<div class="WidgetSimple" id="TicketChecklistWidget">
+    <div class="Header">
+        <div class="WidgetAction Toggle">
+            <a href="#" title="[% Translate("Show or hide the content") | html %]" aria-expanded="true"><i class="fa fa-caret-right"></i><i class="fa fa-caret-down"></i></a>
+        </div>
+        <h2>[% Translate("Ticket Checklist") | html %]</h2>
+    </div>
+    <div class="Content">
+        <fieldset class="TableLike FixedLabelSmall TicketChecklist">
+            <input type="hidden" id="ChecklistTicketID" name="ChecklistTicketID" value="[% Data.TicketID | html %]" />
+[% RenderBlockStart("HiddenItemsWarning") %]
+            <p>
+                [% Translate("Checklist has hidden items.") %]
+                <a onclick="PS.TicketChecklistWidget.ShowHiddenItems(1);" href="#">[% Translate("Show all items") %]</a>
+            </p>
+[% RenderBlockEnd("HiddenItemsWarning") %]
+[% RenderBlockStart("HideItemsLink") %]
+            <p>
+                [% Translate("Checklist has hidden items.") %]
+                <a onclick="PS.TicketChecklistWidget.ShowHiddenItems(-1);" href="#">[% Translate("Hide items") %]</a>
+            </p>
+[% RenderBlockEnd("HideItemsLink") %]
+[% IF Config("TicketChecklist::Feature::CustomerVisibility") %]
+            <label for="PS-Checklist-Customer-View" class="ChecklistTask">
+                [% Translate("customerportal") %]:
+            </label>
+            <p class="Value" title="Customer Visibility">
+                <input type="checkbox" id="PS-Checklist-Customer-View" [% Data.CustomerVisibilityChecked %]>
+            </p>
+            <div class="Clear"></div>
+[% END %]
+[% RenderBlockStart("Item") %]
+[% RenderBlockStart("TitleLink") %]
+                <label id="Task-[% Data.ID %]" class="ChecklistTask">
+                    <a href="javascript:void(0)" onclick="PS.TicketChecklistWidget.GotoArticle('[% Data.ArticleID | uri %]')">
+                       [% Data.Title | html %]
+                    </a>:
+                </label>
+[% RenderBlockEnd("TitleLink") %]
+[% RenderBlockStart("TitlePlain") %]
+                <label id="Task-[% Data.ID %]" class="ChecklistTask">[% Data.Title | html %]: </label>
+[% RenderBlockEnd("TitlePlain") %]
+[% RenderBlockStart("TitleTicketLink") %]
+                <label id="Task-[% Data.ID %]" class="ChecklistTask">
+                    <a href="[% Env("Baselink") %]Action=AgentTicketZoom&TicketID=[% Data.TicketID | uri %]&ArticleID=[% Data.ArticleID | uri %]">
+                       [% Data.Title | html %]
+                    </a>:
+                </label>
+[% RenderBlockEnd("TitleTicketLink") %]
+               <p class="Value" title="[% Data.Title | html %]">
+                    <span style="background-color: [% Data.Color | html %]" id="ItemFlag_[% Data.Position | html %]">
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                    </span>
+                    <input type="hidden" id="ItemID_[% Data.Position | html %]" value="[% Data.ID | html %]" />
+                    [% Data.StatusSelect %]
+[% RenderBlockStart("TaskDetailsLink") %]
+                    <a class="ItemInfo" id="ItemInfoLink-[% Data.ID | html %]" href="#" title="[% Translate("Details") | html %]">[% Translate("Details") | html %]</a>
+[% RenderBlockEnd("TaskDetailsLink") %]
+                </p>
+[% RenderBlockStart("TaskDetails") %]
+                <div class="ChecklistItemDetails Content Hidden" id="ItemInfo-[% Data.ID | html %]">
+                    <fieldset class="TableLike FixedLabelSmall Narrow">
+                        <label>[% Translate("Comment") | html %]:</label>
+                        <p class="Value">
+[% RenderBlockStart("CommentPlain") %]
+                            [% Data.Comment | html %]
+[% RenderBlockEnd("CommentPlain") %]
+[% RenderBlockStart("CommentHTML") %]
+                            [% Data.Comment %]
+[% RenderBlockEnd("CommentHTML") %]
+                        </p>
+                        <div class="Clear"></div>
+                
+                        <label>[% Translate("Article #") | html %]:</label>
+                        <p class="Value">
+[% RenderBlockStart("ArticleLink") %]
+                            <a href="javascript:void(0)" onclick="PS.TicketChecklistWidget.GotoArticle('[% Data.ArticleID | uri %]')">
+                               [% Data.ArticleNumber | html %]
+                            </a>
+[% RenderBlockEnd("ArticleLink") %]
+[% RenderBlockStart("ArticleTicketLink") %]
+                            <a href="[% Env("Baselink") %]Action=AgentTicketZoom&TicketID=[% Data.TicketID | uri %]&ArticleID=[% Data.ArticleID | uri %]">
+                               [% Data.ArticleNumber | html %]
+                            </a>
+[% RenderBlockEnd("ArticleTicketLink") %]
+                        </p>
+                        <div class="Clear"></div>
+                
+                        <label>[% Translate("Responsible") | html %]:</label>
+                        <p class="Value">
+[% IF Config("TicketChecklist::Widget::ShowResponsibleFullname") %]
+                            [% Data.ResponsibleFullname | html %]
+[% ELSE %]
+                            [% Data.Responsible | html %]
+[% END %]
+                        </p>
+                        <div class="Clear"></div>
+
+[% IF Config("TicketChecklist::Feature::DateStart") %]
+                        <label>[% Translate("Start Date") | html %]:</label>
+                        <p class="Value">
+                            [% Data.DateStart | Localize("TimeLong") %]
+                        </p>
+                        <div class="Clear"></div>
+[% END %]
+
+                        <label>[% Translate("Due Date") | html %]:</label>
+                        <p class="Value">
+                            [% Data.DueDate | Localize("TimeLong") %]
+                        </p>
+                        <div class="Clear"></div>
+
+                        <label>[% Translate("Priority") | html %]:</label>
+                        <p class="Value">
+                            [% Translate(Data.Priority) | html %]
+                        </p>
+                        <div class="Clear"></div>
+                
+[% RenderBlockStart("ChangeNoteDetail") %]
+                        <label>[% Translate("Change Note") | html %]:</label>
+                        <p class="Value" id="ChangeNote_[% Data.Position | html %]">
+[% RenderBlockStart("ChangeNoteDetailPlain") %]
+                                    [% Translate(Data.ChangeNote) | html %]
+[% RenderBlockEnd("ChangeNoteDetailPlain") %]
+[% RenderBlockStart("ChangeNoteDetailHTML") %]
+                                    [% Translate(Data.ChangeNote) %]
+[% RenderBlockEnd("ChangeNoteDetailHTML") %]
+                        </p>
+                        <div class="Clear"></div>
+[% RenderBlockEnd("ChangeNoteDetail") %]
+
+[% IF Data.StateChangeBy %]
+                        <label>[% Translate("Agent (state changer)") | html %]:</label>
+                        <p class="Value">
+                            [% Translate(Data.StateChangeAgent) | html %]
+                        </p>
+                        <div class="Clear"></div>
+[% END %]
+
+[% RenderBlockStart("TaskDetailsClose") %]
+                        <p class="Value"><a href="#" class="ItemInfoClose">[% Translate("Close") | html %]</a></p>
+[% RenderBlockEnd("TaskDetailsClose") %]
+                    </fieldset>
+                </div>
+[% RenderBlockEnd("TaskDetails") %]
+                <div class="Clear"></div>
+[% RenderBlockEnd("Item") %]
+
+[% RenderBlockStart("ExportIcons") %]
+               <hr style="width: 100%; height: 1px; color: #000000" />
+               <input type="checkbox" id="my_todos" />[% Translate("Only my todos") | html %]<br />
+               [% Translate("Export to") | html %]:
+               <span style="font-size: 1.3em">
+                   <a title="[% Translate("PDF") | html %]" class="ExportLink" href="[% Env("Baselink") %]Action=AgentChecklistExport;TicketID=[% Data.TicketID | uri %];Type=pdf;Filter="><span class="fa fa-file-pdf-o" style="cursor: pointer"></span></a>
+               
+[% RenderBlockStart("ExportIconsXLSX") %]
+                   <a title="[% Tranlsate("Excel file") | html %]" class="ExportLink" href="[% Env("Baselink") %]Action=AgentChecklistExport;TicketID=[% Data.TicketID | uri %];Type=xls;Filter="><span class="fa fa-file-excel-o" style="cursor: pointer"></span></a>
+[% RenderBlockEnd("ExportIconsXLSX") %]
+[% RenderBlockStart("ExportIconsICS") %]
+                   <a title="[% Translate("ICal Todo") | html %]" class="ExportLink" href="[% Env("Baselink") %]Action=AgentChecklistExport;TicketID=[% Data.TicketID | uri %];Type=ics;Filter="><span class="fa fa-calendar" style="cursor: pointer"></span></a>
+[% RenderBlockEnd("ExportIconsICS") %]
+               </span>
+[% RenderBlockEnd("ExportIcons") %]
+
+[% RenderBlockStart("ShowEditButton") %]
+                <a class="CallForAction Primary AsPopup PopupType_TicketAction" id="EditChecklistBtn" title="[% Translate("Edit") | html %]" href="[% Env("Baselink") %]Action=AgentTicketChecklist&Subaction=NewChecklist&TicketFormID=[% Data.FormID %]">
+                    <span>[% Translate("Edit") | html %]</span>
+                </a>
+[% RenderBlockEnd("ShowEditButton") %]
+         </fieldset>
+    </div>
+</div>
+<div class="Content ComplexChecklistItemDetails" id="ComplexChecklistItemDetails"></div>
+[% RenderBlockEnd("SimpleView") %]
+
+
+[% RenderBlockStart("ComplexView") %]
+<div class="WidgetSimple SpacingTop Expanded" id="TicketChecklistWidget">
+    <div class="Header">
+        <div class="WidgetAction Toggle">
+            <a href="#" title="[% Translate("Show or hide the content") | html %]" aria-expanded="true"><i class="fa fa-caret-right"></i><i class="fa fa-caret-down"></i></a>
+        </div>
+        <h2>[% Translate("Ticket Checklist") | html %]</h2>
+    </div>
+    <div class="Content">
+        <input type="hidden" id="ChecklistTicketID" name="ChecklistTicketID" value="[% Data.TicketID | html %]" />
+[% RenderBlockStart("ComplexHiddenItemsWarning") %]
+            <p>
+                [% Translate("Checklist has hidden items.") %]
+                <a onclick="PS.TicketChecklistWidget.ShowHiddenItems(1);" href="#">[% Translate("Show all items") %]</a>
+            </p>
+[% RenderBlockEnd("ComplexHiddenItemsWarning") %]
+[% RenderBlockStart("ComplexHideItemsLink") %]
+            <p>
+                [% Translate("Checklist has hidden items.") %]
+                <a onclick="PS.TicketChecklistWidget.ShowHiddenItems(-1);" href="#">[% Translate("Hide items") %]</a>
+            </p>
+[% RenderBlockEnd("ComplexHideItemsLink") %]
+[% IF Config("TicketChecklist::Feature::CustomerVisibility") %]
+            <p>
+                [% Translate("customerportal") %]:
+                <input type="checkbox" id="PS-Checklist-Customer-View" [% Data.CustomerVisibilityChecked %]>
+            </p>
+[% END %]
+        <table class="DataTable">
+            <thead>
+                <tr>
+                    <th>[% Translate("Title") | html %]</th>
+                    <th>[% Translate("State") | html %]</th>
+                    <th>[% Translate("Details") | html %]</th>
+                    <th>[% Translate("Responsible") | html %]</th>
+                    <th>[% Translate("Priority") | html %]</th>
+                    <th>[% Translate("DueDate") | html %]</th>
+                </tr>
+            </thead>
+            <tbody>
+[% RenderBlockStart("ComplexItem") %]
+                <tr>
+[% RenderBlockStart("ComplexTitleLink") %]
+                    <td>
+                        <a href="javascript:void(0)" onclick="PS.TicketChecklistWidget.GotoArticle('[% Data.ArticleID | uri %]')">
+                           [% Data.Title | html %]
+                        </a>
+                    </td>
+[% RenderBlockEnd("ComplexTitleLink") %]
+[% RenderBlockStart("ComplexTitlePlain") %]
+                    <td>[% Data.Title | html %]</td>
+[% RenderBlockEnd("ComplexTitlePlain") %]
+[% RenderBlockStart("ComplexTitleTicketLink") %]
+                    <td>
+                        <a href="[% Env("Baselink") %]Action=AgentTicketZoom&TicketID=[% Data.TicketID | uri %]&ArticleID=[% Data.ArticleID | uri %]">
+                           [% Data.Title | html %]
+                        </a>
+                    </td>
+[% RenderBlockEnd("ComplexTitleTicketLink") %]
+                    <td>
+                        <span style="background-color: [% Data.Color | html %]" id="ItemFlag_[% Data.Position | html %]">
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                        <input type="hidden" id="ItemID_[% Data.Position | html %]" value="[% Data.ID | html %]" />
+                        [% Data.StatusSelect %]
+                    </td>
+                    <td>
+                        <a class="ItemComplexInfo ChecklistTask" id="ItemComplexInfoLink-[% Data.ID | html %]" href="javascript:void(0);" title="[% Translate("Details") | html %]">[% Translate("Details") | html %]</a>
+                        <div class="Content Hidden" id="ItemInfo-[% Data.ID | html %]">
+                            <fieldset class="TableLike FixedLabelSmall Narrow">
+                                <label>[% Translate("Comment") | html %]:</label>
+                                <p class="Value">
+[% RenderBlockStart("ComplexCommentPlain") %]
+                            [% Data.Comment | html %]
+[% RenderBlockEnd("ComplexCommentPlain") %]
+[% RenderBlockStart("ComplexCommentHTML") %]
+                            [% Data.Comment %]
+[% RenderBlockEnd("ComplexCommentHTML") %]
+                                </p>
+                                <div class="Clear"></div>
+
+                                <label>[% Translate("Article #") | html %]:</label>
+                                <p class="Value">
+[% RenderBlockStart("ComplexArticleLink") %]
+                                    <a href="javascript:void(0)" onclick="PS.TicketChecklistWidget.GotoArticle('[% Data.ArticleID | uri %]')">
+                                        [% Data.ArticleNumber | html %]
+                                    </a>
+[% RenderBlockEnd("ComplexArticleLink") %]
+[% RenderBlockStart("ComplexArticleTicketLink") %]
+                                    <a href="[% Env("Baselink") %]Action=AgentTicketZoom&TicketID=[% Data.TicketID | uri %]&ArticleID=[% Data.ArticleID | uri %]">
+                                       [% Data.ArticleNumber | html %]
+                                    </a>
+[% RenderBlockEnd("ComplexArticleTicketLink") %]
+                                </p>
+                                <div class="Clear"></div>
+
+[% RenderBlockStart("ComplexChangeNoteDetail") %]
+                                <label>[% Translate("Change Note") | html %]:</label>
+                                <p class="Value" id="ChangeNote_[% Data.Position | html %]">
+[% RenderBlockStart("ComplexChangeNoteDetailPlain") %]
+                                    [% Translate(Data.ChangeNote) | html %]
+[% RenderBlockEnd("ComplexChangeNoteDetailPlain") %]
+[% RenderBlockStart("ComplexChangeNoteDetailHTML") %]
+                                    [% Translate(Data.ChangeNote) %]
+[% RenderBlockEnd("ComplexChangeNoteDetailHTML") %]
+                                </p>
+                                <div class="Clear"></div>
+[% RenderBlockEnd("ComplexChangeNoteDetail") %]
+
+[% IF Data.StateChangeAgent %]
+                        <label>[% Translate("Agent (state changer)") | html %]:</label>
+                        <p class="Value">
+                            [% Translate(Data.StateChangeAgent) | html %]
+                        </p>
+                        <div class="Clear"></div>
+[% END %]
+
+                                <p class="Value"><a href="javascript:void(0);" class="ItemInfoClose">[% Translate("Close") | html %]</a></p>
+                            </fieldset>
+                        </div>
+                    </td>
+
+                    <td>
+[% IF Config("TicketChecklist::Widget::ShowResponsibleFullname") %]
+                        [% Data.ResponsibleFullname | html %]
+[% ELSE %]
+                        [% Data.Responsible | html %]
+[% END %]
+                    </td>
+                    <td>
+                        [% Translate(Data.Priority) | html %]
+                    </td>
+                    <td>
+                        [% Data.DueDate | Localize("TimeLong") %]
+                    </td>
+                 </tr>
+[% RenderBlockEnd("ComplexItem") %]
+             </tbody>
+         </table>
+
+[% RenderBlockStart("ComplexExportIcons") %]
+               <hr style="width: 100%; height: 1px; color: #000000" />
+               <input type="checkbox" id="my_todos" />[% Translate("Only my todos") | html %]
+               [% Translate("Export to") | html %]:
+               <span style="font-size: 1.3em">
+                   <a title="[% Translate("PDF") | html %]" class="ExportLink" href="[% Env("Baselink") %]Action=AgentChecklistExport;TicketID=[% Data.TicketID | uri %];Type=pdf;Filter="><span class="fa fa-file-pdf-o" style="cursor: pointer"></span></a>
+
+[% RenderBlockStart("ComplexExportIconsXLSX") %]
+                   <a title="[% Tranlsate("Excel file") | html %]" class="ExportLink" href="[% Env("Baselink") %]Action=AgentChecklistExport;TicketID=[% Data.TicketID | uri %];Type=xls;Filter="><span class="fa fa-file-excel-o" style="cursor: pointer"></span></a>
+[% RenderBlockEnd("ComplexExportIconsXLSX") %]
+[% RenderBlockStart("ComplexExportIconsICS") %]
+                   <a title="[% Translate("ICal Todo") | html %]" class="ExportLink" href="[% Env("Baselink") %]Action=AgentChecklistExport;TicketID=[% Data.TicketID | uri %];Type=ics;Filter="><span class="fa fa-calendar" style="cursor: pointer"></span></a>
+[% RenderBlockEnd("ComplexExportIconsICS") %]
+               </span>
+[% RenderBlockEnd("ComplexExportIcons") %]
+
+    </div>
+</div>
+[% RenderBlockEnd("ComplexView") %]
+
+<div class="Content ComplexChecklistItemDetails" id="ComplexChecklistItemDetails"></div>
+<div class="Clear"></div>
+
+<div class="Hidden">
+    <input type="text" id='ChangeNoteDialogTitle' value="[% Translate("Change Note") | html %] ">
+    <input type="text" id='ChangeNoteDialogOkButton' value="[% Translate("Ok") | html %] ">
+    <input type="text" id='ChangeNoteMandatory' value="[% Translate("This field is required") | html %] ">
+    <input type="hidden" id='ChangeNoteDialogRows' value="[% Config("TicketChecklist::ChangeNoteDialogRows") | html %] ">
+    <input type="hidden" id='ChangeNoteDialogCols' value="[% Config("TicketChecklist::ChangeNoteDialogCols") | html %] ">
+</div>
