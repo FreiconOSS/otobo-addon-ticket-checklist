@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de
+ * Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+ * Modified by Freicon GmbH & Co. KG, 2026-10-29: spacing in the checklist dialog.
+ * AGPL-3.0, see the enclosed file COPYING.
+ */
+
 div.ChecklistItemDetails {
     display: none;
     position: absolute;
@@ -34,3 +41,40 @@ div.ComplexChecklistItemDetails {
     box-shadow: 4px 4px 4px #666;
 }
 
+/* checklist dialog: some room around the action buttons and between the items */
+#ToggleAllBtn,
+#ClearBtn,
+#TicketPriorityBtn,
+#ShowChecklistTextarea,
+#FromTextarea {
+    margin: 4px 6px 4px 0;
+    padding: 4px 12px;
+}
+
+#ChecklistItems {
+    margin: 12px 0;
+    padding-left: 24px;
+}
+
+#ChecklistItems > li {
+    margin-bottom: 10px;
+}
+
+#ChecklistItems .DelBtn {
+    margin: 0 8px 0 10px;
+}
+
+#ChecklistItems span[id^="ArrowUp_"],
+#ChecklistItems span[id^="ArrowDown_"],
+#ChecklistItems span[id^="InfoMore_"] {
+    margin: 0 2px;
+    padding: 4px;
+}
+
+#ChecklistItems div[id^="Info_"] {
+    margin: 10px 0 14px;
+}
+
+#AddBtn {
+    margin-right: 8px;
+}

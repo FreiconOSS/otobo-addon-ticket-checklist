@@ -166,11 +166,26 @@ $Self->IsDeeply(
         ItemDueDate_1_Year   => 2026,
         ItemDueDate_1_Month  => 1,
         ItemDueDate_1_Day    => 15,
-        ItemDueDate_1_Hour   => 11,
+        ItemDueDate_1_Hour   => 10,
         ItemDueDate_1_Minute => 0,
     },
-    'date selection: 10:00 UTC is shown as 11:00 Europe/Berlin',
+    'date selection values stay in OTOBO time',
 );
+
+# BuildDateSelection does the conversion to the user's time zone - exactly once
+my $DateSelectionHTML = $Kernel::OM->Get('Kernel::Output::HTML::Layout')->BuildDateSelection(
+    %DateValues,
+    Prefix                  => 'ItemDueDate_1_',
+    Format                  => 'DateInputFormatLong',
+    YearPeriodPast          => 0,
+    YearPeriodFuture        => 5,
+    'ItemDueDate_1_Used'    => 1,
+    'ItemDueDate_1_Optional' => 1,
+);
+my ($SelectedHour) = $DateSelectionHTML =~ m{
+    <select [^>]* name="ItemDueDate_1_Hour" .*? <option [^>]* value="(\d+)" [^>]* selected
+}xms;
+$Self->Is( $SelectedHour + 0, 11, 'date selection: 10:00 UTC is shown as 11:00 Europe/Berlin' );
 
 # ---------------------------------------------------------------------------
 # ticket PDF: checklist in front of the articles, article selection

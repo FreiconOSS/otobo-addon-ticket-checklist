@@ -1,5 +1,7 @@
 /*
 Copyright (C) 2020 Perl-Services.de, https://perl-services.de
+Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+Modified by Freicon GmbH & Co. KG, 2026-10-29: spacing in the customer ticket zoom.
 
 This software comes with ABSOLUTELY NO WARRANTY. For details, see
 the enclosed file COPYING for license information (GPL). If you
@@ -50,3 +52,14 @@ did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 }
 
 } /* end @media */
+
+/* checklist in the customer ticket zoom: some room around the item states */
+#CustomerTicketChecklist li {
+    margin-bottom: 4px;
+}
+
+#CustomerTicketChecklist .ChecklistStatus {
+    margin-left: 4px;
+    padding: 1px 8px;
+    border-radius: 3px;
+}

@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de/
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-29: permission check used an unset ticket id.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -71,9 +74,11 @@ sub Run {
     # check permissions
     my $Access = $TicketObject->TicketPermission(
         Type     => 'ro',
-        TicketID => $Self->{TicketID},
+        TicketID => $TicketID,
         UserID   => $Self->{UserID}
     );
+
+    return {} if !$Access;
 
     my @ChecklistItems = $ChecklistObject->TicketChecklistTicketGet(
         TicketID => $TicketID,

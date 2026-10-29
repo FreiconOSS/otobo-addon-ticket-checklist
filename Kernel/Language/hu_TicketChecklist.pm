@@ -1,6 +1,9 @@
 # --
 # Kernel/Language/hu_TicketChecklist.pm - the Hungarian translation for Checklists
 # Copyright (C) 2014 - 2022 Perl-Services, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11.
 # Copyright (C) 2016 Balázs Úr, http://www.otrs-megoldasok.hu
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see

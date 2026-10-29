@@ -1,6 +1,9 @@
 # --
 # CustomerTicketChecklistWidget.tt - widget for checklist
 # Copyright (C) 2020 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-29: spacing of the item states.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -9,12 +12,10 @@
 
 <div class="oooSection">
     <h3>[% Translate("Ticket Checklist") | html %]</h3>
-    <ul>
+    <ul id="CustomerTicketChecklist">
 [% RenderBlockStart("Item") %]
-        <li><span class="Key">[% Data.Title | html %]:</span> 
-            <span style="background-color: [% Data.Color | html %]">
-                [% Data.StatusSelect %]
-            </span>
+        <li><span class="Key">[% Data.Title | html %]:</span>
+            <span class="ChecklistStatus" style="background-color: [% Data.Color | html %]">[% Data.StatusSelect %]</span>
         </li>
 [% RenderBlockEnd("Item") %]
     </ul>

@@ -1164,12 +1164,10 @@ sub Form {
 }
 
 # Prefill values for BuildDateSelection from a stored time stamp. Stored dates are
-# in OTOBO time; saving runs them through TransformDateSelection, so showing them
-# has to convert to the user's time zone, or every save shifts them by the offset.
+# in OTOBO time and are passed on unchanged: BuildDateSelection converts them to
+# the user's time zone itself, and saving converts back via TransformDateSelection.
 sub _DateSelectionValues {
     my ( $Self, %Param ) = @_;
-
-    my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 
     my $DateTimeObject = $Kernel::OM->Create(
         'Kernel::System::DateTime',
@@ -1178,10 +1176,6 @@ sub _DateSelectionValues {
         },
     );
     return if !$DateTimeObject;
-
-    if ( $LayoutObject->{UserTimeZone} ) {
-        $DateTimeObject->ToTimeZone( TimeZone => $LayoutObject->{UserTimeZone} );
-    }
 
     my $Values = $DateTimeObject->Get();
 

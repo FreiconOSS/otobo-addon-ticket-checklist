@@ -49,7 +49,7 @@
                 <Item Key="Module">Kernel::Output::HTML::TicketMenu::Generic</Item>
                 <Item Key="Name" Translatable="1">Print Checklist</Item>
                 <Item Key="Description" Translatable="1">Print tickets' checklist</Item>
-                <Item Key="Action">AgentChecklistPrint</Item>
+                <Item Key="Action">AgentChecklistExport</Item>
                 <Item Key="Link">Action=AgentChecklistExport;Type=pdf;TicketID=[% Data.TicketID | html %]</Item>
                 <Item Key="LinkParam"></Item>
                 <Item Key="Target"></Item>

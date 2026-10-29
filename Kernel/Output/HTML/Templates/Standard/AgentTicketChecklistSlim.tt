@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-29: delete buttons styled like the other dialog buttons.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -62,7 +65,7 @@
 [% END %]
             [% Data.DueDateSelect %]
 
-                        <button name="DelBtn" id="DelBtn_[% Data.Position | html %]" class="DelBtn" value="-">-</button><br />
+                        <button name="DelBtn" id="DelBtn_[% Data.Position | html %]" class="DelBtn CallForAction" value="-"><span>-</span></button><br />
                         <span id="ArrowUp_[% Data.Position | html %]" class="fa fa-arrow-up" style="cursor: pointer"></span>
                         <span id="ArrowDown_[% Data.Position | html %]" class="fa fa-arrow-down" style="cursor: pointer"></span>
 

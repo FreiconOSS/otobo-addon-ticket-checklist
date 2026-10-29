@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-29: a missing notification text is logged as debug, not as error.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -658,10 +661,11 @@ sub _NotificationGet {
         Language => $Param{Language},
     );
 
-    # no notification found
+    # no notification found - not an error: only the events and languages an
+    # administrator has set up in AdminTicketChecklistNotifications send one
     if ( !%NotificationData ) {
         $LogObject->Log(
-            Priority => 'error',
+            Priority => 'debug',
             Message  => "Could not find notification for $Param{Event} ($Param{Language})",
         );
 

@@ -1,6 +1,9 @@
 # --
 # Kernel/System/PerlServices/TicketChecklistUtils.pm - Some utility methods for the TicketChecklist addon
 # Copyright (C) 2015 - 2022 Perl-Services.de, https://www.perl-services.d
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-29: no user lookup for items without a responsible.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -230,12 +233,13 @@ sub ReplaceMacros {
 
         # get user data
         my %UserData;
-        if ( $UseAutocomplete ) {
+        # items without a responsible have no user to look up
+        if ( $UseAutocomplete && $ItemData{ResponsibleKey} ) {
             %UserData = $AutocompleteObject->GetUserData(
                 User => $ItemData{ResponsibleKey},
             );
         }
-        else {
+        elsif ( !$UseAutocomplete && $ItemData{ResponsibleID} ) {
             %UserData = $UserObject->GetUserData(
                 UserID => $ItemData{ResponsibleID},
                 Valid  => 1,

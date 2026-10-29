@@ -1,5 +1,8 @@
 # --
 # Copyright (C) 2014 - 2022 Perl-Services, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11; 2026-10-29: translation of the print menu entry.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -25,6 +28,8 @@ sub Data {
     $Lang->{'Shows a link in the ticket menu to manage the ticket checklist.'} = 'Zeigt einen Link im Ticketmenü zur Verwaltung der Ticket-Checkliste';
     $Lang->{'Checklist'} = 'Checkliste';
     $Lang->{'Maintain checklist for the ticket'} = 'Verwalten Sie eine Checkliste für das Ticket';
+    $Lang->{'Print Checklist'} = 'Checkliste drucken';
+    $Lang->{"Print tickets' checklist"} = 'Checkliste des Tickets drucken';
     $Lang->{'Enable/Disable debugging feature.'} = 'Ein-/Ausschalten des Debuggings';
     $Lang->{'No'} = 'Nein';
     $Lang->{'Yes'} = 'Ja';
