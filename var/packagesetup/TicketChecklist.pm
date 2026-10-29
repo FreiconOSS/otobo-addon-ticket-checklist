@@ -292,7 +292,7 @@ sub _RemoveObsoleteSettings {
 
     my $Removed;
     SETTING:
-    for my $Name (qw(Ticket::CustomModule###10001-TicketChecklist)) {
+    for my $Name ('Ticket::CustomModule###10001-TicketChecklist') {
         my %Setting = $SysConfigDBObject->DefaultSettingLookup( Name => $Name );
         next SETTING if !%Setting;
 
