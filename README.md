@@ -336,7 +336,7 @@ agent has not switched them off in the preferences, and that the ticket's queue 
 <!-- section:requirements -->
 ## Requirements
 
-- OTOBO 11.0.x
+- OTOBO 11.0.x or 11.1.x (one package for both)
 - Perl module `Net::LDAP`, only for the `LDAP` responsible source (an optional module of
   OTOBO, see `bin/otobo.CheckModules.pl`).
 - No other packages.
