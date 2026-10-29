@@ -1,0 +1,5 @@
+# Handbook build output and raw screenshots
+doc/_build/
+doc/_shots/
+doc/venv/
+.DS_Store

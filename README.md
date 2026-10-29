@@ -1,5 +1,7 @@
 # TicketChecklist
 
+📚 **Handbook (German):** <https://freiconoss.github.io/otobo-addon-docs/ticket-checklist/>
+
 <!-- section:overview -->
 Adds a checklist to OTOBO tickets: a list of tasks, each with a state, and optionally a
 responsible agent, a priority, a start date and a due date.

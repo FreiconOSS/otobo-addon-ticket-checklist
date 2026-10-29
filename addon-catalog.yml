@@ -1,0 +1,69 @@
+# Catalog entry for the internal addon pages and the Teams announcement, built by
+# tools/addon-docs/build.py in otobo-development. Everything technical comes from
+# README.md; this file only holds what sales and consulting need on top of it, in German.
+# It lives in the repo root on purpose: root files never go into the OPM, doc/ does,
+# and two addons with a doc/catalog.yml would collide on install.
+
+name: TicketChecklist
+title: Ticket Checklist
+rubric: Ticketbearbeitung
+visibility: public            # internal | public (public also gets a handbook on the website)
+license: AGPL-3.0             # open source: shown as such on the internal page
+audience:
+  - Vertrieb
+  - Consulting
+
+summary: >-
+  Gibt jedem Ticket eine Checkliste – Aufgaben mit Status, Verantwortlichem und Fälligkeit,
+  aus Vorlagen für wiederkehrende Abläufe wie das Onboarding.
+
+benefits:
+  - Kein Schritt wird vergessen – wiederkehrende Abläufe stehen einmal als Vorlage bereit und kommen vollständig aufs Ticket.
+  - Jeder sieht auf einen Blick, was erledigt ist und was noch fehlt – direkt in der Ticketansicht.
+  - Verantwortliche werden vor der Fälligkeit benachrichtigt; Aufgaben mit Startdatum werden erst zum richtigen Zeitpunkt aktiv.
+  - Die Checkliste kommt automatisch aufs Ticket – per Ticketmaske, E-Mail, Prozess oder GenericAgent.
+  - Open Source unter AGPL-3.0, ein Paket für OTOBO 11.0 und 11.1.
+
+use_cases:
+  - Onboarding und Offboarding von Mitarbeitern
+  - Wiederkehrende Wartung, z. B. Patchday oder Zertifikatstausch
+  - Arbeitsplatzumzug mit mehreren beteiligten Teams
+  - Freigaben im Prozess – das Ticket schließt, wenn die letzte Aufgabe erledigt ist
+
+ticket: OTRS-1294
+repo: https://github.com/FreiconOSS/otobo-addon-ticket-checklist
+handbook: https://freiconoss.github.io/otobo-addon-docs/ticket-checklist/
+requires: []
+
+keywords: [checkliste, checklist, aufgaben, todo, todos, vorlage, vorlagen, onboarding, offboarding, fälligkeit, verantwortlicher, benachrichtigung, kundenportal, open source, agpl, perl-services]
+
+# Pictures for the internal page. flow: the step diagram "So funktioniert's", 3-5 steps in the
+# customer's words, icon names from ICONS in tools/addon-docs/build.py. screenshots: files in
+# this repo with a German caption; the first one is the large picture at the top.
+flow:
+  - icon: note
+    title: Vorlage anlegen
+    text: Einmal die Schritte eines Ablaufs festhalten – mit Verantwortlichen und Fristen.
+  - icon: ticket
+    title: Checkliste aufs Ticket
+    text: Per Ticketmaske, E-Mail, Prozess oder von Hand im Ticket.
+  - icon: alert
+    title: Erinnerung
+    text: Verantwortliche werden benachrichtigt, wenn ihre Aufgabe fällig wird.
+  - icon: check
+    title: Abhaken
+    text: Status direkt in der Ticketansicht setzen – jeder sieht, was noch offen ist.
+
+screenshots:
+  - file: doc/content/images/ticket-zoom.png
+    caption: Das Onboarding-Ticket mit seiner Checkliste – zwei Aufgaben erledigt, eine in Bearbeitung, drei offen.
+  - file: doc/content/images/widget.png
+    caption: Das Widget in der Ticketansicht – jede Aufgabe mit ihrem Status in Farbe, dazu Kundenfreigabe, „Nur meine Aufgaben“ und Export.
+  - file: doc/content/images/customer-ticket.png
+    caption: Dasselbe Ticket im Kundenportal – der Kunde sieht, welche Schritte erledigt sind.
+  - file: doc/content/images/ticket-create.png
+    caption: Beim Anlegen eines Tickets die passende Vorlage gleich mit auswählen.
+  - file: doc/content/images/checklist-mask.png
+    caption: Die Checklisten-Maske mit Vorlagenauswahl und den Details jeder Aufgabe.
+  - file: doc/content/images/template-form.png
+    caption: Eine Vorlage – Aufgaben mit Verantwortlichen, Priorität und Fälligkeit.
