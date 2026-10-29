@@ -4,6 +4,8 @@
 # Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
 # --
 # Modified by Freicon GmbH & Co. KG, 2026-10-26: ported to OTOBO 11.
+# Modified by Freicon GmbH & Co. KG, 2026-10-29: items chosen in the ticket create mask lost
+#   their responsible agent, edited ones were not saved at all.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -130,18 +132,22 @@ sub _AddChecklist {
         UserID    => $Param{UserID},
     );
 
+    # the items come either straight from a template (Status, Priority, Responsible)
+    # or from the edit dialog of the ticket create mask (StatusID, PriorityID, ResponsibleID)
     my $Position = 1;
     for my $Item ( @Checklist ) {
-        my $StatusID   = delete $Item->{Status};
-        my $PriorityID = delete $Item->{Priority};
+        my $StatusID      = delete $Item->{Status};
+        my $PriorityID    = delete $Item->{Priority};
+        my $ResponsibleID = delete $Item->{Responsible};
 
         $ChecklistObject->TicketChecklistAdd(
             %{$Item},
-            StatusID    => $StatusID,
-            PriorityID  => $PriorityID,
-            Position    => $Position++,
-            TicketID    => $Param{Data}->{TicketID},
-            UserID      => $Param{UserID},
+            StatusID      => $Item->{StatusID}      || $StatusID,
+            PriorityID    => $Item->{PriorityID}    || $PriorityID,
+            ResponsibleID => $Item->{ResponsibleID} || $ResponsibleID || $Param{UserID} || 1,
+            Position      => $Position++,
+            TicketID      => $Param{Data}->{TicketID},
+            UserID        => $Param{UserID},
         );
     }
 

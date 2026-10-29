@@ -2,7 +2,8 @@
 # Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de/
 # Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
 # --
-# Modified by Freicon GmbH & Co. KG, 2026-10-29: permission check used an unset ticket id.
+# Modified by Freicon GmbH & Co. KG, 2026-10-29: permission check used an unset ticket id;
+#   items without a responsible agent wrote a Perl warning per item.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -228,7 +229,8 @@ sub Run {
         if (
             ( $Item->{ResponsibleID} == 1 && !$Item->{ResponsibleKey} ) ||
             ( !$Item->{ResponsibleID} && $AutocompleteModule eq 'Agent' &&
-                ($Item->{ResponsibleKey} == $Self->{UserID} || $Item->{ResponsibleKey} == 1 ) ) ||
+                $Item->{ResponsibleKey} &&
+                ($Item->{ResponsibleKey} eq $Self->{UserID} || $Item->{ResponsibleKey} eq '1' ) ) ||
             ( !$Item->{ResponsibleID} && !$Item->{ResponsibleKey} )
         ) {
             $IsResponsible = 1;

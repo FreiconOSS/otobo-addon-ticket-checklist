@@ -1,6 +1,10 @@
 // --
 // PS.ChecklistDropdown.js
 // --
+// Modified by Freicon GmbH & Co. KG, 2026-10-29: item details in the ticket create masks used
+// an undefined event, an error message an undefined URL; choosing the customer dropped the
+// chosen template and ended in an undefined variable.
+// --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
 // did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
@@ -50,6 +54,9 @@ PS.ChecklistDropdown = (function (TargetNS) {
 
                         // Select elements
                         if ($Element.is('select')) {
+                            // keep the template the agent already chose, if the customer may have it
+                            var Selected = $Element.val();
+
                             $Element.empty();
 
                             $.each(DataValue, function (Index, Value) {
@@ -66,12 +73,15 @@ PS.ChecklistDropdown = (function (TargetNS) {
                                 $Element.append(NewOption);
                             });
 
+                            if (Selected && $Element.find('option[value="' + Selected + '"]').length) {
+                                $Element.val(Selected);
+                            }
+
                             // Trigger custom redraw event for InputFields
                             if ($Element.hasClass('Modernize')) {
                                 $Element.trigger('redraw.InputField');
                             }
 
-                            Core.UI.InputFields.InitSelect($('#'+FieldID));
                             return;
                         }
 
@@ -116,7 +126,7 @@ PS.ChecklistDropdown = (function (TargetNS) {
                 dataType: 'json',
                 success: function (Response){
                     if ( !Response ) {
-                        Core.Exception.Throw('invalid json from ' + url, 'communicationerror');
+                        Core.Exception.Throw('Invalid JSON from ' + URL, 'CommunicationError');
                     }
                     else if ( Response.HasHTML ) {
                         $('#TicketChecklistWidget').remove();
@@ -130,10 +140,10 @@ PS.ChecklistDropdown = (function (TargetNS) {
                         });
 
                         $('a.ItemInfo').unbind('click');
-                        $('a.ItemInfo').bind('click', function (event) {
+                        $('a.ItemInfo').bind('click', function (Event) {
                             $('div.ChecklistItemDetails').each( function() { $(this).hide() } );
                     
-                            var MouseLeft = parseInt( Event.pagex, 10 ) - 420;
+                            var MouseLeft = parseInt( Event.pageX, 10 ) - 420;
                             var MouseTop  = parseInt( Event.pageY, 10 ) - 150;
                     
                             var ElemID    = $(this).attr('id').replace("Link", "");

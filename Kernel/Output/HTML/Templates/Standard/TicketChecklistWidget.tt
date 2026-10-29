@@ -1,5 +1,9 @@
 # --
 # Copyright (C) 2014 - 2022 Perl-Services.de, https://www.perl-services.de
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-29: the widget in the ticket create masks broke
+# its script with an empty condition and called a widget script those masks do not load.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -7,7 +11,7 @@
 # --
 
 <script type="text/javascript">
-    if ( [% Data.MoveChecklistAfterArticleItems %] ) {
+    if ( [% Data.MoveChecklistAfterArticleItems ? 1 : 0 %] ) {
         var ArticleItems = $('#ArticleItems');
         var ComplexTable = $('#TicketChecklistWidget');
         var Copy = ComplexTable.clone(true);
@@ -22,7 +26,10 @@
       Core.Config.Set('TicketChecklist.ReloadTicketZoom', "[% Data.ReloadTicketZoom | html %]" );
       Core.Config.Set('PS.Checklist.DetailsOnMouseover', "[% Data.DetailsMouseOver | html %]" );
       Core.Config.Set('PS.Checklist.Prefix', "[% Data.Prefix | html %]" );
-      PS.TicketChecklistWidget.Init();
+      // the ticket create masks show the widget as a preview without loading its script
+      if ( PS.TicketChecklistWidget ) {
+          PS.TicketChecklistWidget.Init();
+      }
     });
 </script>
 

@@ -393,7 +393,13 @@ the ticket PDF on the OTOBO 11 PDF backend, the autoload wrapper instead of
 the removal of the LDAP example configuration, and a few fixes found on the way (the
 *Print Checklist* menu entry pointed at a module that does not exist; the zoom widget
 checked the permission without a ticket id; notifications looked up a responsible for
-items that have none; a missing notification text was logged as an error).
+items that have none; a missing notification text was logged as an error; the edit mask
+moved the due date by one hour on every save; the package setup wrote a Perl warning on
+installation; the template
+selection in the ticket create masks showed up only on OTOBO 11.0 phone tickets, was
+cleared again when the customer was chosen, and the items it brought lost their
+responsible agent or, after editing, were not saved at all; the zoom widget wrote a Perl
+warning for every item without a responsible agent).
 Every changed file carries a modification notice with the date.
 
 The whole work stays under AGPL-3.0; the full text is in [`LICENSE`](LICENSE) and is shipped

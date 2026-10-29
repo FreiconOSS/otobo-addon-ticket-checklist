@@ -1,6 +1,10 @@
 # --
 # Kernel/Output/HTML/FilterElementPost/TicketChecklistDropdown.pm
 # Copyright (C) 2015 - 2022 Perl-Services.de, https://www.perl-services.de/
+# Copyright (C) 2026 Freicon GmbH & Co. KG, https://freicon.de/
+# --
+# Modified by Freicon GmbH & Co. KG, 2026-10-29: template selection found its place in the
+# ticket create masks only on OTOBO 11.0 phone tickets.
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -23,6 +27,7 @@ our @ObjectDependencies = qw(
     Kernel::System::Web::Request
     Kernel::System::Group
     Kernel::System::AuthSession
+    Kernel::System::Log
 );
 
 sub new {
@@ -83,6 +88,7 @@ sub Run {
     $LayoutObject->AddJSOnDocumentComplete(
         Code => qq~
             PS.ChecklistDropdown.Init();
+            window.ReloadChecklist = function () { PS.ChecklistDropdown.ReloadChecklist(); };
         ~,
     );
 
@@ -97,29 +103,33 @@ sub Run {
     }
 
     my $ChecklistString = $LanguageObject->Translate("Checklist");
-    my $Template = qq~
-            <script type="text/javascript">
-                function ReloadChecklist() {
-                    PS.ChecklistDropdown.ReloadChecklist();
-                }
-            </script>
-        <label for="TicketChecklistID">$ChecklistString</label>
+    my $Field = qq~
+        <label for="TicketChecklistID">$ChecklistString:</label>
         <div class="Field">
             $Param{TemplateSelect}
             $MultiChecklistCheckbox
         </div>
     ~;
 
-    my $HiddenField = $Templatename eq 'AgentTicketEmail' ? 'TicketID' : 'FromChatID';
-
-    ${ $Param{Data} } =~ s{
-        <input \s+ type="hidden" \s+ name="$HiddenField" [^>]+> \s+
-        <fieldset \s+ class="TableLike">\K
-
+    # The selection goes first into the first fieldset after the hidden field LinkTicketID,
+    # which both masks have. That fieldset is "TableLike" up to OTOBO 11.0 and "ModularForm"
+    # from 11.1 on, where every field sits in a row. Other output filters may put markup
+    # between the hidden fields and the fieldset, so it is searched for, not expected next.
+    my $Inserted = ${ $Param{Data} } =~ s{
+        ( <input \s [^>]* name="LinkTicketID" [^>]* > .*? <fieldset \s+ class="(TableLike|ModularForm)[^"]*"> )
     }{
-        $Template
-    }xms;
+        $1 . ( $2 eq 'ModularForm'
+            ? qq~<div class="Row"><div class="FieldCell">$Field</div></div>~
+            : $Field
+        )
+    }xmse;
 
+    if ( !$Inserted && $Param{Debug} ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'debug',
+            Message  => "TicketChecklistDropdown: no place for the template selection in $Templatename",
+        );
+    }
 
     return 1;
 }

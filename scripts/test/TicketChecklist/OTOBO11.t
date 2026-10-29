@@ -232,6 +232,96 @@ my $OrigArticles  = \&Kernel::Output::PDF::Ticket::_PDFOutputArticles;
 }
 
 # ---------------------------------------------------------------------------
+# template selection in the ticket create masks, 11.0 and 11.1 markup
+# ---------------------------------------------------------------------------
+
+$Self->True(
+    $Kernel::OM->Get('Kernel::System::PerlServices::TicketChecklistTemplate')->TemplateAdd(
+        Name    => 'Unit test template ' . $HelperObject->GetRandomID(),
+        Items   => [ { Title => 'step', Status => 1 } ],
+        ValidID => 1,
+        UserID  => 1,
+    ) ? 1 : 0,
+    'template for the selection added',
+);
+
+my %CreateMasks = (
+    'phone 11.0, other filter in between' => [
+        'AgentTicketPhone',
+        qq~<input type="hidden" name="LinkTicketID" value=""/>\n<input type="hidden" name="FromChatID" value=""/>\n<!--other filter-->\n<fieldset class="TableLike">~,
+        qr{<fieldset class="TableLike">\s*<label for="TicketChecklistID">},
+    ],
+    'email 11.0' => [
+        'AgentTicketEmail',
+        qq~<input type="hidden" name="TicketID" value=""/>\n<input type="hidden" name="LinkTicketID" value=""/>\n<fieldset class="TableLike">~,
+        qr{<fieldset class="TableLike">\s*<label for="TicketChecklistID">},
+    ],
+    'phone 11.1' => [
+        'AgentTicketPhone',
+        qq~<input type="hidden" name="LinkTicketID" value=""/>\n<input type="hidden" name="FromChatID" value=""/>\n\n<fieldset class="ModularForm">~,
+        qr{<fieldset class="ModularForm"><div class="Row"><div class="FieldCell">\s*<label for="TicketChecklistID">},
+    ],
+);
+
+for my $Case ( sort keys %CreateMasks ) {
+    my ( $TemplateFile, $HTML, $Expected ) = @{ $CreateMasks{$Case} };
+    $Kernel::OM->Get('Kernel::Output::HTML::FilterElementPost::TicketChecklistDropdown')->Run(
+        TemplateFile => $TemplateFile,
+        Templates    => { $TemplateFile => 1 },
+        Data         => \$HTML,
+    );
+    $Self->True( ( $HTML =~ $Expected ) ? 1 : 0, "template selection placed: $Case" );
+}
+
+# ---------------------------------------------------------------------------
+# items chosen in the ticket create mask keep responsible, status and priority
+# ---------------------------------------------------------------------------
+
+$ConfigObject->Set(
+    Key   => 'TicketChecklist::ResponsibleAutocomplete',
+    Value => 0,
+);
+
+my $ResponsibleID = $Kernel::OM->Get('Kernel::System::User')->UserLookup(
+    UserLogin => $HelperObject->TestUserCreate(),
+);
+my $OpenID   = $Kernel::OM->Get('Kernel::System::PerlServices::TicketChecklistStatus')->TicketChecklistStatusLookup( Name => 'open' );
+my $HighID   = $Kernel::OM->Get('Kernel::System::Priority')->PriorityLookup( Priority => '4 high' );
+my $CreateID = $TicketObject->TicketCreate(
+    Title        => 'TicketChecklist create mask',
+    Queue        => 'Raw',
+    Lock         => 'unlock',
+    Priority     => '3 normal',
+    State        => 'new',
+    CustomerID   => 'unittest',
+    CustomerUser => 'unittest@example.com',
+    OwnerID      => 1,
+    UserID       => 1,
+);
+
+# one item as it comes from the template, one as the edit dialog saves it
+$Kernel::OM->Get('Kernel::System::Ticket::Event::SetTicketChecklists')->_AddChecklist(
+    Data      => { TicketID => $CreateID },
+    UserID    => 1,
+    Checklist => $Kernel::OM->Get('Kernel::System::JSON')->Encode(
+        Data => [
+            { Title => 'from template', Status => $OpenID, Priority => $HighID, Responsible => $ResponsibleID },
+            { Title => 'edited', StatusID => $OpenID, PriorityID => $HighID, ResponsibleID => $ResponsibleID },
+        ],
+    ),
+);
+
+my %CreatedItem = map { $_->{Title} => $_ } $ChecklistObject->TicketChecklistTicketGet( TicketID => $CreateID );
+for my $Title ( 'from template', 'edited' ) {
+    my $Item = $CreatedItem{$Title} || {};
+    $Self->Is(
+        join( '/', map { $_ // '' } @{$Item}{qw(StatusID PriorityID ResponsibleID)} ),
+        "$OpenID/$HighID/$ResponsibleID",
+        "create mask item '$Title' keeps status, priority and responsible",
+    );
+}
+
+# ---------------------------------------------------------------------------
 # TicketDelete removes the checklist first (Kernel::Autoload::TicketChecklist)
 # ---------------------------------------------------------------------------
 
