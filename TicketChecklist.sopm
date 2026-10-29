@@ -2,6 +2,7 @@
 <otobo_package version="1.0">
     <Name>TicketChecklist</Name>
     <Framework>11.0.x</Framework>
+    <Framework>11.1.x</Framework>
     <Vendor>Freicon GmbH &amp; Co.KG</Vendor>
     <URL>https://github.com/FreiconOSS/otobo-addon-ticket-checklist</URL>
     <Description Lang="de">Eine Checkliste für Tickets. Basiert auf TicketChecklist von Perl-Services.de, von Freicon für OTOBO 11 angepasst (AGPL-3.0).</Description>
